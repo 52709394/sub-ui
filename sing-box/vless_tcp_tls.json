@@ -1,0 +1,18 @@
+{
+    "type": "vless",
+    "tag": "{{.Tag}}",			
+    "server": "{{.Addr}}",
+    "server_port": {{.Port}},
+    "uuid": "{{.UUID}}",
+    "flow": "xtls-rprx-vision",
+    "tls": {
+        "enabled": true,
+        "server_name": "",
+        {{.Alpn}}
+        "utls": {
+            "enabled": true,
+            "fingerprint": "{{.Fingerprint}}"
+        }
+    },
+    "packet_encoding": "xudp"
+}

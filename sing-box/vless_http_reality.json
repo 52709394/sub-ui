@@ -1,0 +1,25 @@
+{
+    "type": "vless",
+    "tag": "{{.Tag}}",
+    "server": "{{.Addr}}",
+    "server_port": 443,
+    "uuid": "{{.UUID}}",
+    "tls": {
+        "enabled": true,
+        "server_name": "{{.Sni}}",
+        "utls": {
+            "enabled": true,
+            "fingerprint": "{{.Fingerprint}}"
+        },
+        "reality": {
+            "enabled": true,
+            "public_key": "{{.PublicKey}}",
+            "short_id": "{{.ShortId}}"
+        }
+    },
+    "packet_encoding": "xudp",
+    "transport": {
+        "type": "http",
+        "host": [{{.HttpHost}}]
+    }
+}

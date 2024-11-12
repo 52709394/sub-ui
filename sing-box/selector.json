@@ -1,0 +1,10 @@
+{
+    "type": "selector",
+    "tag": "select",
+    "outbounds": [
+        "auto",
+        {{.Tags}}
+    ],
+    "default": "auto",
+    "interrupt_exist_connections": true
+}

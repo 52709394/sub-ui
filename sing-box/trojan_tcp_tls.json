@@ -1,0 +1,19 @@
+{
+    "type": "trojan",
+    "tag": "{{.Tag}}",			
+    "server": "{{.Addr}}",
+    "server_port": {{.Port}},
+    "password": "{{.Password}}",
+    "tls": {
+        "enabled": true,
+        "server_name": "",
+        {{.Alpn}}
+        "utls": {
+            "enabled": true,
+            "fingerprint": "{{.Fingerprint}}"
+        }
+    },
+    "multiplex": {
+        "enabled": true
+    }
+}

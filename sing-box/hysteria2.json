@@ -1,0 +1,14 @@
+{
+    "type": "hysteria2",
+    "tag": "{{.Tag}}",
+    "server": "{{.Addr}}",
+    "server_port": {{.Port}},
+    "password": "{{.Password}}",
+    "tls": {
+        "enabled": true,
+        "server_name": "",
+        "alpn": [
+            "h3"
+        ]
+    }
+}

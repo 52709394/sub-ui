@@ -1,0 +1,16 @@
+{
+    "type": "tuic",
+    "tag": "{{.Tag}}",
+    "server": "{{.Addr}}",
+    "server_port": {{.Port}},
+    "uuid": "{{.UUID}}",
+    "password": "{{.Password}}",
+    "congestion_control": "{{.TuicCC}}",
+    "tls": {
+        "enabled": true,
+        "server_name": "",
+        "alpn": [
+            "h3"
+        ]
+    }
+}

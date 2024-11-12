@@ -1,0 +1,483 @@
+{
+    "inbounds": [
+        {
+            "listen": "127.0.0.1",
+            "port": 62789,
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "127.0.0.1"
+            },
+            "streamSettings": null,
+            "tag": "api",
+            "sniffing": null
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 0,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "8791e1ad-c040-48ba-ef67-bea0b4367b98",
+                        "flow": "xtls-rprx-vision"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "certificates": [
+                        {
+                            "ocspStapling": 3600,
+                            "certificateFile": "/etc/ssl/private/fullchain.cer",
+                            "keyFile": "/etc/ssl/private/private.key"
+                        }
+                    ]
+                }
+            },
+            "tag": "xVlessTcpTls",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 1,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "8791e1ad-c040-48ba-ef67-bea0b4367b98",
+                        "flow": "xtls-rprx-vision"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "streamSettings": {
+                "network": "raw",
+                "security": "tls",
+                "tlsSettings": {
+                    "certificates": [
+                        {
+                            "ocspStapling": 3600,
+                            "certificateFile": "/etc/ssl/private/fullchain.cer",
+                            "keyFile": "/etc/ssl/private/private.key"
+                        }
+                    ]
+                }
+            },
+            "tag": "xVlessRawTls",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 2,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "dbfe500b-107e-40fb-8fbc-7ea51767bfb7",
+                        "flow": "xtls-rprx-vision"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "reality",
+                "realitySettings": {
+                    "show": false,
+                    "fingerprint": "chrome",
+                    "dest": "/dev/shm/WEB.sock",
+                    "xver": 2,
+                    "serverNames": [
+                        "ly01.709394.xyz"
+                    ],
+                    "privateKey": "KCz_4MXnkisaHfx-HmaUfBNl7o39jozplhuoYGkafTI",
+                    "shortIds": [
+                        "bb2edf40a870f5a5"
+                    ]
+                },
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "xVlessTcpReality",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 3,
+            "protocol": "vless",
+            "settings": {
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "streamSettings": {
+                "network": "raw",
+                "security": "reality",
+                "realitySettings": {
+                    "show": false,
+                    "fingerprint": "chrome",
+                    "dest": "/dev/shm/WEB.sock",
+                    "xver": 2,
+                    "serverNames": [
+                        "ly01.709394.xyz"
+                    ],
+                    "privateKey": "KCz_4MXnkisaHfx-HmaUfBNl7o39jozplhuoYGkafTI",
+                    "shortIds": [
+                        "bb2edf40a870f5a5"
+                    ]
+                },
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "xTestVlessRawReality",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 3,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "dbfe500b-107e-40fb-8fbc-7ea51767bfb7",
+                        "flow": "xtls-rprx-vision"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "streamSettings": {
+                "network": "raw",
+                "security": "reality",
+                "realitySettings": {
+                    "show": false,
+                    "fingerprint": "chrome",
+                    "dest": "/dev/shm/WEB.sock",
+                    "xver": 2,
+                    "serverNames": [
+                        "ly01.709394.xyz"
+                    ],
+                    "privateKey": "KCz_4MXnkisaHfx-HmaUfBNl7o39jozplhuoYGkafTI",
+                    "shortIds": [
+                        "bb2edf40a870f5a5"
+                    ]
+                },
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "xVlessRawReality",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 4,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "86162ee1-ce59-4149-9782-ac11f4ca79b8"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "security": "reality",
+                "grpcSettings": {
+                    "serviceName": "lovelive"
+                },
+                "realitySettings": {
+                    "show": false,
+                    "fingerprint": "chrome",
+                    "dest": "/dev/shm/WEB.sock",
+                    "xver": 2,
+                    "serverNames": [
+                        "hdx01.709394.xyz"
+                    ],
+                    "privateKey": "6O6LBS20BPRdqQ5q4f3VcFXWMjIP00O5KAZDHao_i1U",
+                    "shortIds": [
+                        "c65d930732a9fe35"
+                    ]
+                },
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "xVlessGrpcReality",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "listen": "/dev/shm/ZHY.sock,0666",
+            "port": 5,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "931863cd-351d-4e59-c624-e2c87c5e6203"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "streamSettings": {
+                "network": "h2",
+                "security": "reality",
+                "httpSettings": {
+                    "host": ["www.ctrip.com"],
+                    "path": "/"
+                },
+                "realitySettings": {
+                    "show": false,
+                    "fingerprint": "chrome",
+                    "dest": "/dev/shm/WEB.sock",
+                    "xver": 2,
+                    "serverNames": [
+                        "zhy.709394.xyz"
+                    ],
+                    "privateKey": "ODJiXZkmGvl8jlirhRx-dHQIwHLuqYuT0byrFVinjHo",
+                    "shortIds": [
+                        "80ff80df83210f80"
+                    ]
+                },
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "xVlesshttpReality",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "tag": "xVlessSplitTls",
+            "listen": "127.0.0.1",
+            "port": 6,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "email": "vlessSplitTls-1",
+                        "id": "0eb85658-a75e-4b86-a924-98e5c920e17a"
+                    },
+                    {
+                        "email": "vlessSplitTls-2",
+                        "id": "5cc06b35-1609-47c6-93ed-072851fd408e"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "splithttp",
+                "splithttpSettings": {
+                    "path": "/lovelive"
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "tag": "xVlessXhttpTls",
+            "listen": "127.0.0.1",
+            "port": 7,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "email": "vlessXhttpTls-1",
+                        "id": "0eb85658-a75e-4b86-a924-98e5c920e17a"
+                    },
+                    {
+                        "email": "vlessXhttpTls-2",
+                        "id": "5cc06b35-1609-47c6-93ed-072851fd408e"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "xhttp",
+                "xhttpSettings": {
+                    "path": "/lovelive"
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 8,
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "83e0692c-54d2-49eb-9812-dc775f6361e4"
+                    }
+                ],
+                "disableInsecureEncryption": false
+            },
+            "streamSettings": {
+                "network": "httpupgrade",
+                "security": "none",
+                "httpupgradeSettings": {
+                    "path": "/CcAw3PRxv57Q5usu"
+                }
+            },
+            "tag": "xVmessHttpupgradeTls",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 9,
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "email": "vmessWsTls-1",
+                        "id": "e4f47cdb-4d1c-4403-ff9e-6522da59f637"
+                    },
+                    {
+                        "id": "2fc4f929-ccaa-4887-b47d-a056921068b3"
+                    }
+                ],
+                "disableInsecureEncryption": false
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "/wdh9XOe3NLgitLJX"
+                },
+                "security": "tls",
+                "tlsSettings": {
+                    "certificates": [
+                        {
+                            "ocspStapling": 3600,
+                            "certificateFile": "/etc/ssl/private/fullchain.cer",
+                            "keyFile": "/etc/ssl/private/private.key"
+                        }
+                    ]
+                }
+            },
+            "tag": "xVmessWsTls",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "port": 443,
+            "tag": "xTrojanTcpTls",
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password":"your password",
+                        "email": "xTrojanTcpTls-1"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": [
+                        "http/1.1"
+                    ],
+                    "certificates": [
+                        {
+                            "certificateFile": "/path/to/fullchain.crt",
+                            "keyFile": "/path/to/private.key"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

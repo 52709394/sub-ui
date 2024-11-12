@@ -1,0 +1,23 @@
+{
+    "type": "vmess",
+    "tag": "{{.Tag}}",
+    "server": "{{.Addr}}",
+    "server_port": {{.Port}},
+    "uuid": "{{.UUID}}",
+    "security": "auto",
+    "alter_id": 0,
+    "tls": {
+        "enabled": true,
+        "server_name": "",
+        {{.Alpn}}
+        "utls": {
+            "enabled": true,
+            "fingerprint": "{{.Fingerprint}}"
+        }
+    },
+    "packet_encoding": "packetaddr",
+    "transport": {
+        "type": "{{.Network}}",
+        "path": "{{.Path}}"
+    }
+}

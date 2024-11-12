@@ -1,0 +1,169 @@
+{
+    "dns": {
+        "servers": [
+            {
+                "tag": "cloudflare",
+                "address": "https://1.1.1.1/dns-query"
+            },
+            {
+                "tag": "local",
+                "address": "https://1.12.12.12/dns-query",
+                "detour": "direct"
+            }
+        ],
+        "rules": [
+            {
+                "outbound": "any",
+                "server": "local"
+            },
+            {
+                "clash_mode": "direct",
+                "server": "local"
+            },
+            {
+                "clash_mode": "global",
+                "server": "cloudflare"
+            },
+            {
+                "rule_set": "geosite-cn",
+                "server": "local"
+            }
+        ],
+        "strategy": "ipv4_only"
+    },
+    "inbounds": [
+        {
+            "type": "mixed",
+            "tag": "mixed-in",
+            "listen": "127.0.0.1",
+            "listen_port": 2080,
+            "sniff": true,
+            "sniff_override_destination": false,
+            "domain_strategy": "ipv4_only"
+        },
+        {
+            "type": "tun",
+            "tag": "tun-in",
+            "mtu": 9000,
+            "inet4_address": "172.19.0.1/30",
+            "auto_route": true,
+            "strict_route": true,
+            "inet4_route_address": [
+                "0.0.0.0/1",
+                "128.0.0.0/1",
+                "198.18.0.0/15"
+            ],
+            "endpoint_independent_nat": false,
+            "stack": "gvisor",
+            "platform": {
+                "http_proxy": {
+                    "enabled": true,
+                    "server": "127.0.0.1",
+                    "server_port": 2080
+                }
+            },
+            "sniff": true,
+            "sniff_override_destination": false,
+            "domain_strategy": "ipv4_only"
+        }
+    ],
+    "outbounds": [
+        {{.Proxys}},
+        {
+            "type": "direct",
+            "tag": "direct"
+        },
+        {
+            "type": "block",
+            "tag": "block"
+        },
+        {
+            "type": "dns",
+            "tag": "dns-out"
+        }
+    ],
+    "route": {
+        "rules": [
+            {
+                "protocol": "dns",
+                "outbound": "dns-out"
+            },
+            {
+                "port": 53,
+                "outbound": "dns-out"
+            },
+            {
+                "network": "udp",
+                "port": 443,
+                "outbound": "block"
+            },
+            {
+                "clash_mode": "direct",
+                "outbound": "direct"
+            },
+            {
+                "clash_mode": "global",
+                "outbound": "{{.Outbound}}"
+            },
+            {
+                "type": "logical",
+                "mode": "and",
+                "rules": [
+                    {
+                        "rule_set": "geosite-geolocation-!cn"
+                    },
+                    {
+                        "rule_set": "geoip-cn",
+                        "invert": true
+                    }
+                ],
+                "outbound": "{{.Outbound}}"
+            },
+            {
+                "rule_set": "geosite-cn",
+                "outbound": "direct"
+            },
+            {
+                "rule_set": "geoip-cn",
+                "outbound": "direct"
+            }
+        ],
+        "rule_set": [
+            {
+                "tag": "geosite-cn",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
+                "download_detour": "{{.Detour}}"
+            },
+            {
+                "tag": "geoip-cn",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
+                "download_detour": "{{.Detour}}"
+            },
+            {
+                "type": "remote",
+                "tag": "geosite-geolocation-!cn",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-geolocation-!cn.srs",
+                "download_detour": "{{.Detour}}"
+            }
+        ],
+        "auto_detect_interface": true
+    },
+    "experimental": {
+        "cache_file": {
+            "enabled": true
+        },
+        "clash_api": {
+            "external_controller": "127.0.0.1:9090",
+            "external_ui": "ui",
+            "secret": "",
+            "external_ui_download_url": "",
+            "external_ui_download_detour": "{{.UiDetour}}",
+            "default_mode": "rule"
+        }
+    }
+}

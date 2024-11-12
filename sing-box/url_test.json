@@ -1,0 +1,6 @@
+{
+    "type": "urltest",
+    "tag": "auto",
+    "outbounds": [{{.Tags}}],
+    "interrupt_exist_connections": true
+}

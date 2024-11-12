@@ -1,0 +1,346 @@
+{
+  "inbounds": [
+    {
+      "address": "www.douban.com",
+      "protocol": "vless",
+      "port": 443,
+      "users": [
+        {
+          "name": "facai-1",
+          "uuid": "8791e1ad-c040-48ba-ef67-bea0b4367b98",
+          "password": "",
+          "flow": "xtls-rprx-vision",
+          "user_path": "g5jXZ9I81UDy7eby"
+        }
+      ],
+      "congestion_control": "",
+      "network": "tcp",
+      "host": "",
+      "path": "",
+      "service_name": "",
+      "security": "tls",
+      "fixed_Security": true,
+      "alpn": "http/1.1",
+      "sni": "",
+      "publicKey": "",
+      "shortId": "",
+      "fingerprint": "chrome",
+      "tag": "xVlessTcpTls",
+      "tag_path": "eFZsZXNzVGNwVGxz"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "vless",
+      "port": 443,
+      "users": [
+        {
+          "name": "facai-2",
+          "uuid": "8791e1ad-c040-48ba-ef67-bea0b4367b98",
+          "password": "",
+          "flow": "xtls-rprx-vision",
+          "user_path": "FsyZ1kP8kueA5esX"
+        }
+      ],
+      "congestion_control": "",
+      "network": "tcp",
+      "host": "",
+      "path": "",
+      "service_name": "",
+      "security": "tls",
+      "fixed_Security": true,
+      "alpn": "http/1.1",
+      "sni": "",
+      "publicKey": "",
+      "shortId": "",
+      "fingerprint": "chrome",
+      "tag": "xVlessRawTls",
+      "tag_path": "eFZsZXNzUmF3VGxz"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "vless",
+      "port": 443,
+      "users": [
+        {
+          "name": "facai-3",
+          "uuid": "dbfe500b-107e-40fb-8fbc-7ea51767bfb7",
+          "password": "",
+          "flow": "xtls-rprx-vision",
+          "user_path": "nGApVd5AI0fFwROL"
+        }
+      ],
+      "congestion_control": "",
+      "network": "tcp",
+      "host": "",
+      "path": "",
+      "service_name": "",
+      "security": "reality",
+      "fixed_Security": true,
+      "alpn": "http/1.1",
+      "sni": "ly01.709394.xyz",
+      "publicKey": "VUYw8KthSxZDvQqgqUNRt32c1ZMqF6Y7U9eaQuDn3yg",
+      "shortId": "bb2edf40a870f5a5",
+      "fingerprint": "chrome",
+      "tag": "xVlessTcpReality",
+      "tag_path": "eFZsZXNzVGNwUmVhbGl0eQ253D253D"
+    },
+    {
+      "address": "",
+      "protocol": "vless",
+      "port": 0,
+      "users": null,
+      "congestion_control": "",
+      "network": "tcp",
+      "host": "",
+      "path": "",
+      "service_name": "",
+      "security": "reality",
+      "fixed_Security": true,
+      "alpn": "",
+      "sni": "ly01.709394.xyz",
+      "publicKey": "VUYw8KthSxZDvQqgqUNRt32c1ZMqF6Y7U9eaQuDn3yg",
+      "shortId": "bb2edf40a870f5a5",
+      "fingerprint": "chrome",
+      "tag": "xTestVlessRawReality",
+      "tag_path": "eFRlc3RWbGVzc1Jhd1JlYWxpdHk253D"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "vless",
+      "port": 443,
+      "users": [
+        {
+          "name": "facai-5",
+          "uuid": "dbfe500b-107e-40fb-8fbc-7ea51767bfb7",
+          "password": "",
+          "flow": "xtls-rprx-vision",
+          "user_path": "vexxUaUZcplncSHn"
+        }
+      ],
+      "congestion_control": "",
+      "network": "tcp",
+      "host": "",
+      "path": "",
+      "service_name": "",
+      "security": "reality",
+      "fixed_Security": true,
+      "alpn": "http/1.1",
+      "sni": "ly01.709394.xyz",
+      "publicKey": "VUYw8KthSxZDvQqgqUNRt32c1ZMqF6Y7U9eaQuDn3yg",
+      "shortId": "bb2edf40a870f5a5",
+      "fingerprint": "chrome",
+      "tag": "xVlessRawReality",
+      "tag_path": "eFZsZXNzUmF3UmVhbGl0eQ253D253D"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "vless",
+      "port": 443,
+      "users": [
+        {
+          "name": "facai-6",
+          "uuid": "86162ee1-ce59-4149-9782-ac11f4ca79b8",
+          "password": "",
+          "flow": "",
+          "user_path": "idiq5R5x7o1ia89P"
+        }
+      ],
+      "congestion_control": "",
+      "network": "grpc",
+      "host": "",
+      "path": "",
+      "service_name": "lovelive",
+      "security": "reality",
+      "fixed_Security": true,
+      "alpn": "http/1.1",
+      "sni": "hdx01.709394.xyz",
+      "publicKey": "0DBvaHVK1I1fbjdNNLl4tqNnsJFSb8c2SQEwh9XgiQU",
+      "shortId": "c65d930732a9fe35",
+      "fingerprint": "chrome",
+      "tag": "xVlessGrpcReality",
+      "tag_path": "eFZsZXNzR3JwY1JlYWxpdHk253D"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "vless",
+      "port": 443,
+      "users": [
+        {
+          "name": "facai-7",
+          "uuid": "931863cd-351d-4e59-c624-e2c87c5e6203",
+          "password": "",
+          "flow": "",
+          "user_path": "4OLavwzsl0EUnqCD"
+        }
+      ],
+      "congestion_control": "",
+      "network": "http",
+      "host": "www.ctrip.com",
+      "path": "/",
+      "service_name": "",
+      "security": "reality",
+      "fixed_Security": true,
+      "alpn": "http/1.1",
+      "sni": "zhy.709394.xyz",
+      "publicKey": "Y8MzPGEVkGm_nmt-xgsJuaRyjd6EGffic3GYXbOWED4",
+      "shortId": "80ff80df83210f80",
+      "fingerprint": "chrome",
+      "tag": "xVlesshttpReality",
+      "tag_path": "eFZsZXNzaHR0cFJlYWxpdHk253D"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "vless",
+      "port": 443,
+      "users": [
+        {
+          "name": "vlessSplitTls-1",
+          "uuid": "0eb85658-a75e-4b86-a924-98e5c920e17a",
+          "password": "",
+          "flow": "",
+          "user_path": "YNrFwKwOqLNW80jh"
+        },
+        {
+          "name": "vlessSplitTls-2",
+          "uuid": "5cc06b35-1609-47c6-93ed-072851fd408e",
+          "password": "",
+          "flow": "",
+          "user_path": "obnESynbfmYfiNKf"
+        }
+      ],
+      "congestion_control": "",
+      "network": "splithttp",
+      "host": "",
+      "path": "/lovelive",
+      "service_name": "",
+      "security": "tls",
+      "fixed_Security": false,
+      "alpn": "http/1.1",
+      "sni": "",
+      "publicKey": "",
+      "shortId": "",
+      "fingerprint": "chrome",
+      "tag": "xVlessSplitTls",
+      "tag_path": "eFZsZXNzU3BsaXRUbHM253D"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "vless",
+      "port": 443,
+      "users": [
+        {
+          "name": "vlessXhttpTls-1",
+          "uuid": "0eb85658-a75e-4b86-a924-98e5c920e17a",
+          "password": "",
+          "flow": "",
+          "user_path": "sfbsKEBbIqzOTDl2"
+        },
+        {
+          "name": "vlessXhttpTls-2",
+          "uuid": "5cc06b35-1609-47c6-93ed-072851fd408e",
+          "password": "",
+          "flow": "",
+          "user_path": "bxzfnr2DEkq8Xg5V"
+        }
+      ],
+      "congestion_control": "",
+      "network": "xhttp",
+      "host": "",
+      "path": "/lovelive",
+      "service_name": "",
+      "security": "tls",
+      "fixed_Security": false,
+      "alpn": "http/1.1",
+      "sni": "",
+      "publicKey": "",
+      "shortId": "",
+      "fingerprint": "chrome",
+      "tag": "xVlessXhttpTls",
+      "tag_path": "eFZsZXNzWGh0dHBUbHM253D"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "vmess",
+      "port": 443,
+      "users": [
+        {
+          "name": "facai-10",
+          "uuid": "83e0692c-54d2-49eb-9812-dc775f6361e4",
+          "password": "",
+          "flow": "",
+          "user_path": "6Ns1DD1dPRJwtmAj"
+        }
+      ],
+      "congestion_control": "",
+      "network": "httpupgrade",
+      "host": "",
+      "path": "/CcAw3PRxv57Q5usu",
+      "service_name": "",
+      "security": "tls",
+      "fixed_Security": false,
+      "alpn": "http/1.1",
+      "sni": "",
+      "publicKey": "",
+      "shortId": "",
+      "fingerprint": "chrome",
+      "tag": "xVmessHttpupgradeTls",
+      "tag_path": "eFZtZXNzSHR0cHVwZ3JhZGVUbHM253D"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "vmess",
+      "port": 443,
+      "users": [
+        {
+          "name": "vmessWsTls-1",
+          "uuid": "e4f47cdb-4d1c-4403-ff9e-6522da59f637",
+          "password": "",
+          "flow": "",
+          "user_path": "5GL77FIKHsvP7VWf"
+        }
+      ],
+      "congestion_control": "",
+      "network": "ws",
+      "host": "",
+      "path": "/wdh9XOe3NLgitLJX",
+      "service_name": "",
+      "security": "tls",
+      "fixed_Security": true,
+      "alpn": "http/1.1",
+      "sni": "",
+      "publicKey": "",
+      "shortId": "",
+      "fingerprint": "chrome",
+      "tag": "xVmessWsTls",
+      "tag_path": "eFZtZXNzV3NUbHM253D"
+    },
+    {
+      "address": "www.douban.com",
+      "protocol": "trojan",
+      "port": 443,
+      "users": [
+        {
+          "name": "xTrojanTcpTls-1",
+          "uuid": "",
+          "password": "your password",
+          "flow": "",
+          "user_path": "MDLrlvZ3x7hHsIRl"
+        }
+      ],
+      "congestion_control": "",
+      "network": "tcp",
+      "host": "",
+      "path": "",
+      "service_name": "",
+      "security": "tls",
+      "fixed_Security": true,
+      "alpn": "http/1.1",
+      "sni": "",
+      "publicKey": "",
+      "shortId": "",
+      "fingerprint": "chrome",
+      "tag": "xTrojanTcpTls",
+      "tag_path": "eFRyb2phblRjcFRscw253D253D"
+    }
+  ]
+}
