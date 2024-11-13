@@ -204,7 +204,7 @@ func setSBData(_url string, tag string) (string, string) {
 		match = re.FindStringSubmatch(proxyUrl)
 
 		p.Protocol = protocol
-		if protocol == "vless" {
+		if protocol == "vless" || protocol == "vmess" {
 			p.UserUUID = match[1]
 		} else {
 			p.UserPassword, _ = url.PathUnescape(match[1])
