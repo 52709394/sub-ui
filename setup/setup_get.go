@@ -6,19 +6,28 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"runtime"
 	"strconv"
 	"sub-ui/change"
 	"sub-ui/read"
 )
 
 var ConfigData Config
+var SuiUI string
 
 func GetData() {
 
 	var file []byte
 	var err error
+	SuiUI = "sub-ui.json"
 
-	file, err = os.ReadFile("sub-ui.json")
+	if runtime.GOOS == "linux" {
+		if read.CheckExistence("/usr/local/etc/sub-ui/sub-ui.json") == "file" {
+			SuiUI = "/usr/local/etc/sub-ui/sub-ui.json"
+		}
+	}
+
+	file, err = os.ReadFile(SuiUI)
 
 	if err != nil {
 		fmt.Println("错误:自定义配置文件无法读取!")
@@ -173,14 +182,14 @@ func GetData() {
 func SavedConfig() error {
 	nowData, err := json.MarshalIndent(ConfigData, "", "  ")
 	if err != nil {
-		fmt.Println("文件:sub-ui.json")
+		fmt.Println("文件:", SuiUI)
 		fmt.Println("JSON格式化错误:", err)
 		return err
 	}
 
-	err = os.WriteFile("sub-ui.json", nowData, 0644)
+	err = os.WriteFile(SuiUI, nowData, 0644)
 	if err != nil {
-		fmt.Println("文件:sub-ui.json")
+		fmt.Println("文件:", SuiUI)
 		fmt.Println("文件写入错误:", err)
 		return err
 	}
