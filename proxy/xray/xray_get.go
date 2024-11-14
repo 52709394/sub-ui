@@ -131,7 +131,8 @@ func (config Config) RenewData(mod string) error {
 			}
 
 			if config.Inbounds[i].Settings.Clients[j].Email == "" {
-				name = proxy.OnlyName + "-" + fmt.Sprintf("%d", i)
+				//name = proxy.OnlyName + "-" + fmt.Sprintf("%d", i)
+				name = proxy.OnlyName + "-" + fmt.Sprintf("%d", config.Inbounds[i].Port)
 			} else {
 				name = config.Inbounds[i].Settings.Clients[j].Email
 			}
