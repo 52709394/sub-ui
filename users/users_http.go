@@ -98,9 +98,15 @@ func GetUrlData(proxyUrl string) (string, string) {
 				goto jsonOut
 			}
 
-			for _, n := range setup.ConfigData.Backup.Exclude_name {
-				if p.UserName == n {
-					goto jsonOut
+			for i := range setup.ConfigData.Backup.Excludes {
+
+				if tag != setup.ConfigData.Backup.Excludes[i].Tag {
+					continue
+				}
+				for _, n := range setup.ConfigData.Backup.Excludes[i].Users {
+					if p.UserName == n {
+						goto jsonOut
+					}
 				}
 			}
 
@@ -121,9 +127,15 @@ func GetUrlData(proxyUrl string) (string, string) {
 	if setup.ConfigData.Backup.Enabled {
 		if backup.ProxyUrlData != "" {
 
-			for _, n := range setup.ConfigData.Backup.Exclude_name {
-				if p.UserName == n {
-					goto urlOUt
+			for i := range setup.ConfigData.Backup.Excludes {
+
+				if tag != setup.ConfigData.Backup.Excludes[i].Tag {
+					continue
+				}
+				for _, n := range setup.ConfigData.Backup.Excludes[i].Users {
+					if p.UserName == n {
+						goto urlOUt
+					}
 				}
 			}
 

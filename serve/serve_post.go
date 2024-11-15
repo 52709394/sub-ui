@@ -119,12 +119,7 @@ func (s Server) renewBackupUrl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	type Backupinfo struct {
-		Mod  string
-		Name []string
-	}
-
-	var info Backupinfo
+	var info users.Backupinfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {
@@ -133,7 +128,7 @@ func (s Server) renewBackupUrl(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if info.Mod == "exclude" {
-		setup.ConfigData.Backup.Exclude_name = info.Name
+		info.AddUsers()
 		setup.SavedConfig()
 	} else {
 		backup.GetProxyUrl()

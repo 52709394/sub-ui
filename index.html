@@ -278,7 +278,7 @@
                 confirmation = window.confirm(winStr);
 
                 if (!confirmation) { return; };
-                jsonData = JSON.stringify({ "mod": "reset", "users": selectedUsers })
+                jsonData = JSON.stringify({ "mod": "reset", "users": selectedUsers });
 
             } else {
                 return
@@ -330,19 +330,22 @@
             if (model == "exclude") {
                 const checkboxes = document.querySelectorAll('#usersListUl input[type="checkbox"]');
 
-                const Name = [];
+                const selectedUsers = [];
+                const userName = [];
+                //const Name = [];
 
                 checkboxes.forEach(checkbox => {
                     if (checkbox.checked) {
                         const label = JSON.parse(checkbox.dataset.userId);
-                        Name.push(label.name);
+                        selectedUsers.push(label)
+                        userName.push(label.name);
                     }
                 });
 
-                document.getElementById('userOutput').innerText = Name.length > 0 ? `选中用户: ${Name.join(', ')}` : '没有选中任何用户';
+                document.getElementById('userOutput').innerText = userName.length > 0 ? `选中用户: ${userName.join(', ')}` : '没有选中任何用户';
 
-                if (Name.length > 0) {
-                    winStr = `注意:以下用户不会生成备用链接:\n${Name}\n\n点击"是"继续`
+                if (userName.length > 0) {
+                    winStr = `注意:以下用户不会生成备用链接:\n${userName}\n\n点击"是"继续`
                 } else {
                     winStr = `提示:所有用户都可以使用备用链接\n
 注意:本节点如有作为备用链接用户,应当被排除,否则无法在其他节点使用此链接
@@ -357,7 +360,8 @@
                     return;
                 };
 
-                jsonData = JSON.stringify({ "Mod": "exclude", Name });
+                //jsonData = JSON.stringify({ "Mod": "exclude", Name });
+                jsonData = JSON.stringify({ "mod": "exclude", "users": selectedUsers })
 
             } else if (model == "renew") {
                 winStr = `提示:立即更新备用连接!\n\n点击"是"继续`
@@ -369,7 +373,7 @@
                     return;
                 };
 
-                jsonData = JSON.stringify({ "Mod": "renew" });
+                jsonData = JSON.stringify({ "mod": "renew" });
 
             } else {
                 return

@@ -40,6 +40,11 @@ type ResetUrl struct {
 	Users []UserData `json:"users"`
 }
 
+type Backupinfo struct {
+	Mod   string     `json:"mod"`
+	Users []UserData `json:"users"`
+}
+
 type UserData struct {
 	X    int    `json:"x"`
 	Y    int    `json:"y"`

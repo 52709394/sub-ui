@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"sub-ui/random"
+	"sub-ui/setup"
 )
 
 func SetTagData(body []byte) (map[string]string, string, string) {
@@ -109,4 +110,49 @@ func (re ResetUrl) SetUserstUrl() error {
 	}
 
 	return nil
+}
+
+func (bac Backupinfo) AddUsers() {
+
+	var newExcludes []setup.Exclude
+	var names []string
+
+	inboundsLen := len(ConfigData.Inbounds)
+	for i := range bac.Users {
+		x := bac.Users[i].X
+		y := bac.Users[i].Y
+
+		if inboundsLen < x && 1 > x {
+			break
+		}
+
+		UsersLen := len(ConfigData.Inbounds[x].Users)
+
+		if UsersLen < y && 1 > y {
+			break
+		}
+
+		if ConfigData.Inbounds[x].Users[y].Name != bac.Users[i].Name {
+			break
+		}
+
+		tag := ConfigData.Inbounds[x].Tag
+
+		for j := range newExcludes {
+			if tag == newExcludes[j].Tag {
+				newExcludes[j].Users = append(newExcludes[j].Users, bac.Users[i].Name)
+				continue
+			}
+		}
+
+		names = append(names[:0], bac.Users[i].Name)
+
+		newExcludes = append(newExcludes, setup.Exclude{
+			Tag:   tag,
+			Users: names,
+		})
+	}
+
+	setup.ConfigData.Backup.Excludes = newExcludes
+	setup.SavedConfig()
 }

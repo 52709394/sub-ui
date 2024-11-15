@@ -8,8 +8,8 @@
     "ws_0-rtt": "?ed=2560"
   },
   "proxy": {
-    "core": "sing-box",
-    "config": "sconfig.json",
+    "core": "xray",
+    "config": "xconfig.json",
     "real_time": true,
     "only_name": "facai"
   },
@@ -117,19 +117,13 @@
     "start_time": 3,
     "update_interval": 3,
     "sb_selector": false,
-    "exclude_name": [
-      "facai-1",
-      "facai-2",
-      "facai-3",
-      "facai-4",
-      "facai-5",
-      "facai-6",
-      "vlessSplitTls-1",
-      "vlessSplitTls-2",
-      "vlessXhttpTls-1",
-      "vlessXhttpTls-2",
-      "facai-9",
-      "vmessWsTls-1"
+    "excludes": [
+      {
+        "tag": "xTrojanTcpTls",
+        "users": [
+          "xTrojanTcpTls-1"
+        ]
+      }
     ],
     "sing-box": {
       "outbound": "auto",
@@ -144,6 +138,20 @@
       {
         "sb_tag": "proxyC",
         "url": "https://raw.githubusercontent.com/52709394/rm/refs/heads/main/vmess%2Bhttpupgrade%2Btls.txt"
+      }
+    ]
+  },
+  "static": {
+    "enabled": true,
+    "const_list": [
+      {
+        "tag": "xVlessRawTls",
+        "users": [
+          {
+            "name": "facai-1",
+            "path": "qXLFjCpG0m2NT94z"
+          }
+        ]
       }
     ]
   }

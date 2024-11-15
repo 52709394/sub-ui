@@ -4,6 +4,21 @@ var CookieName string
 var CookieValue string
 var CookieDay int
 
+type ConstUser struct {
+	Name string `json:"name"`
+	Path string `json:"path"`
+}
+
+type Consts struct {
+	Tag   string      `json:"tag"`
+	Users []ConstUser `json:"users"`
+}
+
+type Static struct {
+	Enabled   bool     `json:"enabled"`
+	ConstList []Consts `json:"const_list"`
+}
+
 type BckProxy struct {
 	SBTag string `json:"sb_tag"`
 	Url   string `json:"url"`
@@ -15,12 +30,17 @@ type BacSingBox struct {
 	ExternalUiDownloadDetour string `json:"external_ui_download_detour"`
 }
 
+type Exclude struct {
+	Tag   string   `json:"tag"`
+	Users []string `json:"users"`
+}
+
 type Backup struct {
 	Enabled        bool       `json:"enabled"`
 	StartTime      int        `json:"start_time"`
 	UpdateInterval int        `json:"update_interval"`
 	SBSelector     bool       `json:"sb_selector"`
-	Exclude_name   []string   `json:"exclude_name"`
+	Excludes       []Exclude  `json:"excludes"`
 	SingBox        BacSingBox `json:"sing-box"`
 	ProxyList      []BckProxy `json:"proxy_list"`
 }
@@ -118,4 +138,5 @@ type Config struct {
 	Download Download `json:"download"`
 	App      App      `json:"app"`
 	Backup   Backup   `json:"backup"`
+	Static   Static   `json:"static"`
 }
