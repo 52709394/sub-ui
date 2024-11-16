@@ -145,6 +145,7 @@ func (config Config) RenewData(mod string) error {
 
 			newUsersInbound.Users = append(newUsersInbound.Users, users.User{
 				Name:     name,
+				Static:   false,
 				UserPath: path,
 			})
 
@@ -163,8 +164,19 @@ func (config Config) RenewData(mod string) error {
 		// if len(newUsersInbound.Users) > 0 {
 		// 	usersConfig.Inbounds = append(usersConfig.Inbounds, newUsersInbound)
 		// }
+
+		if len(newUsersInbound.Users) == 0 {
+			newUsersInbound.Hide = true
+		} else {
+			newUsersInbound.Hide = false
+		}
+
 		usersConfig.Inbounds = append(usersConfig.Inbounds, newUsersInbound)
 		newUsersInbound = users.Inbound{}
+	}
+
+	if setup.ConfigData.Static.Enabled {
+		usersConfig.SetStaticUrl()
 	}
 
 	path = ""

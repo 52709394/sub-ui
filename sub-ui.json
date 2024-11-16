@@ -145,11 +145,24 @@
     "enabled": true,
     "const_list": [
       {
-        "tag": "xVlessRawTls",
+        "tag": "xVlessXhttpTls",
         "users": [
           {
-            "name": "facai-1",
-            "path": "qXLFjCpG0m2NT94z"
+            "name": "vlessXhttpTls-1",
+            "path": "YszAOMOMWXDiBLYK"
+          },
+          {
+            "name": "vlessXhttpTls-2",
+            "path": "97RlJACQ4uclb6rJ"
+          }
+        ]
+      },
+      {
+        "tag": "xVmessWsTls",
+        "users": [
+          {
+            "name": "vmessWsTls-1",
+            "path": "ww8UfsTSrc1ueT65"
           }
         ]
       }

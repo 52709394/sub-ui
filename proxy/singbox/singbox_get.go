@@ -2,6 +2,7 @@ package singbox
 
 import (
 	"fmt"
+
 	"strings"
 	"sub-ui/change"
 	"sub-ui/proxy"
@@ -80,6 +81,13 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		usersInbound.CongestionControl = inbound.CongestionControl
 		usersInbound.Security = "tls"
 		return protocol
+	case "shadowsocks":
+		usersInbound.Method = inbound.Method
+	case "shadowtls":
+		usersInbound.Version = inbound.Version
+		usersInbound.TargetServer = inbound.Handshake.Server
+		usersInbound.TargetPort = inbound.Handshake.Port
+		usersInbound.Detour = inbound.Detour
 	}
 
 	return ""
@@ -97,6 +105,7 @@ func (config Config) RenewData(mod string) error {
 	var total int
 	var name string
 	var err error
+	var hides []string
 
 	path = ""
 
@@ -124,6 +133,27 @@ func (config Config) RenewData(mod string) error {
 
 		total = len(config.Inbounds[i].Users)
 
+		if protocol == "shadowsocks" {
+
+			if config.Inbounds[i].Password != "" {
+				path, err = random.GenerateStrings(16)
+				if err != nil {
+					fmt.Println("随机url路径错误:", err)
+					return err
+				}
+				newUsersInbound.Users = append(newUsersInbound.Users, users.User{
+					Name:     proxy.OnlyName + "-" + fmt.Sprintf("%d", config.Inbounds[i].Port),
+					Password: config.Inbounds[i].Password,
+					Static:   false,
+					UserPath: path,
+				})
+			}
+		}
+
+		if protocol == "shadowtls" {
+			hides = append(hides, newUsersInbound.Detour)
+		}
+
 		for j := range config.Inbounds[i].Users {
 
 			if config.Inbounds[i].Users[j].Name == "" && total != 1 {
@@ -145,6 +175,7 @@ func (config Config) RenewData(mod string) error {
 
 			newUsersInbound.Users = append(newUsersInbound.Users, users.User{
 				Name:     name,
+				Static:   false,
 				UserPath: path,
 			})
 
@@ -155,7 +186,7 @@ func (config Config) RenewData(mod string) error {
 			case "vless":
 				newUsersInbound.Users[n].UUID = config.Inbounds[i].Users[j].UUID
 				newUsersInbound.Users[n].Flow = config.Inbounds[i].Users[j].Flow
-			case "trojan", "hysteria2":
+			case "trojan", "shadowsocks", "shadowtls", "hysteria2":
 				newUsersInbound.Users[n].Password = config.Inbounds[i].Users[j].Password
 			case "tuic":
 				newUsersInbound.Users[n].UUID = config.Inbounds[i].Users[j].UUID
@@ -165,9 +196,29 @@ func (config Config) RenewData(mod string) error {
 		// if len(newUsersInbound.Users) > 0 {
 		// 	usersConfig.Inbounds = append(usersConfig.Inbounds, newUsersInbound)
 		// }
+
+		if len(newUsersInbound.Users) == 0 {
+			newUsersInbound.Hide = true
+		} else {
+			newUsersInbound.Hide = false
+		}
+
 		usersConfig.Inbounds = append(usersConfig.Inbounds, newUsersInbound)
 		newUsersInbound = users.Inbound{}
 	}
+
+	for i := range hides {
+		for j := range usersConfig.Inbounds {
+			if usersConfig.Inbounds[j].Tag == hides[i] {
+				usersConfig.Inbounds[j].Hide = true
+			}
+		}
+	}
+
+	if setup.ConfigData.Static.Enabled {
+		usersConfig.SetStaticUrl()
+	}
+
 	//fmt.Println(uupConfig)
 	path = ""
 	if mod == "renew" {

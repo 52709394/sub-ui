@@ -4,16 +4,22 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "facai-0",
           "uuid": "8791e1ad-c040-48ba-ef67-bea0b4367b98",
           "password": "",
           "flow": "xtls-rprx-vision",
+          "static": false,
           "user_path": "2FhjBn5cgzzDF6LK"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -32,16 +38,22 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "facai-1",
           "uuid": "8791e1ad-c040-48ba-ef67-bea0b4367b98",
           "password": "",
           "flow": "xtls-rprx-vision",
+          "static": false,
           "user_path": "qXLFjCpG0m2NT94z"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -60,16 +72,22 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "facai-2",
           "uuid": "dbfe500b-107e-40fb-8fbc-7ea51767bfb7",
           "password": "",
           "flow": "xtls-rprx-vision",
-          "user_path": "yUxZUdQYC6E3zBRp"
+          "static": false,
+          "user_path": "5dqHSx5bwoOYex8i"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -88,8 +106,13 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "hide": true,
       "users": null,
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -108,16 +131,22 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "facai-3",
           "uuid": "dbfe500b-107e-40fb-8fbc-7ea51767bfb7",
           "password": "",
           "flow": "xtls-rprx-vision",
+          "static": false,
           "user_path": "M0qkQSdDCa113pFZ"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -136,16 +165,22 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "facai-4",
           "uuid": "86162ee1-ce59-4149-9782-ac11f4ca79b8",
           "password": "",
           "flow": "",
+          "static": false,
           "user_path": "xPacyBp9Ua5ZSTM1"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "grpc",
       "host": "",
       "path": "",
@@ -164,16 +199,22 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "facai-5",
           "uuid": "931863cd-351d-4e59-c624-e2c87c5e6203",
           "password": "",
           "flow": "",
+          "static": false,
           "user_path": "AN0c06kn9dRcxIlQ"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "http",
       "host": "www.ctrip.com",
       "path": "/",
@@ -192,12 +233,14 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "vlessSplitTls-1",
           "uuid": "0eb85658-a75e-4b86-a924-98e5c920e17a",
           "password": "",
           "flow": "",
+          "static": false,
           "user_path": "Xe1oIZXOZmUVaH73"
         },
         {
@@ -205,10 +248,15 @@
           "uuid": "5cc06b35-1609-47c6-93ed-072851fd408e",
           "password": "",
           "flow": "",
+          "static": false,
           "user_path": "FVkdJWuyh4UHCbDN"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "splithttp",
       "host": "",
       "path": "/lovelive",
@@ -227,12 +275,14 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "vlessXhttpTls-1",
           "uuid": "0eb85658-a75e-4b86-a924-98e5c920e17a",
           "password": "",
           "flow": "",
+          "static": true,
           "user_path": "YszAOMOMWXDiBLYK"
         },
         {
@@ -240,15 +290,20 @@
           "uuid": "5cc06b35-1609-47c6-93ed-072851fd408e",
           "password": "",
           "flow": "",
+          "static": true,
           "user_path": "97RlJACQ4uclb6rJ"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "xhttp",
       "host": "",
       "path": "/lovelive",
       "service_name": "",
-      "security": "tls",
+      "security": "Reality@reality",
       "fixed_Security": false,
       "alpn": "",
       "sni": "",
@@ -259,19 +314,50 @@
       "tag_path": "eFZsZXNzWGh0dHBUbHM253D"
     },
     {
+      "address": "",
+      "protocol": "vless",
+      "port": 0,
+      "hide": true,
+      "users": null,
+      "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
+      "network": "tcp",
+      "host": "",
+      "path": "",
+      "service_name": "",
+      "security": "reality",
+      "fixed_Security": true,
+      "alpn": "",
+      "sni": "ly01.709394.xyz",
+      "publicKey": "VUYw8KthSxZDvQqgqUNRt32c1ZMqF6Y7U9eaQuDn3yg",
+      "shortId": "bb2edf40a870f5a5",
+      "fingerprint": "chrome",
+      "tag": "Reality",
+      "tag_path": "UmVhbGl0eQ253D253D"
+    },
+    {
       "address": "usb.zhong168fa.top",
       "protocol": "vmess",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "facai-8",
           "uuid": "83e0692c-54d2-49eb-9812-dc775f6361e4",
           "password": "",
           "flow": "",
+          "static": false,
           "user_path": "pAdSuEChahjjn2f6"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "httpupgrade",
       "host": "",
       "path": "/CcAw3PRxv57Q5usu",
@@ -290,16 +376,22 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vmess",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "vmessWsTls-1",
           "uuid": "e4f47cdb-4d1c-4403-ff9e-6522da59f637",
           "password": "",
           "flow": "",
+          "static": true,
           "user_path": "ww8UfsTSrc1ueT65"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "ws",
       "host": "",
       "path": "/wdh9XOe3NLgitLJX",
@@ -318,16 +410,22 @@
       "address": "usb.zhong168fa.top",
       "protocol": "trojan",
       "port": 443,
+      "hide": false,
       "users": [
         {
           "name": "xTrojanTcpTls-1",
           "uuid": "",
           "password": "your password",
           "flow": "",
-          "user_path": "pS4t4oE9J2lC3oNY"
+          "static": false,
+          "user_path": "bqIrC5UP5CFTspy9"
         }
       ],
       "congestion_control": "",
+      "method": "",
+      "detour": "",
+      "target_server": "",
+      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",

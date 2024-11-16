@@ -5,6 +5,7 @@ type User struct {
 	UUID     string `json:"uuid"`
 	Password string `json:"password"`
 	Flow     string `json:"flow"`
+	Static   bool   `json:"static"`
 	UserPath string `json:"user_path"`
 }
 
@@ -12,8 +13,14 @@ type Inbound struct {
 	Addr              string `json:"address"`
 	Protocol          string `json:"protocol"`
 	Port              uint16 `json:"port"`
+	Hide              bool   `json:"hide"`
 	Users             []User `json:"users"`
 	CongestionControl string `json:"congestion_control"`
+	Version           uint16 `json:"version"`
+	Method            string `json:"method"`
+	Detour            string `json:"detour"`
+	TargetServer      string `json:"target_server"`
+	TargetPort        uint16 `json:"target_Port"`
 	Network           string `json:"network"`
 	Host              string `json:"host"`
 	Path              string `json:"path"`
@@ -35,12 +42,12 @@ type Config struct {
 
 var ConfigData Config
 
-type ResetUrl struct {
+type RenewUsers struct {
 	Mod   string     `json:"mod"`
 	Users []UserData `json:"users"`
 }
 
-type Backupinfo struct {
+type BackupInfo struct {
 	Mod   string     `json:"mod"`
 	Users []UserData `json:"users"`
 }

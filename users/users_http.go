@@ -73,6 +73,11 @@ func GetUrlData(proxyUrl string) (string, string) {
 
 		tag = ConfigData.Inbounds[i].Tag
 
+		re := regexp.MustCompile(`\@reality$`)
+		if re.MatchString(p.Security) {
+			p.Security = "reality"
+		}
+
 	}
 
 	if setup.ConfigData.Proxy.RealTime {
@@ -224,6 +229,28 @@ func TagHttpString(inbound Inbound) (string, string, string) {
 func UsersListHttp(subAddr string, setTagStr, usersLiSrt *string) {
 
 	var urlpath, userName string
+	var securityStr string
+	var selectStr string
+	var jsonData string
+
+	for i := range ConfigData.Inbounds {
+		if len(ConfigData.Inbounds[i].Users) != 0 {
+			continue
+		}
+
+		if ConfigData.Inbounds[i].Security == "reality" {
+			selectStr = ConfigData.Inbounds[i].Tag + "@reality"
+			jsonData = `{"type":"reality",` +
+				`"security":"` + ConfigData.Inbounds[i].Tag + `@reality",` +
+				`"sni":"` + ConfigData.Inbounds[i].Sni + `",` +
+				`"pbk":"` + ConfigData.Inbounds[i].PublicKey + `",` +
+				`"sid":"` + ConfigData.Inbounds[i].ShortId + `"` +
+				`}`
+
+			securityStr += `<option value='` + jsonData + `'>` + selectStr + `</option>`
+		}
+
+	}
 
 	//domain := "https://" + setup.ConfigData.Users.Domain
 
@@ -240,6 +267,7 @@ func UsersListHttp(subAddr string, setTagStr, usersLiSrt *string) {
                 <select id="securitySel-1" style="height: 21px;">
                     <option value=""></option>
                     <option value="tls">tls</option>
+					` + securityStr + `
                 </select>
 
                 <label>alpn:</label>
@@ -260,9 +288,10 @@ func UsersListHttp(subAddr string, setTagStr, usersLiSrt *string) {
 	}
 
 	for i := range ConfigData.Inbounds {
-		if len(ConfigData.Inbounds[i].Users) == 0 {
+		if ConfigData.Inbounds[i].Hide {
 			continue
 		}
+
 		tag := ConfigData.Inbounds[i].Tag
 		tagAID := fmt.Sprintf("tagA%d", i)
 		tagBID := fmt.Sprintf("tagB%d", i)
@@ -287,6 +316,7 @@ func UsersListHttp(subAddr string, setTagStr, usersLiSrt *string) {
                 <select id="` + securityID + `" style="height: 21px;">
                     <option value=""></option>
                     <option value="tls">tls</option>
+					` + securityStr + `
                 </select>
 
                 <label>alpn:</label>

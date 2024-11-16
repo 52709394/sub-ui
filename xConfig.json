@@ -382,6 +382,46 @@
         },
         {
             "listen": "127.0.0.1",
+            "port": 17,
+            "protocol": "vless",
+            "settings": {
+                "decryption": "none",
+                "fallbacks": []
+            },
+            "streamSettings": {
+                "network": "raw",
+                "security": "reality",
+                "realitySettings": {
+                    "show": false,
+                    "fingerprint": "chrome",
+                    "dest": "/dev/shm/WEB.sock",
+                    "xver": 2,
+                    "serverNames": [
+                        "ly01.709394.xyz"
+                    ],
+                    "privateKey": "KCz_4MXnkisaHfx-HmaUfBNl7o39jozplhuoYGkafTI",
+                    "shortIds": [
+                        "bb2edf40a870f5a5"
+                    ]
+                },
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "Reality",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "listen": "127.0.0.1",
             "port": 8,
             "protocol": "vmess",
             "settings": {

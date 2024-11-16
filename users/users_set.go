@@ -7,13 +7,40 @@ import (
 	"sub-ui/setup"
 )
 
+func setStaticUrl(users *[]User, constUsers []setup.ConstUser) {
+	for i := range *users {
+		for j := range constUsers {
+			if (*users)[i].Name == constUsers[j].Name {
+				(*users)[i].UserPath = constUsers[j].Path
+				(*users)[i].Static = true
+			}
+		}
+	}
+}
+
+func (config *Config) SetStaticUrl() {
+	staticData := setup.ConfigData.Static.ConstList
+
+	for i := range config.Inbounds {
+		for j := range staticData {
+			if config.Inbounds[i].Tag != staticData[j].Tag {
+				continue
+			}
+			setStaticUrl(&config.Inbounds[i].Users, staticData[j].Users)
+		}
+	}
+}
+
 func setOldUrlPath(newUsers *[]User, oldUsers []User) {
 
 	for i := range *newUsers {
 		for j := range oldUsers {
 			if (*newUsers)[i].Name == oldUsers[j].Name {
-				(*newUsers)[i].UserPath = oldUsers[j].UserPath
+				if !setup.ConfigData.Static.Enabled || !(*newUsers)[i].Static {
+					(*newUsers)[i].UserPath = oldUsers[j].UserPath
+				}
 			}
+
 		}
 	}
 }
@@ -22,19 +49,19 @@ func (config *Config) SetOldData() {
 
 	for i := range config.Inbounds {
 		for j := range ConfigData.Inbounds {
-			if config.Inbounds[i].Tag == ConfigData.Inbounds[j].Tag {
-				config.Inbounds[i].Addr = ConfigData.Inbounds[j].Addr
-				config.Inbounds[i].Port = ConfigData.Inbounds[j].Port
-
-				if !config.Inbounds[i].FixedSecurity {
-					config.Inbounds[i].Security = ConfigData.Inbounds[j].Security
-				}
-
-				config.Inbounds[i].Alpn = ConfigData.Inbounds[j].Alpn
-
-				setOldUrlPath(&config.Inbounds[i].Users, ConfigData.Inbounds[j].Users)
-
+			if config.Inbounds[i].Tag != ConfigData.Inbounds[j].Tag {
+				continue
 			}
+			config.Inbounds[i].Addr = ConfigData.Inbounds[j].Addr
+			config.Inbounds[i].Port = ConfigData.Inbounds[j].Port
+
+			if !config.Inbounds[i].FixedSecurity {
+				config.Inbounds[i].Security = ConfigData.Inbounds[j].Security
+			}
+
+			config.Inbounds[i].Alpn = ConfigData.Inbounds[j].Alpn
+
+			setOldUrlPath(&config.Inbounds[i].Users, ConfigData.Inbounds[j].Users)
 		}
 	}
 }

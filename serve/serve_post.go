@@ -70,21 +70,24 @@ func (s Server) renewUrl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var resetUrl users.ResetUrl
+	var renewUsers users.RenewUsers
 
-	err = json.Unmarshal(body, &resetUrl)
+	err = json.Unmarshal(body, &renewUsers)
 	if err != nil {
 		jsonError(w, "无法解析数据!", http.StatusBadRequest)
 		return
 	}
 
-	if resetUrl.Mod == "reset" {
+	if renewUsers.Mod == "reset" {
 
-		err = resetUrl.SetUserstUrl()
+		err = renewUsers.SetUsersUrl()
 		if err != nil {
 			jsonError(w, "重置失败,重试或联系技术人员!", http.StatusBadRequest)
 			return
 		}
+
+	} else if renewUsers.Mod == "static" {
+		renewUsers.SetStaticUsers()
 
 	} else {
 
@@ -119,7 +122,7 @@ func (s Server) renewBackupUrl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var info users.Backupinfo
+	var info users.BackupInfo
 
 	err = json.Unmarshal(body, &info)
 	if err != nil {

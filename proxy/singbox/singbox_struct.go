@@ -7,6 +7,11 @@ type User struct {
 	Flow     string `json:"flow"`
 }
 
+type Handshake struct {
+	Server string `json:"server"`
+	Port   uint16 `json:"server_port"`
+}
+
 type Reality struct {
 	Enabled    bool     `json:"enabled"`
 	PrivateKey string   `json:"private_key"`
@@ -32,6 +37,11 @@ type Inbound struct {
 	Listen            string    `json:"listen"`
 	Port              uint16    `json:"listen_port"`
 	Users             []User    `json:"users"`
+	Version           uint16    `json:"version"`
+	Method            string    `json:"method"`
+	Password          string    `json:"password"`
+	Detour            string    `json:"detour"`
+	Handshake         Handshake `json:"handshake"`
 	CongestionControl string    `json:"congestion_control"`
 	Transport         Transport `json:"transport"`
 	Tls               Tls       `json:"tls"`

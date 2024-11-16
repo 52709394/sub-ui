@@ -104,6 +104,7 @@
         <button onclick="renewUsersData()">更新用户数据</button> -->
         <button onclick="renewUsersData('reset')">重置已选中的用户链接</button>
         <button onclick="renewUsersData('renew')">更新用户数据</button>
+        {{.StaticStr}}
         {{.BackupStr}}
     </div>
     </br>
@@ -257,7 +258,7 @@
                 confirmation = window.confirm(winStr);
                 if (!confirmation) { return; }
                 jsonData = JSON.stringify({ "mod": "renew" });
-            } else if (model == "reset") {
+            } else if (model == "reset" || model == "static") {
 
                 const checkboxes = document.querySelectorAll('#usersListUl input[type="checkbox"]');
                 const selectedUsers = [];
@@ -272,13 +273,22 @@
                 });
 
                 document.getElementById('userOutput').innerText = userName.length > 0 ? `选中用户: ${userName.join(', ')}` : '没有选中任何用户';
-                if (!(selectedUsers.length > 0)) { return; };
+                if (!(selectedUsers.length > 0) && (model == "reset")) { return; };
 
-                winStr = `重置以下用户链接:\n${userName}\n\n点击"是"继续`;
+                if (model == "reset") {
+                    winStr = `注意:重置以下用户链接:\n${userName}\n\n点击"是"继续`;
+                } else {
+                    if (selectedUsers.length > 0) {
+                        winStr = `注意:以下用户链接设为静态:\n${userName}\n\n点击"是"继续`;
+                    } else {
+                        winStr = `注意:清除所有静态链接:\n\n点击"是"继续`;
+                    }
+                }
+
                 confirmation = window.confirm(winStr);
 
                 if (!confirmation) { return; };
-                jsonData = JSON.stringify({ "mod": "reset", "users": selectedUsers });
+                jsonData = JSON.stringify({ "mod": model, "users": selectedUsers });
 
             } else {
                 return
@@ -306,12 +316,16 @@
                     return response.json();
                 })
                 .then(data => {
-                    if (model == "renew") {
-                        alert('信息:用户数据更新成功!');
-                    } else {
+                    if (model == "reset") {
                         alert('信息:用户Url重置成功!');
+                    } else {
+                        alert('信息:用户数据更新成功!');
                     }
-                    location.reload();
+                    if (model == "static") {
+                        document.body.style.pointerEvents = 'auto';
+                    } else {
+                        location.reload();
+                    }
                 })
                 .catch(error => {
                     document.getElementById('userOutput').innerText = '';

@@ -103,10 +103,18 @@ func (s Server) home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var setTagStr, usersLiSrt string
+	var staticStr string
 	var backupStr string
 	var appUrl string
 
 	users.UsersListHttp(subAddr, &setTagStr, &usersLiSrt)
+
+	if setup.ConfigData.Static.Enabled {
+		staticStr = `
+	    </br></br>
+	    <button onclick="renewUsersData('static')">设置已选中的用户为静态链接</button>
+        `
+	}
 
 	if setup.ConfigData.Backup.Enabled {
 		backupStr = `
@@ -140,6 +148,7 @@ func (s Server) home(w http.ResponseWriter, r *http.Request) {
 		Logout        string
 		SetTagStr     template.HTML
 		UsersLiSrt    template.HTML
+		StaticStr     template.HTML
 		BackupStr     template.HTML
 		AppUrl        template.HTML
 		ToggleContent string
@@ -150,6 +159,7 @@ func (s Server) home(w http.ResponseWriter, r *http.Request) {
 		Logout:        setup.ConfigData.Server.Home.Url + "/logout",
 		SetTagStr:     template.HTML(setTagStr),
 		UsersLiSrt:    template.HTML(usersLiSrt),
+		StaticStr:     template.HTML(staticStr),
 		BackupStr:     template.HTML(backupStr),
 		AppUrl:        template.HTML(appUrl),
 		ToggleContent: ToggleContent,
