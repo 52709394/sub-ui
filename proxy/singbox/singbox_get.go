@@ -113,10 +113,12 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		return protocol
 	case "shadowsocks":
 		usersInbound.Method = inbound.Method
+		return protocol
 	case "shadowtls":
 		usersInbound.Version = inbound.Version
 		usersInbound.Sni = inbound.Handshake.Server
 		usersInbound.Detour = inbound.Detour
+		return protocol
 	}
 
 	return ""

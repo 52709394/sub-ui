@@ -109,7 +109,7 @@ func (s Server) home(w http.ResponseWriter, r *http.Request) {
 
 	users.UsersListHttp(subAddr, &setTagStr, &usersLiSrt)
 
-	if setup.ConfigData.Static.Enabled {
+	if setup.ConfigData.Static.Enabled && len(setup.ConfigData.Static.ConstList) == 0 {
 		staticStr = `
 	    </br></br>
 	    <button onclick="renewUsersData('static')">设置已选中的用户为静态链接</button>

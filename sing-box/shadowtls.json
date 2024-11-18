@@ -3,7 +3,7 @@
     "tag": "shadowtls-out",
     "server": "{{.Addr}}",
     "server_port": {{.Port}},
-    "version": {{.version}},
+    "version": {{.Version}},
     "password": "{{.Password}}",
     "tls": {
         "enabled": true,

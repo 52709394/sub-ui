@@ -1,7 +1,7 @@
 {
     "type": "shadowsocks",
-    "tag": "shadowtls-out",
-    "detour": "{{.Detour}}",
+    "tag": "{{.Tag}}",
+    "detour": "shadowtls-out",
     "method": "{{.Method}}",
     "password": "{{.Password}}",
     "multiplex": {

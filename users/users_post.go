@@ -152,6 +152,10 @@ func (re RenewUsers) SetUsersUrl() error {
 
 func (re RenewUsers) SetStaticUsers() {
 
+	// if len(setup.ConfigData.Static.ConstList) != 0 {
+	// 	return
+	// }
+
 	var newConsts []setup.Consts
 	var Users []setup.ConstUser
 

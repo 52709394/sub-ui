@@ -273,16 +273,17 @@
                 });
 
                 document.getElementById('userOutput').innerText = userName.length > 0 ? `选中用户: ${userName.join(', ')}` : '没有选中任何用户';
-                if (!(selectedUsers.length > 0) && (model == "reset")) { return; };
+                // if (!(selectedUsers.length > 0) && (model == "reset")) { return; };
+                if (!(selectedUsers.length > 0)) { return; };
 
                 if (model == "reset") {
                     winStr = `注意:重置以下用户链接:\n${userName}\n\n点击"是"继续`;
                 } else {
-                    if (selectedUsers.length > 0) {
-                        winStr = `注意:以下用户链接设为静态:\n${userName}\n\n点击"是"继续`;
-                    } else {
-                        winStr = `注意:清除所有静态链接:\n\n点击"是"继续`;
-                    }
+                    // if (selectedUsers.length > 0) {
+                    winStr = `注意:以下用户链接设为静态:\n只能设置一次,重设需要手动清除,配置中static.const_list所有数据并重启sub-ui\n\n${userName}\n点击"是"继续`;
+                    // } else {
+                    //     winStr = `注意:清除所有静态链接:\n\n点击"是"继续`;
+                    // }
                 }
 
                 confirmation = window.confirm(winStr);
@@ -321,11 +322,11 @@
                     } else {
                         alert('信息:用户数据更新成功!');
                     }
-                    if (model == "static") {
-                        document.body.style.pointerEvents = 'auto';
-                    } else {
-                        location.reload();
-                    }
+                    // if (model == "static") {
+                    //     document.body.style.pointerEvents = 'auto';
+                    // } else {
+                    location.reload();
+                    // }
                 })
                 .catch(error => {
                     document.getElementById('userOutput').innerText = '';

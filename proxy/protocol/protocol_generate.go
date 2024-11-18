@@ -171,7 +171,8 @@ func getDetourData(str, tag string) string {
 
 	var jsonMap map[string]string
 	var p Config
-	err := json.Unmarshal([]byte(str), jsonMap)
+
+	err := json.Unmarshal([]byte(str), &jsonMap)
 
 	if err != nil {
 		return ""
@@ -256,10 +257,12 @@ func (p Config) JsonUrl(tag string) string {
 
 	if proxyMod == "shadowtls" {
 		shadowtlsStr := getDetourData(p.Shadowtls, tag)
+
 		if shadowtlsStr == "" {
 			return ""
 		}
 		shadowtlsStr += ",\n" + p.setSBData(SBStringData.Shadowtls, tag)
+
 		return shadowtlsStr
 	}
 

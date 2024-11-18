@@ -8,8 +8,8 @@
     "ws_0-rtt": "?ed=2560"
   },
   "proxy": {
-    "core": "xray",
-    "config": "xconfig.json",
+    "core": "sing-box",
+    "config": "sconfig.json",
     "real_time": true,
     "only_name": "facai"
   },
@@ -145,24 +145,20 @@
     "enabled": true,
     "const_list": [
       {
-        "tag": "xVlessXhttpTls",
+        "tag": "sTuic",
         "users": [
           {
-            "name": "vlessXhttpTls-1",
-            "path": "YszAOMOMWXDiBLYK"
-          },
-          {
-            "name": "vlessXhttpTls-2",
-            "path": "97RlJACQ4uclb6rJ"
+            "name": "facai-9",
+            "path": "kf1cxo6VEjlXr7CD"
           }
         ]
       },
       {
-        "tag": "xVmessWsTls",
+        "tag": "sshadowtls",
         "users": [
           {
-            "name": "vmessWsTls-1",
-            "path": "ww8UfsTSrc1ueT65"
+            "name": "facai-9",
+            "path": "kf1cxo6VEjlXr7CD"
           }
         ]
       }
