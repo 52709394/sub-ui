@@ -7,8 +7,13 @@ type Client struct {
 	Flow     string `json:"flow"`
 }
 
+type Fallback struct {
+	Dest interface{} `josn:"dest"`
+}
+
 type Settings struct {
-	Clients []Client `jsong:"clients"`
+	Clients   []Client   `jsong:"clients"`
+	Fallbacks []Fallback `json:"fallbacks"`
 }
 
 type XhttpSettings struct {
@@ -70,4 +75,13 @@ type Inbound struct {
 
 type Config struct {
 	Inbounds []Inbound `json:"inbounds"`
+}
+
+type RealityFallback struct {
+	Index int
+	Dest  interface{}
+}
+
+type RealityFallbacks struct {
+	Fallbacks []RealityFallback
 }

@@ -13,6 +13,36 @@ import (
 	"sub-ui/users"
 )
 
+func (s SBDetours) setData(config *users.Config) {
+
+	for i := range s.Detours {
+		for j := range config.Inbounds {
+			if s.Detours[i].Detour != config.Inbounds[j].Tag {
+				continue
+			}
+
+			if config.Inbounds[j].Protocol == "shadowsocks" {
+				if len(config.Inbounds[j].Users) != 1 {
+					continue
+				}
+
+				jsonStr := `{` +
+					`"type":"shadowsocks",` +
+					`"method":"` + config.Inbounds[j].Method + `",` +
+					`"password":"` + config.Inbounds[j].Users[0].Password + `"` +
+					`}`
+
+				config.Inbounds[j].Hide = true
+
+				x := s.Detours[i].Index
+				config.Inbounds[x].Shadowtls = jsonStr
+			}
+
+		}
+	}
+
+}
+
 func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 	protocol := inbound.Type
 	usersInbound.Protocol = protocol
@@ -85,8 +115,7 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		usersInbound.Method = inbound.Method
 	case "shadowtls":
 		usersInbound.Version = inbound.Version
-		usersInbound.TargetServer = inbound.Handshake.Server
-		usersInbound.TargetPort = inbound.Handshake.Port
+		usersInbound.Sni = inbound.Handshake.Server
 		usersInbound.Detour = inbound.Detour
 	}
 
@@ -105,7 +134,9 @@ func (config Config) RenewData(mod string) error {
 	var total int
 	var name string
 	var err error
-	var hides []string
+	// var hides []string
+
+	sbDetours := SBDetours{}
 
 	path = ""
 
@@ -148,10 +179,6 @@ func (config Config) RenewData(mod string) error {
 					UserPath: path,
 				})
 			}
-		}
-
-		if protocol == "shadowtls" {
-			hides = append(hides, newUsersInbound.Detour)
 		}
 
 		for j := range config.Inbounds[i].Users {
@@ -197,6 +224,14 @@ func (config Config) RenewData(mod string) error {
 		// 	usersConfig.Inbounds = append(usersConfig.Inbounds, newUsersInbound)
 		// }
 
+		if protocol == "shadowtls" {
+			sbDetours.Detours = append(sbDetours.Detours, Detour{
+				Index:  len(usersConfig.Inbounds),
+				Detour: newUsersInbound.Detour,
+			})
+			// hides = append(hides, newUsersInbound.Detour)
+		}
+
 		if len(newUsersInbound.Users) == 0 {
 			newUsersInbound.Hide = true
 		} else {
@@ -207,13 +242,14 @@ func (config Config) RenewData(mod string) error {
 		newUsersInbound = users.Inbound{}
 	}
 
-	for i := range hides {
-		for j := range usersConfig.Inbounds {
-			if usersConfig.Inbounds[j].Tag == hides[i] {
-				usersConfig.Inbounds[j].Hide = true
-			}
-		}
-	}
+	sbDetours.setData(&usersConfig)
+	// for i := range hides {
+	// 	for j := range usersConfig.Inbounds {
+	// 		if usersConfig.Inbounds[j].Tag == hides[i] {
+	// 			usersConfig.Inbounds[j].Hide = true
+	// 		}
+	// 	}
+	// }
 
 	if setup.ConfigData.Static.Enabled {
 		usersConfig.SetStaticUrl()

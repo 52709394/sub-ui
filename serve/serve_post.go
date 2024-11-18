@@ -192,10 +192,30 @@ func getConfigData() error {
 	}
 
 	if setup.ConfigData.Download.Enabled {
-		download.DownloadRules()
-		download.DownloadApp()
-		download.RulesScheduledTasks()
-		go download.AppScheduledTasks()
+		isRun := true
+
+		if read.CreateFolder(setup.ConfigData.Download.Folder) != nil {
+			isRun = false
+		}
+
+		if isRun {
+			if read.CreateFolder(setup.ConfigData.Download.Folder+"/app") != nil {
+				isRun = false
+			}
+		}
+
+		if isRun {
+			if read.CreateFolder(setup.ConfigData.Download.Folder+"/rules") != nil {
+				isRun = false
+			}
+		}
+
+		if isRun {
+			download.DownloadRules()
+			download.DownloadApp()
+			download.RulesScheduledTasks()
+			go download.AppScheduledTasks()
+		}
 	}
 
 	protocol.GetSBString()

@@ -1,0 +1,16 @@
+{
+    "type": "shadowtls",
+    "tag": "shadowtls-out",
+    "server": "{{.Addr}}",
+    "server_port": {{.Port}},
+    "version": {{.version}},
+    "password": "{{.Password}}",
+    "tls": {
+        "enabled": true,
+        "server_name": "{{.Sni}}",
+        "utls": {
+            "enabled": true,
+            "fingerprint": "chrome"
+        }
+    }
+}

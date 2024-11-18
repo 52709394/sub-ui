@@ -13,14 +13,15 @@ type Inbound struct {
 	Addr              string `json:"address"`
 	Protocol          string `json:"protocol"`
 	Port              uint16 `json:"port"`
+	ServiceListen     string `json:"-"`
+	ServicePort       uint16 `json:"-"`
+	Shadowtls         string `json:"Shadowtls"`
 	Hide              bool   `json:"hide"`
 	Users             []User `json:"users"`
 	CongestionControl string `json:"congestion_control"`
 	Version           uint16 `json:"version"`
 	Method            string `json:"method"`
-	Detour            string `json:"detour"`
-	TargetServer      string `json:"target_server"`
-	TargetPort        uint16 `json:"target_Port"`
+	Detour            string `json:"-"`
 	Network           string `json:"network"`
 	Host              string `json:"host"`
 	Path              string `json:"path"`

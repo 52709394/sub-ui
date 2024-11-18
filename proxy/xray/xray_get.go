@@ -12,9 +12,39 @@ import (
 	"sub-ui/users"
 )
 
+func (rF RealityFallbacks) setData(config *users.Config) {
+	for i := range rF.Fallbacks {
+		for j := range config.Inbounds {
+			switch v := rF.Fallbacks[i].Dest.(type) {
+			case string:
+				if config.Inbounds[j].ServiceListen != string(v) {
+					continue
+				}
+			case uint16:
+				if config.Inbounds[j].ServicePort != uint16(v) {
+					continue
+				}
+			default:
+				continue
+			}
+
+			x := rF.Fallbacks[i].Index
+			config.Inbounds[x].Network = config.Inbounds[j].Network
+			config.Inbounds[x].Path = config.Inbounds[j].Path
+			config.Inbounds[x].ServiceName = config.Inbounds[j].ServiceName
+			config.Inbounds[x].Host = config.Inbounds[j].Host
+			config.Inbounds[x].Users = config.Inbounds[j].Users
+		}
+	}
+
+}
+
 func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 	protocol := inbound.Protocol
 	usersInbound.Protocol = protocol
+
+	usersInbound.ServiceListen = inbound.Listen
+	usersInbound.ServicePort = inbound.Port
 
 	if inbound.Listen == "" || inbound.Listen == "0.0.0.0" {
 		usersInbound.Port = inbound.Port
@@ -98,6 +128,8 @@ func (config Config) RenewData(mod string) error {
 	var name string
 	var err error
 
+	rF := RealityFallbacks{}
+
 	path = ""
 
 	for i := range config.Inbounds {
@@ -166,7 +198,17 @@ func (config Config) RenewData(mod string) error {
 		// }
 
 		if len(newUsersInbound.Users) == 0 {
-			newUsersInbound.Hide = true
+			if newUsersInbound.Security == "reality" &&
+				len(config.Inbounds[i].Settings.Fallbacks) == 1 {
+				rF.Fallbacks = append(rF.Fallbacks, RealityFallback{
+					Index: len(usersConfig.Inbounds),
+					Dest:  config.Inbounds[i].Settings.Fallbacks[0].Dest,
+				})
+
+			} else {
+				newUsersInbound.Hide = true
+			}
+			//newUsersInbound.Hide = true
 		} else {
 			newUsersInbound.Hide = false
 		}
@@ -174,6 +216,8 @@ func (config Config) RenewData(mod string) error {
 		usersConfig.Inbounds = append(usersConfig.Inbounds, newUsersInbound)
 		newUsersInbound = users.Inbound{}
 	}
+
+	rF.setData(&usersConfig)
 
 	if setup.ConfigData.Static.Enabled {
 		usersConfig.SetStaticUrl()

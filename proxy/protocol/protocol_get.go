@@ -27,6 +27,9 @@ func GetSBString() {
 	SBStringData.TrojanTcpTls = getString("sing-box/trojan_tcp_tls.json")
 	SBStringData.Hysteria2 = getString("sing-box/hysteria2.json")
 	SBStringData.Tuic = getString("sing-box/tuic.json")
+	SBStringData.Shadowtls = getString("sing-box/shadowtls.json")
+	SBStringData.ShadowtlsSS = getString("sing-box/Shadowtls_ss.json")
+
 }
 
 func (p Config) setSBData(proxyStr string, tag string) string {
@@ -77,12 +80,14 @@ func (p Config) setSBData(proxyStr string, tag string) string {
 		Addr        string
 		Port        string
 		TuicCC      string
+		Method      string
 		Network     string
 		HttpHost    template.HTML
 		Path        string
 		ServiceName string
 		Alpn        template.HTML
 		Sni         string
+		Version     string
 		PublicKey   string
 		ShortId     string
 		Fingerprint string
@@ -95,11 +100,13 @@ func (p Config) setSBData(proxyStr string, tag string) string {
 		Port:        p.Port,
 		TuicCC:      p.TuicCC,
 		Network:     p.Network,
+		Method:      p.Method,
 		HttpHost:    template.HTML(host),
 		Path:        p.Path,
 		ServiceName: p.ServiceName,
 		Alpn:        template.HTML(alpn),
 		Sni:         p.Sni,
+		Version:     p.Version,
 		PublicKey:   p.PublicKey,
 		ShortId:     p.ShortId,
 		Fingerprint: p.Fingerprint,

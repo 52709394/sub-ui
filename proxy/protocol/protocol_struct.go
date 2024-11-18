@@ -5,12 +5,15 @@ type Config struct {
 	Protocol     string
 	Port         string
 	TuicCC       string
+	Method       string
 	Network      string
 	Host         string
 	Path         string
 	ServiceName  string
 	Security     string
 	Alpn         string
+	Version      string
+	Shadowtls    string
 	Sni          string
 	PublicKey    string
 	ShortId      string
@@ -32,6 +35,8 @@ type SBString struct {
 	TrojanTcpTls     string
 	Hysteria2        string
 	Tuic             string
+	Shadowtls        string
+	ShadowtlsSS      string
 }
 
 var SBStringData SBString

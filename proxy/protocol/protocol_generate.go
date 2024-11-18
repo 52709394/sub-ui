@@ -167,6 +167,26 @@ func (p Config) HttpUrl() string {
 
 }
 
+func getDetourData(str, tag string) string {
+
+	var jsonMap map[string]string
+	var p Config
+	err := json.Unmarshal([]byte(str), jsonMap)
+
+	if err != nil {
+		return ""
+	}
+
+	if jsonMap["type"] == "shadowsocks" {
+		p.Protocol = "shadowtls_ss"
+		p.Method = jsonMap["method"]
+		p.UserPassword = jsonMap["password"]
+		return p.JsonUrl(tag)
+	}
+
+	return ""
+}
+
 func (p Config) JsonUrl(tag string) string {
 
 	proxyMod := p.Protocol
@@ -232,6 +252,19 @@ func (p Config) JsonUrl(tag string) string {
 
 	if proxyMod == "tuic" {
 		return p.setSBData(SBStringData.Tuic, tag)
+	}
+
+	if proxyMod == "shadowtls" {
+		shadowtlsStr := getDetourData(p.Shadowtls, tag)
+		if shadowtlsStr == "" {
+			return ""
+		}
+		shadowtlsStr += ",\n" + p.setSBData(SBStringData.Shadowtls, tag)
+		return shadowtlsStr
+	}
+
+	if proxyMod == "shadowtls_ss" {
+		return p.setSBData(SBStringData.ShadowtlsSS, tag)
 	}
 
 	fmt.Println("sing-box订阅警告:协议暂不支持!")

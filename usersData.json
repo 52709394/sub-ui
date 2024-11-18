@@ -4,6 +4,7 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -16,10 +17,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -38,6 +37,7 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -50,10 +50,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -72,6 +70,7 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -84,10 +83,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -106,13 +103,12 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "Shadowtls": "",
       "hide": true,
       "users": null,
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -131,6 +127,7 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -143,10 +140,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",
@@ -165,6 +160,7 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -177,10 +173,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "grpc",
       "host": "",
       "path": "",
@@ -199,6 +193,7 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -211,10 +206,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "http",
       "host": "www.ctrip.com",
       "path": "/",
@@ -233,6 +226,7 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -253,10 +247,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "splithttp",
       "host": "",
       "path": "/lovelive",
@@ -275,35 +267,34 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vless",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
-          "name": "vlessXhttpTls-1",
+          "name": "vlessXhttp-1",
           "uuid": "0eb85658-a75e-4b86-a924-98e5c920e17a",
           "password": "",
           "flow": "",
-          "static": true,
-          "user_path": "YszAOMOMWXDiBLYK"
+          "static": false,
+          "user_path": "He1Sy4ixEH5mqmdR"
         },
         {
-          "name": "vlessXhttpTls-2",
+          "name": "vlessXhttp-2",
           "uuid": "5cc06b35-1609-47c6-93ed-072851fd408e",
           "password": "",
           "flow": "",
-          "static": true,
-          "user_path": "97RlJACQ4uclb6rJ"
+          "static": false,
+          "user_path": "xRj18w9fx1gTidCZ"
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "xhttp",
       "host": "",
       "path": "/lovelive",
       "service_name": "",
-      "security": "Reality@reality",
+      "security": "tls",
       "fixed_Security": false,
       "alpn": "",
       "sni": "",
@@ -314,19 +305,35 @@
       "tag_path": "eFZsZXNzWGh0dHBUbHM253D"
     },
     {
-      "address": "",
+      "address": "usb.zhong168fa.top",
       "protocol": "vless",
-      "port": 0,
-      "hide": true,
-      "users": null,
+      "port": 443,
+      "Shadowtls": "",
+      "hide": false,
+      "users": [
+        {
+          "name": "vlessXhttp-1",
+          "uuid": "0eb85658-a75e-4b86-a924-98e5c920e17a",
+          "password": "",
+          "flow": "",
+          "static": false,
+          "user_path": "He1Sy4ixEH5mqmdR"
+        },
+        {
+          "name": "vlessXhttp-2",
+          "uuid": "5cc06b35-1609-47c6-93ed-072851fd408e",
+          "password": "",
+          "flow": "",
+          "static": false,
+          "user_path": "xRj18w9fx1gTidCZ"
+        }
+      ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
-      "network": "tcp",
+      "network": "xhttp",
       "host": "",
-      "path": "",
+      "path": "/lovelive",
       "service_name": "",
       "security": "reality",
       "fixed_Security": true,
@@ -335,13 +342,14 @@
       "publicKey": "VUYw8KthSxZDvQqgqUNRt32c1ZMqF6Y7U9eaQuDn3yg",
       "shortId": "bb2edf40a870f5a5",
       "fingerprint": "chrome",
-      "tag": "Reality",
-      "tag_path": "UmVhbGl0eQ253D253D"
+      "tag": "xVlessXhttpReality",
+      "tag_path": "eFZsZXNzWGh0dHBSZWFsaXR5"
     },
     {
       "address": "usb.zhong168fa.top",
       "protocol": "vmess",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -354,10 +362,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "httpupgrade",
       "host": "",
       "path": "/CcAw3PRxv57Q5usu",
@@ -376,6 +382,7 @@
       "address": "usb.zhong168fa.top",
       "protocol": "vmess",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -388,10 +395,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "ws",
       "host": "",
       "path": "/wdh9XOe3NLgitLJX",
@@ -410,6 +415,7 @@
       "address": "usb.zhong168fa.top",
       "protocol": "trojan",
       "port": 443,
+      "Shadowtls": "",
       "hide": false,
       "users": [
         {
@@ -422,10 +428,8 @@
         }
       ],
       "congestion_control": "",
+      "version": 0,
       "method": "",
-      "detour": "",
-      "target_server": "",
-      "target_Port": 0,
       "network": "tcp",
       "host": "",
       "path": "",

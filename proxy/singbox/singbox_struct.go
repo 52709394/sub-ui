@@ -9,7 +9,6 @@ type User struct {
 
 type Handshake struct {
 	Server string `json:"server"`
-	Port   uint16 `json:"server_port"`
 }
 
 type Reality struct {
@@ -50,4 +49,13 @@ type Inbound struct {
 
 type Config struct {
 	Inbounds []Inbound `json:"inbounds"`
+}
+
+type Detour struct {
+	Index  int
+	Detour string
+}
+
+type SBDetours struct {
+	Detours []Detour
 }

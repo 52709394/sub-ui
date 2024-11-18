@@ -39,3 +39,20 @@ func CheckExistence(path string) string {
 
 	return "nil"
 }
+
+func CreateFolder(folderName string) error {
+
+	if CheckExistence(folderName) == "file" {
+		return fmt.Errorf("无法创建文件夹: 是存在文件")
+	}
+
+	if CheckExistence(folderName) == "folder" {
+		return nil
+	}
+
+	err := os.MkdirAll(folderName, os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("无法创建文件夹: %v", err)
+	}
+	return nil
+}

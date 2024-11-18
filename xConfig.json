@@ -349,17 +349,17 @@
         },
         {
             "tag": "xVlessXhttpTls",
-            "listen": "127.0.0.1",
+            "listen": "@xhttp",
             "port": 7,
             "protocol": "vless",
             "settings": {
                 "clients": [
                     {
-                        "email": "vlessXhttpTls-1",
+                        "email": "vlessXhttp-1",
                         "id": "0eb85658-a75e-4b86-a924-98e5c920e17a"
                     },
                     {
-                        "email": "vlessXhttpTls-2",
+                        "email": "vlessXhttp-2",
                         "id": "5cc06b35-1609-47c6-93ed-072851fd408e"
                     }
                 ],
@@ -381,12 +381,17 @@
             }
         },
         {
-            "listen": "127.0.0.1",
+            "listen": "0.0.0.0",
+            "tag": "xVlessXhttpReality",
             "port": 17,
             "protocol": "vless",
             "settings": {
                 "decryption": "none",
-                "fallbacks": []
+                "fallbacks": [
+                    {
+                        "dest": "@xhttp"
+                    }
+                ]
             },
             "streamSettings": {
                 "network": "raw",
@@ -410,7 +415,6 @@
                     }
                 }
             },
-            "tag": "Reality",
             "sniffing": {
                 "enabled": true,
                 "destOverride": [
