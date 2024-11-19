@@ -13,7 +13,7 @@ type Config struct {
 	Security     string
 	Alpn         string
 	Version      string
-	Shadowtls    string
+	DetourProxy  string
 	Sni          string
 	PublicKey    string
 	ShortId      string
@@ -37,6 +37,7 @@ type SBString struct {
 	Tuic             string
 	Shadowtls        string
 	ShadowtlsSS      string
+	Shadowsocks      string
 }
 
 var SBStringData SBString

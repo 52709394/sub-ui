@@ -292,6 +292,34 @@
             "multiplex": {
                 "enabled": true
             }
+        },
+        {
+            "type": "shadowsocks",
+            "tag": "shadowsocks-1",
+            "listen": "::",
+            "listen_port": 80,
+            "method": "2022-blake3-aes-128-gcm",
+            "password": "j12bZGKDeZ1o/ftx5WlSvw==", 
+            "multiplex": {
+                "enabled": true
+            }
+        },
+        {
+            "type": "shadowsocks",
+            "tag": "shadowsocks-2",
+            "listen": "::",
+            "listen_port": 80,
+            "method": "2022-blake3-aes-128-gcm",
+            "password": "j12bZGKDeZ1o/ftx5WlSvw==", 
+            "users": [
+              {
+                "name": "sekai",
+                "password": "PCD2Z4o12bKUoFa3cC97Hw=="
+              }
+            ],
+            "multiplex": {
+                "enabled": true
+            }
         }
     ]
 }

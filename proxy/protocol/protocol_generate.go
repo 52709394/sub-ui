@@ -256,7 +256,7 @@ func (p Config) JsonUrl(tag string) string {
 	}
 
 	if proxyMod == "shadowtls" {
-		shadowtlsStr := getDetourData(p.Shadowtls, tag)
+		shadowtlsStr := getDetourData(p.DetourProxy, tag)
 
 		if shadowtlsStr == "" {
 			return ""
@@ -268,6 +268,10 @@ func (p Config) JsonUrl(tag string) string {
 
 	if proxyMod == "shadowtls_ss" {
 		return p.setSBData(SBStringData.ShadowtlsSS, tag)
+	}
+
+	if proxyMod == "shadowsocks" {
+		return p.setSBData(SBStringData.Shadowsocks, tag)
 	}
 
 	fmt.Println("sing-box订阅警告:协议暂不支持!")

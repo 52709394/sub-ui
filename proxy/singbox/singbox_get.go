@@ -28,14 +28,14 @@ func (s SBDetours) setData(config *users.Config) {
 
 				jsonStr := `{` +
 					`"type":"shadowsocks",` +
-					`"method":"` + config.Inbounds[j].Method + `",` +
+					`"method":"` + config.Inbounds[j].Users[0].Method + `",` +
 					`"password":"` + config.Inbounds[j].Users[0].Password + `"` +
 					`}`
 
 				config.Inbounds[j].Hide = true
 
 				x := s.Detours[i].Index
-				config.Inbounds[x].Shadowtls = jsonStr
+				config.Inbounds[x].DetourProxy = jsonStr
 			}
 
 		}
@@ -112,7 +112,20 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		usersInbound.Security = "tls"
 		return protocol
 	case "shadowsocks":
-		usersInbound.Method = inbound.Method
+		if inbound.Password != "" {
+			path, err := random.GenerateStrings(16)
+			if err != nil {
+				fmt.Println("随机url路径错误:", err)
+				return ""
+			}
+			usersInbound.Users = append(usersInbound.Users, users.User{
+				Name:     proxy.OnlyName + "-" + fmt.Sprintf("%d", inbound.Port),
+				Password: inbound.Password,
+				Method:   inbound.Method,
+				Static:   false,
+				UserPath: path,
+			})
+		}
 		return protocol
 	case "shadowtls":
 		usersInbound.Version = inbound.Version
@@ -166,23 +179,6 @@ func (config Config) RenewData(mod string) error {
 
 		total = len(config.Inbounds[i].Users)
 
-		if protocol == "shadowsocks" {
-
-			if config.Inbounds[i].Password != "" {
-				path, err = random.GenerateStrings(16)
-				if err != nil {
-					fmt.Println("随机url路径错误:", err)
-					return err
-				}
-				newUsersInbound.Users = append(newUsersInbound.Users, users.User{
-					Name:     proxy.OnlyName + "-" + fmt.Sprintf("%d", config.Inbounds[i].Port),
-					Password: config.Inbounds[i].Password,
-					Static:   false,
-					UserPath: path,
-				})
-			}
-		}
-
 		for j := range config.Inbounds[i].Users {
 
 			if config.Inbounds[i].Users[j].Name == "" && total != 1 {
@@ -217,21 +213,21 @@ func (config Config) RenewData(mod string) error {
 				newUsersInbound.Users[n].Flow = config.Inbounds[i].Users[j].Flow
 			case "trojan", "shadowsocks", "shadowtls", "hysteria2":
 				newUsersInbound.Users[n].Password = config.Inbounds[i].Users[j].Password
+				if protocol == "shadowsocks" {
+					newUsersInbound.Users[n].Method = config.Inbounds[i].Method
+				}
+
 			case "tuic":
 				newUsersInbound.Users[n].UUID = config.Inbounds[i].Users[j].UUID
 				newUsersInbound.Users[n].Password = config.Inbounds[i].Users[j].Password
 			}
 		}
-		// if len(newUsersInbound.Users) > 0 {
-		// 	usersConfig.Inbounds = append(usersConfig.Inbounds, newUsersInbound)
-		// }
 
 		if protocol == "shadowtls" {
 			sbDetours.Detours = append(sbDetours.Detours, Detour{
 				Index:  len(usersConfig.Inbounds),
 				Detour: newUsersInbound.Detour,
 			})
-			// hides = append(hides, newUsersInbound.Detour)
 		}
 
 		if len(newUsersInbound.Users) == 0 {
@@ -245,13 +241,6 @@ func (config Config) RenewData(mod string) error {
 	}
 
 	sbDetours.setData(&usersConfig)
-	// for i := range hides {
-	// 	for j := range usersConfig.Inbounds {
-	// 		if usersConfig.Inbounds[j].Tag == hides[i] {
-	// 			usersConfig.Inbounds[j].Hide = true
-	// 		}
-	// 	}
-	// }
 
 	if setup.ConfigData.Static.Enabled {
 		usersConfig.SetStaticUrl()

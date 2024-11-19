@@ -282,7 +282,9 @@
                 "network": "h2",
                 "security": "reality",
                 "httpSettings": {
-                    "host": ["www.ctrip.com"],
+                    "host": [
+                        "www.ctrip.com"
+                    ],
                     "path": "/"
                 },
                 "realitySettings": {
@@ -502,7 +504,7 @@
             "settings": {
                 "clients": [
                     {
-                        "password":"your password",
+                        "password": "your password",
                         "email": "xTrojanTcpTls-1"
                     }
                 ]
@@ -521,6 +523,41 @@
                         }
                     ]
                 }
+            }
+        },
+        {
+            "port": 1234,
+            "protocol": "shadowsocks",
+            "tag":"shadowsocks-1",
+            "settings": {
+                "method": "2022-blake3-aes-128-gcm",
+                "password": "{{ psk }}",
+                "network": "tcp,udp"
+            }
+        },
+        {
+            "port": 12345,
+            "protocol": "shadowsocks",
+            "tag":"shadowsocks-2",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "example_user_1",
+                        "email": "aes-128-gcm",
+                        "method": "aes-128-gcm"
+                    },
+                    {
+                        "password": "example_user_2",
+                        "email": "aes-256-gcm",
+                        "method": "aes-256-gcm"
+                    },
+                    {
+                        "password": "example_user_3",
+                        "email": "chacha20-poly1305",
+                        "method": "chacha20-poly1305"
+                    }
+                ],
+                "network": "tcp,udp"
             }
         }
     ]

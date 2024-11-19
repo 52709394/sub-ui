@@ -3,6 +3,7 @@ package users
 type User struct {
 	Name     string `json:"name"`
 	UUID     string `json:"uuid"`
+	Method   string `json:"method"`
 	Password string `json:"password"`
 	Flow     string `json:"flow"`
 	Static   bool   `json:"static"`
@@ -15,13 +16,12 @@ type Inbound struct {
 	Port              uint16 `json:"port"`
 	ServiceListen     string `json:"-"`
 	ServicePort       uint16 `json:"-"`
-	Shadowtls         string `json:"Shadowtls"`
 	Hide              bool   `json:"hide"`
 	Users             []User `json:"users"`
 	CongestionControl string `json:"congestion_control"`
 	Version           uint16 `json:"version"`
-	Method            string `json:"method"`
 	Detour            string `json:"-"`
+	DetourProxy       string `json:"detour_proxy "`
 	Network           string `json:"network"`
 	Host              string `json:"host"`
 	Path              string `json:"path"`

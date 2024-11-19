@@ -112,6 +112,25 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		return protocol
 	}
 
+	if protocol == "shadowsocks" {
+		if inbound.Settings.Method != "" {
+			path, err := random.GenerateStrings(16)
+			if err != nil {
+				fmt.Println("随机url路径错误:", err)
+				return ""
+			}
+			usersInbound.Users = append(usersInbound.Users, users.User{
+				Name:     proxy.OnlyName + "-" + fmt.Sprintf("%d", inbound.Port),
+				Password: inbound.Settings.Password,
+				Method:   inbound.Settings.Method,
+				Static:   false,
+				UserPath: path,
+			})
+		}
+		usersInbound.Fingerprint = setup.ConfigData.Users.UtlsFp
+		return protocol
+	}
+
 	return ""
 }
 
@@ -190,12 +209,11 @@ func (config Config) RenewData(mod string) error {
 				newUsersInbound.Users[n].Flow = config.Inbounds[i].Settings.Clients[j].Flow
 			case "trojan":
 				newUsersInbound.Users[n].Password = config.Inbounds[i].Settings.Clients[j].Password
-
+			case "shadowsocks":
+				newUsersInbound.Users[n].Method = config.Inbounds[i].Settings.Clients[j].Method
+				newUsersInbound.Users[n].Password = config.Inbounds[i].Settings.Clients[j].Password
 			}
 		}
-		// if len(newUsersInbound.Users) > 0 {
-		// 	usersConfig.Inbounds = append(usersConfig.Inbounds, newUsersInbound)
-		// }
 
 		if len(newUsersInbound.Users) == 0 {
 			if newUsersInbound.Security == "reality" &&
@@ -208,7 +226,7 @@ func (config Config) RenewData(mod string) error {
 			} else {
 				newUsersInbound.Hide = true
 			}
-			//newUsersInbound.Hide = true
+
 		} else {
 			newUsersInbound.Hide = false
 		}

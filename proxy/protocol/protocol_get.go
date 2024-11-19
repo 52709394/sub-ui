@@ -29,6 +29,7 @@ func GetSBString() {
 	SBStringData.Tuic = getString("sing-box/tuic.json")
 	SBStringData.Shadowtls = getString("sing-box/shadowtls.json")
 	SBStringData.ShadowtlsSS = getString("sing-box/Shadowtls_ss.json")
+	SBStringData.Shadowsocks = getString("sing-box/shadowsocks.json")
 
 }
 

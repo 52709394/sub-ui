@@ -7,33 +7,6 @@ import (
 	"sub-ui/setup"
 )
 
-// func setSecurityData(securityStr string, inbound *Inbound) {
-
-// 	type Config struct {
-// 		Type     string `json:"type"`
-// 		Security string `json:"security"`
-// 		Sni      string `json:"sni"`
-// 		Pbk      string `json:"pbk"`
-// 		Sid      string `json:"sid"`
-// 	}
-
-// 	var config Config
-
-// 	err := json.Unmarshal([]byte(securityStr), &config)
-
-// 	if err != nil {
-// 		return
-// 	}
-
-// 	if config.Type == "reality" {
-// 		inbound.Security = config.Security
-// 		inbound.Sni = config.Sni
-// 		inbound.PublicKey = config.Pbk
-// 		inbound.ShortId = config.Sid
-// 	}
-
-// }
-
 func SetTagData(body []byte) (map[string]string, string, string) {
 
 	var response map[string]string
@@ -58,11 +31,7 @@ func SetTagData(body []byte) (map[string]string, string, string) {
 			ConfigData.Inbounds[i].Port = tagData.Port
 
 			if !ConfigData.Inbounds[i].FixedSecurity {
-				// if tagData.Security == "tls" || tagData.Security == "" {
 				ConfigData.Inbounds[i].Security = tagData.Security
-				// } else {
-				// 	setSecurityData(tagData.Security, &ConfigData.Inbounds[i])
-				// }
 			}
 
 			ConfigData.Inbounds[i].Alpn = tagData.Alpn
@@ -84,11 +53,7 @@ func SetTagData(body []byte) (map[string]string, string, string) {
 		ConfigData.Inbounds[i].Addr = tagData.Addr
 		ConfigData.Inbounds[i].Port = tagData.Port
 		if !ConfigData.Inbounds[i].FixedSecurity {
-			// if tagData.Security == "tls" || tagData.Security == "" {
 			ConfigData.Inbounds[i].Security = tagData.Security
-			// } else {
-			// 	setSecurityData(tagData.Security, &ConfigData.Inbounds[i])
-			// }
 		}
 		ConfigData.Inbounds[i].Alpn = tagData.Alpn
 
@@ -151,10 +116,6 @@ func (re RenewUsers) SetUsersUrl() error {
 }
 
 func (re RenewUsers) SetStaticUsers() {
-
-	// if len(setup.ConfigData.Static.ConstList) != 0 {
-	// 	return
-	// }
 
 	var newConsts []setup.Consts
 	var Users []setup.ConstUser

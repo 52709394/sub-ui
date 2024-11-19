@@ -1,0 +1,11 @@
+{
+    "type": "shadowsocks",
+    "tag": "{{.Tag}}",
+    "server": "{{.Addr}}",
+    "server_port": {{.Port}},
+    "method": "{{.Method}}",
+    "password": "{{.Password}}",
+    "multiplex": {
+        "enabled": true
+    }
+}

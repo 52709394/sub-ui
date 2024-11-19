@@ -11,27 +11,6 @@ import (
 	"sub-ui/setup"
 )
 
-// func getShadowtlsDetour(detour string, tag string) string {
-// 	var p protocol.Config
-
-// 	for i := range ConfigData.Inbounds {
-// 		if ConfigData.Inbounds[i].Tag != detour {
-// 			continue
-// 		}
-// 		if ConfigData.Inbounds[i].Protocol == "shadowsocks" {
-// 			p.Protocol = "shadowtls_ss"
-// 			p.Method = ConfigData.Inbounds[i].Method
-// 			if len(ConfigData.Inbounds[i].Users) == 0 {
-// 				return ""
-// 			}
-// 			p.UserPassword = ConfigData.Inbounds[i].Users[0].Password
-// 			p.Detour = tag
-// 			return p.JsonUrl("shadowtls_ss")
-// 		}
-// 	}
-// 	return ""
-// }
-
 func GetUrlData(proxyUrl string) (string, string) {
 
 	re := regexp.MustCompile(`^(.*?)/([0-9a-zA-Z]*)/(.*?)\.((?:html|json))$`)
@@ -56,10 +35,15 @@ func GetUrlData(proxyUrl string) (string, string) {
 		for j := range ConfigData.Inbounds[i].Users {
 			if ConfigData.Inbounds[i].Users[j].UserPath == urlMatch[2] && ConfigData.Inbounds[i].Users[j].Name == urlName {
 				userName = ConfigData.Inbounds[i].Users[j].Name
+
 				p.UserName = ConfigData.Inbounds[i].Users[j].Name
 				p.UserUUID = ConfigData.Inbounds[i].Users[j].UUID
 				p.UserPassword = ConfigData.Inbounds[i].Users[j].Password
 				p.UserFlow = ConfigData.Inbounds[i].Users[j].Flow
+
+				if ConfigData.Inbounds[i].Protocol == "shadowsocks" {
+					p.Method = ConfigData.Inbounds[i].Users[j].Method
+				}
 				isUser = true
 				break
 			}
@@ -77,31 +61,49 @@ func GetUrlData(proxyUrl string) (string, string) {
 			return "", ""
 		}
 
-		p.Protocol = ConfigData.Inbounds[i].Protocol
-		p.Addr = ConfigData.Inbounds[i].Addr
-		p.Port = fmt.Sprintf("%d", ConfigData.Inbounds[i].Port)
-		p.TuicCC = ConfigData.Inbounds[i].CongestionControl
-		p.Method = ConfigData.Inbounds[i].Method
-		p.Network = ConfigData.Inbounds[i].Network
-		p.ServiceName = ConfigData.Inbounds[i].ServiceName
-		p.Host = ConfigData.Inbounds[i].Host
-		p.Path = ConfigData.Inbounds[i].Path
-		p.Security = ConfigData.Inbounds[i].Security
-		p.Version = fmt.Sprintf("%d", ConfigData.Inbounds[i].Version)
-		//p.Detour = ConfigData.Inbounds[i].Detour
-		p.Shadowtls = ConfigData.Inbounds[i].Shadowtls
-		p.Sni = ConfigData.Inbounds[i].Sni
-		p.Alpn = ConfigData.Inbounds[i].Alpn
-		p.PublicKey = ConfigData.Inbounds[i].PublicKey
-		p.ShortId = ConfigData.Inbounds[i].ShortId
-		p.Fingerprint = ConfigData.Inbounds[i].Fingerprint
-
 		tag = ConfigData.Inbounds[i].Tag
 
-		// re := regexp.MustCompile(`\@reality$`)
-		// if re.MatchString(p.Security) {
-		// 	p.Security = "reality"
-		// }
+		p.Addr = ConfigData.Inbounds[i].Addr
+		p.Port = fmt.Sprintf("%d", ConfigData.Inbounds[i].Port)
+		p.Protocol = ConfigData.Inbounds[i].Protocol
+
+		p.Fingerprint = ConfigData.Inbounds[i].Fingerprint
+
+		switch p.Protocol {
+		case "vmess", "vless", "trojan":
+
+			p.Network = ConfigData.Inbounds[i].Network
+
+			switch p.Network {
+			case "grpc":
+				p.ServiceName = ConfigData.Inbounds[i].ServiceName
+			case "http", "ws", "httpupgrade", "splithttp", "xhttp":
+				p.Host = ConfigData.Inbounds[i].Host
+				p.Path = ConfigData.Inbounds[i].Path
+			}
+
+			p.Security = ConfigData.Inbounds[i].Security
+
+			if p.Security == "reality" {
+				p.PublicKey = ConfigData.Inbounds[i].PublicKey
+				p.ShortId = ConfigData.Inbounds[i].ShortId
+			} else if p.Security == "tls" {
+				p.Alpn = ConfigData.Inbounds[i].Alpn
+			}
+
+		case "tuic", "hysteria2":
+			if p.Protocol == "tuic" {
+				p.TuicCC = ConfigData.Inbounds[i].CongestionControl
+			}
+			p.Alpn = ConfigData.Inbounds[i].Alpn
+		case "shadowtls":
+
+			p.Version = fmt.Sprintf("%d", ConfigData.Inbounds[i].Version)
+			p.DetourProxy = ConfigData.Inbounds[i].DetourProxy
+
+		}
+
+		p.Sni = ConfigData.Inbounds[i].Sni
 
 	}
 
@@ -122,14 +124,6 @@ func GetUrlData(proxyUrl string) (string, string) {
 		if jsonStr == "" {
 			return "", "html"
 		}
-
-		// if p.Protocol == "shadowtls" {
-		// 	shadowtlStr := getShadowtlsDetour(p.Detour, setup.ConfigData.SingBox.MainTag)
-		// 	if shadowtlStr == "" {
-		// 		return "", "html"
-		// 	}
-		// 	jsonStr += `,\n` + shadowtlStr
-		// }
 
 		if setup.ConfigData.Backup.Enabled {
 			if backup.ProxySBData == "" || backup.SBSelectorOrUrlTestData == "" {
@@ -262,28 +256,6 @@ func TagHttpString(inbound Inbound) (string, string, string) {
 func UsersListHttp(subAddr string, setTagStr, usersLiSrt *string) {
 
 	var urlpath, userName string
-	// var securityStr string
-	// var selectStr string
-	// var jsonData string
-
-	// for i := range ConfigData.Inbounds {
-	// 	if len(ConfigData.Inbounds[i].Users) != 0 {
-	// 		continue
-	// 	}
-
-	// 	if ConfigData.Inbounds[i].Security == "reality" {
-	// 		selectStr = ConfigData.Inbounds[i].Tag + "@reality"
-	// 		jsonData = `{"type":"reality",` +
-	// 			`"security":"` + ConfigData.Inbounds[i].Tag + `@reality",` +
-	// 			`"sni":"` + ConfigData.Inbounds[i].Sni + `",` +
-	// 			`"pbk":"` + ConfigData.Inbounds[i].PublicKey + `",` +
-	// 			`"sid":"` + ConfigData.Inbounds[i].ShortId + `"` +
-	// 			`}`
-
-	// 		securityStr += `<option value='` + jsonData + `'>` + selectStr + `</option>`
-	// 	}
-
-	// }
 
 	//domain := "https://" + setup.ConfigData.Users.Domain
 

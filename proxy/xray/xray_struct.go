@@ -3,6 +3,7 @@ package xray
 type Client struct {
 	Email    string `json:"email"`
 	Id       string `json:"id"`
+	Method   string `json:"method"`
 	Password string `json:"password"`
 	Flow     string `json:"flow"`
 }
@@ -12,6 +13,8 @@ type Fallback struct {
 }
 
 type Settings struct {
+	Method    string     `json:"method"`
+	Password  string     `json:"password"`
 	Clients   []Client   `jsong:"clients"`
 	Fallbacks []Fallback `json:"fallbacks"`
 }
