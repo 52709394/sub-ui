@@ -77,9 +77,9 @@
       {
         "user": "2dust",
         "repository": "v2rayN",
-        "regexp": "/zz.*?\\.7z$",
+        "regexp": "/v2rayN.*?\\.7z$",
         "name": "v2rayN.7z",
-        "url": ""
+        "url": "https://github.com/2dust/v2rayN/releases/download/7.0.9/v2rayN-windows-64-SelfContained-With-Core.7z"
       }
     ]
   },
@@ -105,7 +105,7 @@
       {
         "user": "2dust",
         "repository": "v2rayN",
-        "regexp": "/zz.*?\\.7z$",
+        "regexp": "/v2rayN.*?\\.7z$",
         "only_copy": true,
         "label": "v2rayNG(windows)",
         "url": ""

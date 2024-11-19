@@ -279,7 +279,7 @@ func (s Server) Run() {
 
 	fmt.Println("启动服务器 :", setup.ConfigData.Server.Port)
 	if err := http.ListenAndServe(":"+setup.ConfigData.Server.Port, nil); err != nil {
-		fmt.Println("服务无法启动: %s\n", err)
+		fmt.Println("服务无法启动:", err)
 	}
 
 }

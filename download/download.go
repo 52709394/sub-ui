@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"sub-ui/app"
+	"sub-ui/read"
 	"sub-ui/setup"
 	"time"
 )
@@ -62,19 +63,19 @@ func getGithubUrl(github *setup.Github) bool {
 	regStr := github.Regexp
 	newUrl, err := app.GetLatestAppUrl(user, repo, regStr)
 
-	if err != nil {
+	if err != nil || newUrl == "" {
 		return false
 	}
 
 	url := github.Url
 
-	if url == newUrl {
+	filepath := setup.ConfigData.Download.Folder + "/app/" + github.Name
+
+	if url == newUrl && read.CheckExistence(filepath) != "nil" {
 		return false
 	}
 
 	github.Url = newUrl
-
-	filepath := setup.ConfigData.Download.Folder + "/app/" + github.Name
 
 	fmt.Println(newUrl)
 	fmt.Println(filepath)

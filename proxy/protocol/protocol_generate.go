@@ -103,7 +103,7 @@ func (p Config) HttpUrl() string {
 
 	if proxyMod == "vless+xhttp+reality" {
 
-		httpStr = vless + `&security=reality&sni=` + p.Sni + `&fp=` + p.Fingerprint + `&pbk=` + publicKey + `&sid=` + p.ShortId + `&type=xhttp` + path + host + `#` + name
+		httpStr = vless + `&security=reality&sni=` + p.Sni + `&fp=` + p.Fingerprint + `&pbk=` + publicKey + `&sid=` + p.ShortId + `&type=xhttp` + path + host + `&mode=auto#` + name
 		return httpStr
 	}
 
@@ -133,7 +133,7 @@ func (p Config) HttpUrl() string {
 
 	if proxyMod == "vless+xhttp+tls" {
 
-		httpStr = vless + `&security=tls` + alpn + `&fp=` + p.Fingerprint + `&type=xhttp` + path + host + `#` + name
+		httpStr = vless + `&security=tls` + alpn + `&fp=` + p.Fingerprint + `&type=xhttp` + path + host + `&mode=auto#` + name
 
 		return httpStr
 	}
