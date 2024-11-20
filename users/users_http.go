@@ -76,34 +76,47 @@ func GetUrlData(proxyUrl string) (string, string) {
 
 			switch p.Network {
 			case "grpc":
-				p.ServiceName = ConfigData.Inbounds[i].ServiceName
+				if ConfigData.Inbounds[i].Transport != nil {
+					p.ServiceName = ConfigData.Inbounds[i].Transport.ServiceName
+				}
+
 			case "http", "ws", "httpupgrade", "splithttp", "xhttp":
-				p.Host = ConfigData.Inbounds[i].Host
-				p.Path = ConfigData.Inbounds[i].Path
+				if ConfigData.Inbounds[i].Transport != nil {
+					p.Host = ConfigData.Inbounds[i].Transport.Host
+					p.Path = ConfigData.Inbounds[i].Transport.Path
+				}
 			}
 
 			p.Security = ConfigData.Inbounds[i].Security
 
 			if p.Security == "reality" {
-				p.PublicKey = ConfigData.Inbounds[i].PublicKey
-				p.ShortId = ConfigData.Inbounds[i].ShortId
+				if ConfigData.Inbounds[i].Reality != nil {
+					p.Sni = (*ConfigData.Inbounds[i].Reality).Sni
+					p.PublicKey = (*ConfigData.Inbounds[i].Reality).PublicKey
+					p.ShortId = (*ConfigData.Inbounds[i].Reality).ShortId
+				}
+
 			} else if p.Security == "tls" {
-				p.Alpn = ConfigData.Inbounds[i].Alpn
+				if ConfigData.Inbounds[i].Tls != nil {
+					p.Sni = (*ConfigData.Inbounds[i].Tls).Sni
+					p.Alpn = (*ConfigData.Inbounds[i].Tls).Alpn
+				}
 			}
 
 		case "tuic", "hysteria2":
 			if p.Protocol == "tuic" {
 				p.TuicCC = ConfigData.Inbounds[i].CongestionControl
 			}
-			p.Alpn = ConfigData.Inbounds[i].Alpn
+			if ConfigData.Inbounds[i].Tls != nil {
+				p.Alpn = (*ConfigData.Inbounds[i].Tls).Alpn
+			}
 		case "shadowtls":
 
-			p.Version = fmt.Sprintf("%d", ConfigData.Inbounds[i].Version)
-			p.DetourProxy = ConfigData.Inbounds[i].DetourProxy
+			p.Version = fmt.Sprintf("%d", (*ConfigData.Inbounds[i].Shadowtls).Version)
+			p.DetourProxy = (*ConfigData.Inbounds[i].Shadowtls).DetourProxy
+			p.Sni = (*ConfigData.Inbounds[i].Shadowtls).Sni
 
 		}
-
-		p.Sni = ConfigData.Inbounds[i].Sni
 
 	}
 
@@ -245,8 +258,10 @@ func TagHttpString(inbound Inbound) (string, string, string) {
 		strC += "传输层安全: 没, "
 	}
 
-	if inbound.Alpn != "" {
-		strC += "alpn:" + inbound.Alpn
+	if inbound.Tls != nil {
+		if (*inbound.Tls).Alpn == "" {
+			strC += "alpn:" + (*inbound.Tls).Alpn
+		}
 	} else {
 		strC += "alpn: 没 "
 	}

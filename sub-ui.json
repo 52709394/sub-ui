@@ -8,8 +8,8 @@
     "ws_0-rtt": "?ed=2560"
   },
   "proxy": {
-    "core": "xray",
-    "config": "xconfig.json",
+    "core": "sing-box",
+    "config": "sconfig.json",
     "real_time": true,
     "only_name": "facai"
   },

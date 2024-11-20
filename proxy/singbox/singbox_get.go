@@ -35,7 +35,7 @@ func (s SBDetours) setData(config *users.Config) {
 				config.Inbounds[j].Hide = true
 
 				x := s.Detours[i].Index
-				config.Inbounds[x].DetourProxy = jsonStr
+				(*config.Inbounds[x].Shadowtls).DetourProxy = jsonStr
 			}
 
 		}
@@ -55,34 +55,40 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 	case "vmess", "vless", "trojan":
 		usersInbound.Network = inbound.Transport.Type
 		usersInbound.FixedSecurity = false
-		switch inbound.Transport.Type {
+
+		if usersInbound.Network != "" {
+			usersInbound.Transport = new(users.Transport)
+		}
+
+		switch usersInbound.Network {
 		case "":
 			usersInbound.Network = "tcp"
 		case "grpc":
-			usersInbound.ServiceName = inbound.Transport.ServiceName
+			(*usersInbound.Transport).ServiceName = inbound.Transport.ServiceName
 		case "http":
-			usersInbound.Path = inbound.Transport.Path
+			usersInbound.Transport.Path = inbound.Transport.Path
 			if len(inbound.Transport.Host) > 0 {
-				usersInbound.Host = ""
+				(*usersInbound.Transport).Host = ""
 				for _, host := range inbound.Transport.Host {
-					usersInbound.Host += host + ","
+					(*usersInbound.Transport).Host += host + ","
 				}
-				usersInbound.Host = strings.TrimRight(usersInbound.Host, ",")
+				(*usersInbound.Transport).Host = strings.TrimRight((*usersInbound.Transport).Host, ",")
 			}
 		case "httpupgrade", "ws":
-			usersInbound.Path = inbound.Transport.Path
+			(*usersInbound.Transport).Path = inbound.Transport.Path
 		}
 
 		if protocol == "vless" {
 			if inbound.Tls.Reality.Enabled {
 				usersInbound.Security = "reality"
 				usersInbound.FixedSecurity = true
-				usersInbound.Sni = inbound.Tls.ServerName
+				usersInbound.Reality = new(users.Reality)
+				(*usersInbound.Reality).Sni = inbound.Tls.ServerName
 				if publicKey, err := change.GetPublicKey(inbound.Tls.Reality.PrivateKey); err == nil {
-					usersInbound.PublicKey = publicKey
+					(*usersInbound.Reality).PublicKey = publicKey
 				}
 				if len(inbound.Tls.Reality.ShortId) > 0 {
-					usersInbound.ShortId = inbound.Tls.Reality.ShortId[0]
+					(*usersInbound.Reality).ShortId = inbound.Tls.Reality.ShortId[0]
 				}
 			}
 		}
@@ -91,11 +97,12 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 			usersInbound.Security = "tls"
 			usersInbound.FixedSecurity = true
 			if len(inbound.Tls.Alpn) > 0 {
-				usersInbound.Alpn = ""
+				usersInbound.Tls = new(users.Tls)
+				(*usersInbound.Tls).Alpn = ""
 				for _, alpn := range inbound.Tls.Alpn {
-					usersInbound.Alpn += alpn + ","
+					(*usersInbound.Tls).Alpn += alpn + ","
 				}
-				usersInbound.Alpn = strings.TrimRight(usersInbound.Alpn, ",")
+				(*usersInbound.Tls).Alpn = strings.TrimRight((*usersInbound.Tls).Alpn, ",")
 			}
 		}
 
@@ -103,11 +110,13 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 
 		return protocol
 	case "hysteria2":
-		usersInbound.Alpn = "h3"
+		usersInbound.Tls = new(users.Tls)
+		(*usersInbound.Tls).Alpn = "h3"
 		usersInbound.Security = "tls"
 		return protocol
 	case "tuic":
-		usersInbound.Alpn = "h3"
+		usersInbound.Tls = new(users.Tls)
+		(*usersInbound.Tls).Alpn = "h3"
 		usersInbound.CongestionControl = inbound.CongestionControl
 		usersInbound.Security = "tls"
 		return protocol
@@ -128,9 +137,11 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		}
 		return protocol
 	case "shadowtls":
-		usersInbound.Version = inbound.Version
-		usersInbound.Sni = inbound.Handshake.Server
-		usersInbound.Detour = inbound.Detour
+		usersInbound.Shadowtls = new(users.Shadowtls)
+
+		(*usersInbound.Shadowtls).Version = inbound.Version
+		(*usersInbound.Shadowtls).Sni = inbound.Handshake.Server
+		(*usersInbound.Shadowtls).Detour = inbound.Detour
 		return protocol
 	}
 
@@ -226,7 +237,7 @@ func (config Config) RenewData(mod string) error {
 		if protocol == "shadowtls" {
 			sbDetours.Detours = append(sbDetours.Detours, Detour{
 				Index:  len(usersConfig.Inbounds),
-				Detour: newUsersInbound.Detour,
+				Detour: newUsersInbound.Shadowtls.Detour,
 			})
 		}
 

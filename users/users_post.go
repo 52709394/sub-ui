@@ -34,7 +34,13 @@ func SetTagData(body []byte) (map[string]string, string, string) {
 				ConfigData.Inbounds[i].Security = tagData.Security
 			}
 
-			ConfigData.Inbounds[i].Alpn = tagData.Alpn
+			if tagData.Alpn != "" && ConfigData.Inbounds[i].Security != "reality" {
+				if ConfigData.Inbounds[i].Tls == nil {
+					ConfigData.Inbounds[i].Tls = new(Tls)
+				}
+				ConfigData.Inbounds[i].Tls.Alpn = tagData.Alpn
+			}
+
 		}
 		toggleContent = "set"
 	} else {
@@ -55,7 +61,13 @@ func SetTagData(body []byte) (map[string]string, string, string) {
 		if !ConfigData.Inbounds[i].FixedSecurity {
 			ConfigData.Inbounds[i].Security = tagData.Security
 		}
-		ConfigData.Inbounds[i].Alpn = tagData.Alpn
+
+		if tagData.Alpn != "" && ConfigData.Inbounds[i].Security != "reality" {
+			if ConfigData.Inbounds[i].Tls == nil {
+				ConfigData.Inbounds[i].Tls = new(Tls)
+			}
+			ConfigData.Inbounds[i].Tls.Alpn = tagData.Alpn
+		}
 
 		tagSrtA, tagSrtB, tagInfoSrt = TagHttpString(ConfigData.Inbounds[i])
 

@@ -29,11 +29,19 @@ func (rF RealityFallbacks) setData(config *users.Config) {
 			}
 
 			x := rF.Fallbacks[i].Index
-			config.Inbounds[x].Network = config.Inbounds[j].Network
-			config.Inbounds[x].Path = config.Inbounds[j].Path
-			config.Inbounds[x].ServiceName = config.Inbounds[j].ServiceName
-			config.Inbounds[x].Host = config.Inbounds[j].Host
-			config.Inbounds[x].Users = config.Inbounds[j].Users
+			if config.Inbounds[j].Transport != nil {
+				if config.Inbounds[x].Transport == nil {
+					config.Inbounds[x].Transport = new(users.Transport)
+				}
+				config.Inbounds[x].Network = config.Inbounds[j].Network
+				config.Inbounds[x].Transport = config.Inbounds[j].Transport
+				config.Inbounds[x].Users = config.Inbounds[j].Users
+				//config.Inbounds[x].Transport.Path = config.Inbounds[j].Transport.Path
+				//config.Inbounds[x].Transport.ServiceName = config.Inbounds[j].Transport.ServiceName
+				//config.Inbounds[x].Transport.Host = config.Inbounds[j].Transport.Host
+				//config.Inbounds[x].Users = config.Inbounds[j].Users
+			}
+
 		}
 	}
 
@@ -56,41 +64,46 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		usersInbound.Network = inbound.StreamSettings.Network
 		usersInbound.FixedSecurity = false
 
+		if usersInbound.Network != "raw" && usersInbound.Network != "tcp" {
+			usersInbound.Transport = new(users.Transport)
+		}
+
 		switch usersInbound.Network {
 		case "raw":
 			usersInbound.Network = "tcp"
 		case "grpc":
-			usersInbound.ServiceName = inbound.StreamSettings.GrpcSettings.ServiceName
+			(*usersInbound.Transport).ServiceName = inbound.StreamSettings.GrpcSettings.ServiceName
 		case "h2", "http":
 			usersInbound.Network = "http"
-			usersInbound.Path = inbound.StreamSettings.HttpSettings.Path
+			(*usersInbound.Transport).Path = inbound.StreamSettings.HttpSettings.Path
 			if len(inbound.StreamSettings.HttpSettings.Host) > 0 {
-				usersInbound.Host = ""
+				(*usersInbound.Transport).Host = ""
 				for _, host := range inbound.StreamSettings.HttpSettings.Host {
-					usersInbound.Host += host + ","
+					(*usersInbound.Transport).Host += host + ","
 				}
-				usersInbound.Host = strings.TrimRight(usersInbound.Host, ",")
+				(*usersInbound.Transport).Host = strings.TrimRight((*usersInbound.Transport).Host, ",")
 			}
 		case "ws":
-			usersInbound.Path = inbound.StreamSettings.WsSettings.Path
+			(*usersInbound.Transport).Path = inbound.StreamSettings.WsSettings.Path
 		case "splithttp":
-			usersInbound.Path = inbound.StreamSettings.SplithttpSettings.Path
+			(*usersInbound.Transport).Path = inbound.StreamSettings.SplithttpSettings.Path
 		case "xhttp":
-			usersInbound.Path = inbound.StreamSettings.XhttpSettings.Path
+			(*usersInbound.Transport).Path = inbound.StreamSettings.XhttpSettings.Path
 		case "httpupgrade":
-			usersInbound.Path = inbound.StreamSettings.HttpupgradeSettings.Path
+			(*usersInbound.Transport).Path = inbound.StreamSettings.HttpupgradeSettings.Path
 		}
 
 		if protocol == "vless" {
 			if inbound.StreamSettings.Security == "reality" {
 				usersInbound.Security = "reality"
 				usersInbound.FixedSecurity = true
-				usersInbound.Sni = inbound.StreamSettings.RealitySettings.ServerNames[0]
+				usersInbound.Reality = new(users.Reality)
+				(*usersInbound.Reality).Sni = inbound.StreamSettings.RealitySettings.ServerNames[0]
 				if publicKey, err := change.GetPublicKey(inbound.StreamSettings.RealitySettings.PrivateKey); err == nil {
-					usersInbound.PublicKey = publicKey
+					(*usersInbound.Reality).PublicKey = publicKey
 				}
 				if len(inbound.StreamSettings.RealitySettings.ShortIds) > 0 {
-					usersInbound.ShortId = inbound.StreamSettings.RealitySettings.ShortIds[0]
+					(*usersInbound.Reality).ShortId = inbound.StreamSettings.RealitySettings.ShortIds[0]
 				}
 			}
 		}
@@ -99,11 +112,12 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 			usersInbound.Security = "tls"
 			usersInbound.FixedSecurity = true
 			if len(inbound.StreamSettings.TlsSettings.Alpn) > 0 {
-				usersInbound.Alpn = ""
+				usersInbound.Tls = new(users.Tls)
+				(*usersInbound.Tls).Alpn = ""
 				for _, alpn := range inbound.StreamSettings.TlsSettings.Alpn {
-					usersInbound.Alpn += alpn + ","
+					(*usersInbound.Tls).Alpn += alpn + ","
 				}
-				usersInbound.Alpn = strings.TrimRight(usersInbound.Alpn, ",")
+				(*usersInbound.Tls).Alpn = strings.TrimRight(usersInbound.Tls.Alpn, ",")
 			}
 		}
 
