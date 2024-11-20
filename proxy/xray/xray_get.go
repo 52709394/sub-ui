@@ -35,12 +35,8 @@ func (rF RealityFallbacks) setData(config *users.Config) {
 				}
 				config.Inbounds[x].Network = config.Inbounds[j].Network
 				config.Inbounds[x].Transport = config.Inbounds[j].Transport
-				config.Inbounds[x].Users = config.Inbounds[j].Users
-				//config.Inbounds[x].Transport.Path = config.Inbounds[j].Transport.Path
-				//config.Inbounds[x].Transport.ServiceName = config.Inbounds[j].Transport.ServiceName
-				//config.Inbounds[x].Transport.Host = config.Inbounds[j].Transport.Host
-				//config.Inbounds[x].Users = config.Inbounds[j].Users
 			}
+			config.Inbounds[x].Users = config.Inbounds[j].Users
 
 		}
 	}
@@ -278,18 +274,36 @@ OuterLoop:
 
 		if len(config.Inbounds[i].Settings.Clients) == 1 {
 			if config.Inbounds[i].Settings.Clients[0].Email == "" {
-				p.UserUUID = config.Inbounds[i].Settings.Clients[0].Id
-				p.UserPassword = config.Inbounds[i].Settings.Clients[0].Password
-				p.UserFlow = config.Inbounds[i].Settings.Clients[0].Flow
+				switch config.Inbounds[i].Protocol {
+				case "vmess":
+					p.UserUUID = config.Inbounds[i].Settings.Clients[0].Id
+				case "vless":
+					p.UserUUID = config.Inbounds[i].Settings.Clients[0].Id
+					p.UserFlow = config.Inbounds[i].Settings.Clients[0].Flow
+				case "trojan", "shadowsocks":
+					p.UserPassword = config.Inbounds[i].Settings.Clients[0].Password
+				}
+
+				break OuterLoop
+			}
+		} else if config.Inbounds[i].Protocol == "shadowsocks" {
+			if len(config.Inbounds[i].Settings.Clients) == 0 && config.Inbounds[i].Settings.Password != "" {
+				p.UserPassword = config.Inbounds[i].Settings.Password
 				break OuterLoop
 			}
 		}
 
 		for j := range config.Inbounds[i].Settings.Clients {
 			if config.Inbounds[i].Settings.Clients[j].Email == userName {
-				p.UserUUID = config.Inbounds[i].Settings.Clients[j].Id
-				p.UserPassword = config.Inbounds[i].Settings.Clients[j].Password
-				p.UserFlow = config.Inbounds[i].Settings.Clients[j].Flow
+				switch config.Inbounds[i].Protocol {
+				case "vmess":
+					p.UserUUID = config.Inbounds[i].Settings.Clients[j].Id
+				case "vless":
+					p.UserUUID = config.Inbounds[i].Settings.Clients[j].Id
+					p.UserFlow = config.Inbounds[i].Settings.Clients[j].Flow
+				case "trojan", "shadowsocks":
+					p.UserPassword = config.Inbounds[i].Settings.Clients[j].Password
+				}
 				break OuterLoop
 			}
 

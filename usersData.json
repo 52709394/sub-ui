@@ -12,7 +12,7 @@
           "name": "vmessWsTls-1",
           "uuid": "3f2580eb-d1c8-492e-a142-45887c8aad41",
           "static": false,
-          "user_path": "JN8EPA0FRzzmhsRC"
+          "user_path": "fhh6CEha8ZKNmGHt"
         }
       ],
       "network": "ws",
@@ -207,7 +207,7 @@
           "name": "vlessGrpcReality-3",
           "uuid": "e981b3b0-7294-4850-aa23-b2ae17b55db9",
           "static": false,
-          "user_path": "z1HsdLuJoXEciXPR"
+          "user_path": "gYbVa8wfWBGA2CQH"
         }
       ],
       "network": "grpc",

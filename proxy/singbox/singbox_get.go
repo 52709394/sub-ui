@@ -283,18 +283,43 @@ OuterLoop:
 
 		if len(config.Inbounds[i].Users) == 1 {
 			if config.Inbounds[i].Users[0].Name == "" {
-				p.UserUUID = config.Inbounds[i].Users[0].UUID
-				p.UserPassword = config.Inbounds[i].Users[0].Password
-				p.UserFlow = config.Inbounds[i].Users[0].Flow
+				switch config.Inbounds[i].Type {
+				case "vmess":
+					p.UserUUID = config.Inbounds[i].Users[0].UUID
+				case "vless":
+					p.UserUUID = config.Inbounds[i].Users[0].UUID
+					p.UserFlow = config.Inbounds[i].Users[0].Flow
+				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
+					p.UserPassword = config.Inbounds[i].Users[0].Password
+				case "tuic":
+					p.UserUUID = config.Inbounds[i].Users[0].UUID
+					p.UserPassword = config.Inbounds[i].Users[0].Password
+				}
+
+				break OuterLoop
+			}
+		} else if config.Inbounds[i].Type == "shadowsocks" {
+			if len(config.Inbounds[i].Users) == 0 && config.Inbounds[i].Password != "" {
+				p.UserPassword = config.Inbounds[i].Password
 				break OuterLoop
 			}
 		}
 
 		for j := range config.Inbounds[i].Users {
 			if config.Inbounds[i].Users[j].Name == userName {
-				p.UserUUID = config.Inbounds[i].Users[j].UUID
-				p.UserPassword = config.Inbounds[i].Users[j].Password
-				p.UserFlow = config.Inbounds[i].Users[j].Flow
+				switch config.Inbounds[i].Type {
+				case "vmess":
+					p.UserUUID = config.Inbounds[i].Users[j].UUID
+				case "vless":
+					p.UserUUID = config.Inbounds[i].Users[j].UUID
+					p.UserFlow = config.Inbounds[i].Users[j].Flow
+				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
+					p.UserPassword = config.Inbounds[i].Users[j].Password
+
+				case "tuic":
+					p.UserUUID = config.Inbounds[i].Users[j].UUID
+					p.UserPassword = config.Inbounds[i].Users[j].Password
+				}
 				break OuterLoop
 			}
 		}
