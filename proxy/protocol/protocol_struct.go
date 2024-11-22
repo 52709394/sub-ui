@@ -1,27 +1,27 @@
 package protocol
 
 type Config struct {
-	Addr         string
-	Protocol     string
-	Port         string
-	TuicCC       string
-	Method       string
-	Network      string
-	Host         string
-	Path         string
-	ServiceName  string
-	Security     string
-	Alpn         string
-	Version      string
-	DetourProxy  string
-	Sni          string
-	PublicKey    string
-	ShortId      string
-	Fingerprint  string
-	UserName     string
-	UserUUID     string
-	UserPassword string
-	UserFlow     string
+	Addr         *string
+	Protocol     *string
+	Port         *string
+	TuicCC       *string
+	Method       *string
+	Network      *string
+	Host         *string
+	Path         *string
+	ServiceName  *string
+	Security     *string
+	Alpn         *string
+	Version      *string
+	DetourProxy  *string
+	Sni          *string
+	PublicKey    *string
+	ShortId      *string
+	Fingerprint  *string
+	UserName     *string
+	UserUUID     *string
+	UserPassword *string
+	UserFlow     *string
 }
 
 type SBString struct {

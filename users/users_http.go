@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+	"strconv"
 	"sub-ui/backup"
 	"sub-ui/change"
 	"sub-ui/proxy"
@@ -35,15 +36,27 @@ func GetUrlData(proxyUrl string) (string, string) {
 		for j := range ConfigData.Inbounds[i].Users {
 			if ConfigData.Inbounds[i].Users[j].UserPath == urlMatch[2] && ConfigData.Inbounds[i].Users[j].Name == urlName {
 				userName = ConfigData.Inbounds[i].Users[j].Name
+				p.UserName = &ConfigData.Inbounds[i].Users[j].Name
 
-				p.UserName = ConfigData.Inbounds[i].Users[j].Name
-				p.UserUUID = ConfigData.Inbounds[i].Users[j].UUID
-				p.UserPassword = ConfigData.Inbounds[i].Users[j].Password
-				p.UserFlow = ConfigData.Inbounds[i].Users[j].Flow
+				switch ConfigData.Inbounds[i].Protocol {
+				case "vmess":
+					p.UserUUID = &ConfigData.Inbounds[i].Users[j].UUID
+				case "vless":
+					p.UserUUID = &ConfigData.Inbounds[i].Users[j].UUID
+					if ConfigData.Inbounds[i].Users[j].Flow != "" {
+						p.UserFlow = &ConfigData.Inbounds[i].Users[j].Flow
+					}
+				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
+					p.UserPassword = &ConfigData.Inbounds[i].Users[j].Password
+				case "tuic":
+					p.UserUUID = &ConfigData.Inbounds[i].Users[j].UUID
+					p.UserPassword = &ConfigData.Inbounds[i].Users[j].Password
+				}
 
 				if ConfigData.Inbounds[i].Protocol == "shadowsocks" {
-					p.Method = ConfigData.Inbounds[i].Users[j].Method
+					p.Method = &ConfigData.Inbounds[i].Users[j].Method
 				}
+
 				isUser = true
 				break
 			}
@@ -54,67 +67,82 @@ func GetUrlData(proxyUrl string) (string, string) {
 			return "", ""
 		}
 
+		portNumber, _ := strconv.Atoi(ConfigData.Inbounds[i].Port)
+
 		if ConfigData.Inbounds[i].Addr == "" ||
-			ConfigData.Inbounds[i].Port < 1 ||
-			ConfigData.Inbounds[i].Port > 65535 {
+			portNumber < 1 ||
+			portNumber > 65535 {
 			fmt.Println("订阅警告:用户地址或端口未设置!")
 			return "", ""
 		}
 
 		tag = ConfigData.Inbounds[i].Tag
 
-		p.Addr = ConfigData.Inbounds[i].Addr
-		p.Port = fmt.Sprintf("%d", ConfigData.Inbounds[i].Port)
-		p.Protocol = ConfigData.Inbounds[i].Protocol
+		p.Addr = &ConfigData.Inbounds[i].Addr
+		p.Port = &ConfigData.Inbounds[i].Port
+		p.Protocol = &ConfigData.Inbounds[i].Protocol
 
-		p.Fingerprint = ConfigData.Inbounds[i].Fingerprint
+		p.Fingerprint = &ConfigData.Inbounds[i].Fingerprint
 
-		switch p.Protocol {
+		switch *p.Protocol {
 		case "vmess", "vless", "trojan":
 
-			p.Network = ConfigData.Inbounds[i].Network
+			p.Network = &ConfigData.Inbounds[i].Network
 
-			switch p.Network {
+			switch *p.Network {
 			case "grpc":
 				if ConfigData.Inbounds[i].Transport != nil {
-					p.ServiceName = ConfigData.Inbounds[i].Transport.ServiceName
+					if ConfigData.Inbounds[i].Transport.ServiceName != "" {
+						p.ServiceName = &ConfigData.Inbounds[i].Transport.ServiceName
+					}
 				}
 
 			case "http", "ws", "httpupgrade", "splithttp", "xhttp":
 				if ConfigData.Inbounds[i].Transport != nil {
-					p.Host = ConfigData.Inbounds[i].Transport.Host
-					p.Path = ConfigData.Inbounds[i].Transport.Path
+					if ConfigData.Inbounds[i].Transport.Host != "" {
+						p.Host = &ConfigData.Inbounds[i].Transport.Host
+					}
+					if ConfigData.Inbounds[i].Transport.Path != "" {
+						p.Path = &ConfigData.Inbounds[i].Transport.Path
+					}
 				}
 			}
 
-			p.Security = ConfigData.Inbounds[i].Security
+			p.Security = &ConfigData.Inbounds[i].Security
 
-			if p.Security == "reality" {
+			if *p.Security == "reality" {
 				if ConfigData.Inbounds[i].Reality != nil {
-					p.Sni = (*ConfigData.Inbounds[i].Reality).Sni
-					p.PublicKey = (*ConfigData.Inbounds[i].Reality).PublicKey
-					p.ShortId = (*ConfigData.Inbounds[i].Reality).ShortId
+					p.Sni = &ConfigData.Inbounds[i].Reality.Sni
+					p.PublicKey = &ConfigData.Inbounds[i].Reality.PublicKey
+					p.ShortId = &ConfigData.Inbounds[i].Reality.ShortId
 				}
 
-			} else if p.Security == "tls" {
+			} else if *p.Security == "tls" {
 				if ConfigData.Inbounds[i].Tls != nil {
-					p.Sni = (*ConfigData.Inbounds[i].Tls).Sni
-					p.Alpn = (*ConfigData.Inbounds[i].Tls).Alpn
+					if ConfigData.Inbounds[i].Tls.Sni != "" {
+						p.Sni = &ConfigData.Inbounds[i].Tls.Sni
+					}
+
+					if ConfigData.Inbounds[i].Tls.Alpn != "" {
+						p.Alpn = &ConfigData.Inbounds[i].Tls.Alpn
+					}
 				}
 			}
 
 		case "tuic", "hysteria2":
-			if p.Protocol == "tuic" {
-				p.TuicCC = ConfigData.Inbounds[i].CongestionControl
+			if *p.Protocol == "tuic" {
+				p.TuicCC = &ConfigData.Inbounds[i].CongestionControl
 			}
 			if ConfigData.Inbounds[i].Tls != nil {
-				p.Alpn = (*ConfigData.Inbounds[i].Tls).Alpn
+				if ConfigData.Inbounds[i].Tls.Alpn != "" {
+					p.Alpn = &ConfigData.Inbounds[i].Tls.Alpn
+				}
 			}
 		case "shadowtls":
 
-			p.Version = fmt.Sprintf("%d", (*ConfigData.Inbounds[i].Shadowtls).Version)
-			p.DetourProxy = (*ConfigData.Inbounds[i].Shadowtls).DetourProxy
-			p.Sni = (*ConfigData.Inbounds[i].Shadowtls).Sni
+			p.Version = &ConfigData.Inbounds[i].Shadowtls.Version
+			p.DetourProxy = &ConfigData.Inbounds[i].Shadowtls.DetourProxy
+			p.Sni = &ConfigData.Inbounds[i].Shadowtls.Sni
 
 		}
 
@@ -124,7 +152,7 @@ func GetUrlData(proxyUrl string) (string, string) {
 		proxy.ConfigData.GetCurrentData(&p, tag, userName)
 	}
 
-	if p.UserUUID == "" && p.UserPassword == "" {
+	if p.UserUUID != nil && p.UserPassword != nil {
 		fmt.Println("订阅警告:UUID或Password是无效的!")
 		return "", ""
 	}
@@ -149,7 +177,7 @@ func GetUrlData(proxyUrl string) (string, string) {
 					continue
 				}
 				for _, n := range setup.ConfigData.Backup.Excludes[i].Users {
-					if p.UserName == n {
+					if *p.UserName == n {
 						goto jsonOut
 					}
 				}
@@ -178,7 +206,7 @@ func GetUrlData(proxyUrl string) (string, string) {
 					continue
 				}
 				for _, n := range setup.ConfigData.Backup.Excludes[i].Users {
-					if p.UserName == n {
+					if *p.UserName == n {
 						goto urlOUt
 					}
 				}
@@ -219,7 +247,9 @@ func TagHttpString(inbound Inbound) (string, string, string) {
 		strB += "(协议:" + inbound.Protocol + " "
 	}
 
-	if inbound.Port < 1 || inbound.Port > 65535 ||
+	portNumber, _ := strconv.Atoi(inbound.Port)
+
+	if portNumber < 1 || portNumber > 65535 ||
 		inbound.Addr == "" {
 		if inbound.Addr == "" {
 			strB += "地址:,未设置, "
@@ -227,40 +257,40 @@ func TagHttpString(inbound Inbound) (string, string, string) {
 			strB += "地址:" + inbound.Addr + ", "
 		}
 
-		if inbound.Port < 1 || inbound.Port > 65535 {
+		if portNumber < 1 || portNumber > 65535 {
 			strB += "端口:端口号超出范围, "
 		} else {
-			strB += "端口:" + fmt.Sprintf("%d", inbound.Port) + ", "
+			strB += "端口:" + inbound.Port + ", "
 		}
 		strB += "注意:地址或端口设置有误,无法生成订阅!)"
 	} else {
 		strB += "地址:" + inbound.Addr + ", " +
-			"端口:" + fmt.Sprintf("%d", inbound.Port) + ")"
+			"端口: " + inbound.Port + ")"
 	}
 
 	strC := ""
 
 	if inbound.Addr != "" {
-		strC += "地址:" + inbound.Addr + ", "
+		strC += "地址: " + inbound.Addr + ", "
 	} else {
 		strC += "地址: 未设置, "
 	}
 
-	if inbound.Port != 0 {
-		strC += fmt.Sprintf("端口:%d, ", inbound.Port)
+	if inbound.Port != "" {
+		strC += "端口: " + inbound.Port + ", "
 	} else {
 		strC += "端口: 未设置, "
 	}
 
 	if inbound.Security != "" {
-		strC += "传输层安全:" + inbound.Security + ", "
+		strC += "传输层安全: " + inbound.Security + ", "
 	} else {
 		strC += "传输层安全: 没, "
 	}
 
 	if inbound.Tls != nil {
-		if (*inbound.Tls).Alpn == "" {
-			strC += "alpn:" + (*inbound.Tls).Alpn
+		if inbound.Tls.Alpn == "" {
+			strC += "alpn: " + inbound.Tls.Alpn
 		}
 	} else {
 		strC += "alpn: 没 "

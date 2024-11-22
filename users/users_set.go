@@ -63,7 +63,7 @@ func (config *Config) SetOldData() {
 				if config.Inbounds[i].Tls == nil {
 					config.Inbounds[i].Tls = new(Tls)
 				}
-				(*config.Inbounds[i].Tls).Alpn = (*ConfigData.Inbounds[j].Tls).Alpn
+				config.Inbounds[i].Tls.Alpn = ConfigData.Inbounds[j].Tls.Alpn
 			}
 
 			setOldUrlPath(&config.Inbounds[i].Users, ConfigData.Inbounds[j].Users)

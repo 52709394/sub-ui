@@ -28,7 +28,7 @@ func SetTagData(body []byte) (map[string]string, string, string) {
 	if tagData.Index == -1 {
 		for i := range ConfigData.Inbounds {
 			ConfigData.Inbounds[i].Addr = tagData.Addr
-			ConfigData.Inbounds[i].Port = tagData.Port
+			ConfigData.Inbounds[i].Port = fmt.Sprintf("%d", tagData.Port)
 
 			if !ConfigData.Inbounds[i].FixedSecurity {
 				ConfigData.Inbounds[i].Security = tagData.Security
@@ -57,7 +57,7 @@ func SetTagData(body []byte) (map[string]string, string, string) {
 		}
 
 		ConfigData.Inbounds[i].Addr = tagData.Addr
-		ConfigData.Inbounds[i].Port = tagData.Port
+		ConfigData.Inbounds[i].Port = fmt.Sprintf("%d", tagData.Port)
 		if !ConfigData.Inbounds[i].FixedSecurity {
 			ConfigData.Inbounds[i].Security = tagData.Security
 		}

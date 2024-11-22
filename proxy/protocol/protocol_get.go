@@ -47,54 +47,54 @@ func (p Config) setSBData(proxyStr string, tag string) string {
 
 	var alpn, host string
 
-	if p.Alpn != "" {
-		if strings.Contains(p.Alpn, ",") {
+	if p.Alpn != nil {
+		if strings.Contains(*p.Alpn, ",") {
 			alpn = `"alpn" : [`
 
-			for _, a := range strings.Split(p.Alpn, ",") {
+			for _, a := range strings.Split(*p.Alpn, ",") {
 				alpn += `"` + a + `",`
 			}
 			alpn += `]`
 			alpn = strings.Replace(alpn, ",]", "],", -1)
 		} else {
-			alpn = `"alpn" : ["` + p.Alpn + `"],`
+			alpn = `"alpn" : ["` + *p.Alpn + `"],`
 		}
 	}
 
-	if p.Host != "" {
+	if p.Host != nil {
 
-		if strings.Contains(p.Host, ",") {
+		if strings.Contains(*p.Host, ",") {
 			host = ""
 
-			for _, h := range strings.Split(p.Host, ",") {
+			for _, h := range strings.Split(*p.Host, ",") {
 				host += `"` + h + `",`
 			}
 
 			host = strings.TrimRight(host, ", ")
 		} else {
-			host = `"` + p.Host + `"`
+			host = `"` + *p.Host + `"`
 		}
 	}
 
 	proxyLate := struct {
 		Tag         string
-		Addr        string
-		Port        string
-		TuicCC      string
-		Method      string
-		Network     string
+		Addr        *string
+		Port        *string
+		TuicCC      *string
+		Method      *string
+		Network     *string
 		HttpHost    template.HTML
-		Path        string
-		ServiceName string
+		Path        *string
+		ServiceName *string
 		Alpn        template.HTML
-		Sni         string
-		Version     string
-		PublicKey   string
-		ShortId     string
-		Fingerprint string
-		Name        string
-		UUID        string
-		Password    string
+		Sni         *string
+		Version     *string
+		PublicKey   *string
+		ShortId     *string
+		Fingerprint *string
+		Name        *string
+		UUID        *string
+		Password    *string
 	}{
 		Tag:         tag,
 		Addr:        p.Addr,

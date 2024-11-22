@@ -51,7 +51,7 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 	usersInbound.ServicePort = inbound.Port
 
 	if inbound.Listen == "" || inbound.Listen == "0.0.0.0" {
-		usersInbound.Port = inbound.Port
+		usersInbound.Port = fmt.Sprintf("%d", inbound.Port)
 	}
 
 	switch protocol {
@@ -68,25 +68,25 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		case "raw":
 			usersInbound.Network = "tcp"
 		case "grpc":
-			(*usersInbound.Transport).ServiceName = inbound.StreamSettings.GrpcSettings.ServiceName
+			usersInbound.Transport.ServiceName = inbound.StreamSettings.GrpcSettings.ServiceName
 		case "h2", "http":
 			usersInbound.Network = "http"
-			(*usersInbound.Transport).Path = inbound.StreamSettings.HttpSettings.Path
+			usersInbound.Transport.Path = inbound.StreamSettings.HttpSettings.Path
 			if len(inbound.StreamSettings.HttpSettings.Host) > 0 {
-				(*usersInbound.Transport).Host = ""
+				usersInbound.Transport.Host = ""
 				for _, host := range inbound.StreamSettings.HttpSettings.Host {
-					(*usersInbound.Transport).Host += host + ","
+					usersInbound.Transport.Host += host + ","
 				}
-				(*usersInbound.Transport).Host = strings.TrimRight((*usersInbound.Transport).Host, ",")
+				usersInbound.Transport.Host = strings.TrimRight(usersInbound.Transport.Host, ",")
 			}
 		case "ws":
-			(*usersInbound.Transport).Path = inbound.StreamSettings.WsSettings.Path
+			usersInbound.Transport.Path = inbound.StreamSettings.WsSettings.Path
 		case "splithttp":
-			(*usersInbound.Transport).Path = inbound.StreamSettings.SplithttpSettings.Path
+			usersInbound.Transport.Path = inbound.StreamSettings.SplithttpSettings.Path
 		case "xhttp":
-			(*usersInbound.Transport).Path = inbound.StreamSettings.XhttpSettings.Path
+			usersInbound.Transport.Path = inbound.StreamSettings.XhttpSettings.Path
 		case "httpupgrade":
-			(*usersInbound.Transport).Path = inbound.StreamSettings.HttpupgradeSettings.Path
+			usersInbound.Transport.Path = inbound.StreamSettings.HttpupgradeSettings.Path
 		}
 
 		if protocol == "vless" {
@@ -94,12 +94,12 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 				usersInbound.Security = "reality"
 				usersInbound.FixedSecurity = true
 				usersInbound.Reality = new(users.Reality)
-				(*usersInbound.Reality).Sni = inbound.StreamSettings.RealitySettings.ServerNames[0]
+				usersInbound.Reality.Sni = inbound.StreamSettings.RealitySettings.ServerNames[0]
 				if publicKey, err := change.GetPublicKey(inbound.StreamSettings.RealitySettings.PrivateKey); err == nil {
-					(*usersInbound.Reality).PublicKey = publicKey
+					usersInbound.Reality.PublicKey = publicKey
 				}
 				if len(inbound.StreamSettings.RealitySettings.ShortIds) > 0 {
-					(*usersInbound.Reality).ShortId = inbound.StreamSettings.RealitySettings.ShortIds[0]
+					usersInbound.Reality.ShortId = inbound.StreamSettings.RealitySettings.ShortIds[0]
 				}
 			}
 		}
@@ -109,11 +109,11 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 			usersInbound.FixedSecurity = true
 			if len(inbound.StreamSettings.TlsSettings.Alpn) > 0 {
 				usersInbound.Tls = new(users.Tls)
-				(*usersInbound.Tls).Alpn = ""
+				usersInbound.Tls.Alpn = ""
 				for _, alpn := range inbound.StreamSettings.TlsSettings.Alpn {
-					(*usersInbound.Tls).Alpn += alpn + ","
+					usersInbound.Tls.Alpn += alpn + ","
 				}
-				(*usersInbound.Tls).Alpn = strings.TrimRight(usersInbound.Tls.Alpn, ",")
+				usersInbound.Tls.Alpn = strings.TrimRight(usersInbound.Tls.Alpn, ",")
 			}
 		}
 
@@ -275,20 +275,17 @@ OuterLoop:
 		if len(config.Inbounds[i].Settings.Clients) == 1 {
 			if config.Inbounds[i].Settings.Clients[0].Email == "" {
 				switch config.Inbounds[i].Protocol {
-				case "vmess":
-					p.UserUUID = config.Inbounds[i].Settings.Clients[0].Id
-				case "vless":
-					p.UserUUID = config.Inbounds[i].Settings.Clients[0].Id
-					p.UserFlow = config.Inbounds[i].Settings.Clients[0].Flow
+				case "vmess", "vless":
+					*p.UserUUID = config.Inbounds[i].Settings.Clients[0].Id
 				case "trojan", "shadowsocks":
-					p.UserPassword = config.Inbounds[i].Settings.Clients[0].Password
+					*p.UserPassword = config.Inbounds[i].Settings.Clients[0].Password
 				}
 
 				break OuterLoop
 			}
 		} else if config.Inbounds[i].Protocol == "shadowsocks" {
 			if len(config.Inbounds[i].Settings.Clients) == 0 && config.Inbounds[i].Settings.Password != "" {
-				p.UserPassword = config.Inbounds[i].Settings.Password
+				*p.UserPassword = config.Inbounds[i].Settings.Password
 				break OuterLoop
 			}
 		}
@@ -296,13 +293,10 @@ OuterLoop:
 		for j := range config.Inbounds[i].Settings.Clients {
 			if config.Inbounds[i].Settings.Clients[j].Email == userName {
 				switch config.Inbounds[i].Protocol {
-				case "vmess":
-					p.UserUUID = config.Inbounds[i].Settings.Clients[j].Id
-				case "vless":
-					p.UserUUID = config.Inbounds[i].Settings.Clients[j].Id
-					p.UserFlow = config.Inbounds[i].Settings.Clients[j].Flow
+				case "vmess", "vless":
+					*p.UserUUID = config.Inbounds[i].Settings.Clients[j].Id
 				case "trojan", "shadowsocks":
-					p.UserPassword = config.Inbounds[i].Settings.Clients[j].Password
+					*p.UserPassword = config.Inbounds[i].Settings.Clients[j].Password
 				}
 				break OuterLoop
 			}

@@ -19,23 +19,50 @@ func (p Config) HttpUrl() string {
 	var name string
 	var vless, vmess string
 
-	if p.Protocol == "vmess" && setup.ConfigData.Users.VmessModel == "old" {
-
-		if (p.Network == "ws" || p.Network == "httpupgrade") &&
-			setup.ConfigData.Proxy.Core == "xray" {
-			p.Path += setup.ConfigData.Users.Ws0Rtt
-		}
+	if *p.Protocol == "vmess" && setup.ConfigData.Users.VmessModel == "old" {
 
 		return p.vmessUrl()
 	}
 
-	proxyMod := p.Protocol
+	proxyMod := *p.Protocol
 
-	switch p.Protocol {
+	switch *p.Protocol {
 	case "vmess", "vless", "trojan":
 		proxyMod += "+"
-		proxyMod += p.Network + "+"
-		proxyMod += p.Security
+		proxyMod += *p.Network
+
+		if *p.Security != "" {
+			proxyMod += "+" + *p.Security
+		}
+
+		if p.Alpn != nil {
+			alpn = "&alpn=" + url.QueryEscape(*p.Alpn)
+		}
+
+		if *p.Security == "reality" {
+			publicKey = url.QueryEscape(*p.PublicKey)
+		}
+
+		if p.Host != nil {
+			host = "&host=" + url.QueryEscape(*p.Host)
+		}
+
+		if p.Path != nil {
+			if strings.HasPrefix(*p.Path, "/") {
+				path = *p.Path
+			} else {
+				path = "/" + *p.Path
+			}
+			if (*p.Network == "ws" || *p.Network == "httpupgrade") &&
+				setup.ConfigData.Proxy.Core == "xray" {
+				path += setup.ConfigData.Users.Ws0Rtt
+			}
+			path = "&path=" + url.QueryEscape(path)
+		}
+
+		if p.ServiceName != nil {
+			serviceName = "&mode=gun&serviceName=" + url.QueryEscape(*p.ServiceName)
+		}
 	}
 
 	// if p.Protocol == "vless" || p.Protocol == "trojan" {
@@ -46,119 +73,105 @@ func (p Config) HttpUrl() string {
 
 	proxyMod = strings.ToLower(proxyMod)
 
-	name = url.QueryEscape(p.UserName)
+	name = url.QueryEscape(*p.UserName)
 
-	if p.Alpn != "" {
-		alpn = "&alpn=" + url.QueryEscape(p.Alpn)
-	}
+	if *p.Protocol == "vmess" {
+		vmess = `vmess://` + *p.UserUUID + `@` + *p.Addr + `:` + *p.Port + `?encryption=none`
 
-	if p.Security == "reality" {
-		publicKey = url.QueryEscape(p.PublicKey)
-	}
+		if proxyMod == "vmess+ws+tls" || proxyMod == "vmess+httpupgrade+tls" {
 
-	if p.Host != "" {
-		host = "&host=" + url.QueryEscape(p.Host)
-	}
-
-	if p.Path != "" {
-		if strings.HasPrefix(p.Path, "/") {
-			path = p.Path
-		} else {
-			path = "/" + p.Path
+			httpStr = vmess + `&security=tls` + alpn + `&fp=` + *p.Fingerprint + `&type=` + *p.Network + path + `#` + name
+			return httpStr
 		}
-		if (p.Network == "ws" || p.Network == "httpupgrade") &&
-			setup.ConfigData.Proxy.Core == "xray" {
-			p.Path += setup.ConfigData.Users.Ws0Rtt
-		}
-		path = "&path=" + url.QueryEscape(path)
 	}
 
-	if p.ServiceName != "" {
-		serviceName = "&mode=gun&serviceName=" + url.QueryEscape(p.ServiceName)
-	}
+	if *p.Protocol == "vless" {
+		vless = `vless://` + *p.UserUUID + `@` + *p.Addr + `:` + *p.Port + `?encryption=none`
 
-	if p.UserPassword != "" {
-		password = url.QueryEscape(p.UserPassword)
-	}
+		if proxyMod == "vless+tcp+reality" {
+			if p.UserFlow != nil {
+				fmt.Println("订阅警告:vless+tcp+reality,没开启xtls-rprx-vision!")
+				return ""
+			}
 
-	vmess = `vmess://` + p.UserUUID + `@` + p.Addr + `:` + p.Port + `?encryption=none`
+			if *p.UserFlow != "xtls-rprx-vision" {
+				fmt.Println("订阅警告:vless+tcp+reality,没开启xtls-rprx-vision!")
+				return ""
+			}
 
-	if proxyMod == "vmess+ws+tls" || proxyMod == "vmess+httpupgrade+tls" {
-
-		httpStr = vmess + `&security=tls` + alpn + `&fp=` + p.Fingerprint + `&type=` + p.Network + path + `#` + name
-		return httpStr
-	}
-
-	vless = `vless://` + p.UserUUID + `@` + p.Addr + `:` + p.Port + `?encryption=none`
-
-	if proxyMod == "vless+tcp+reality" {
-		if p.UserFlow != "xtls-rprx-vision" {
-			fmt.Println("订阅警告:xtls-rprx-reality,没开启xtls-rprx-vision!")
-			return ""
+			httpStr := vless + `&flow=xtls-rprx-vision&security=reality&sni=` + *p.Sni + `&fp=` + *p.Fingerprint + `&pbk=` + publicKey + `&sid=` + *p.ShortId + `&type=tcp&headerType=none#` + name
+			return httpStr
 		}
 
-		httpStr := vless + `&flow=xtls-rprx-vision&security=reality&sni=` + p.Sni + `&fp=` + p.Fingerprint + `&pbk=` + publicKey + `&sid=` + p.ShortId + `&type=tcp&headerType=none#` + name
-		return httpStr
-	}
+		if proxyMod == "vless+xhttp+reality" {
 
-	if proxyMod == "vless+xhttp+reality" {
-
-		httpStr = vless + `&security=reality&sni=` + p.Sni + `&fp=` + p.Fingerprint + `&pbk=` + publicKey + `&sid=` + p.ShortId + `&type=xhttp` + path + host + `&mode=auto#` + name
-		return httpStr
-	}
-
-	if proxyMod == "vless+http+reality" {
-
-		httpStr = vless + `&security=reality&sni=` + p.Sni + `&fp=` + p.Fingerprint + `&pbk=` + publicKey + `&sid=` + p.ShortId + `&type=http` + host + `#` + name
-		return httpStr
-	}
-
-	if proxyMod == "vless+grpc+reality" {
-
-		httpStr = vless + `&security=reality&sni=` + p.Sni + `&fp=` + p.Fingerprint + `&pbk=` + publicKey + `&sid=` + p.ShortId + `&type=grpc` + serviceName + `#` + name
-
-		return httpStr
-	}
-
-	if proxyMod == "vless+tcp+tls" {
-
-		if p.UserFlow != "xtls-rprx-vision" {
-			fmt.Println("订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
-			return ""
+			httpStr = vless + `&security=reality&sni=` + *p.Sni + `&fp=` + *p.Fingerprint + `&pbk=` + publicKey + `&sid=` + *p.ShortId + `&type=xhttp` + path + host + `&mode=auto#` + name
+			return httpStr
 		}
-		httpStr = vless + `&flow=xtls-rprx-vision&security=tls` + alpn + `&fp=` + p.Fingerprint + `&type=tcp&headerType=none#` + name
 
-		return httpStr
+		if proxyMod == "vless+http+reality" {
+
+			httpStr = vless + `&security=reality&sni=` + *p.Sni + `&fp=` + *p.Fingerprint + `&pbk=` + publicKey + `&sid=` + *p.ShortId + `&type=http` + host + `#` + name
+			return httpStr
+		}
+
+		if proxyMod == "vless+grpc+reality" {
+
+			httpStr = vless + `&security=reality&sni=` + *p.Sni + `&fp=` + *p.Fingerprint + `&pbk=` + publicKey + `&sid=` + *p.ShortId + `&type=grpc` + serviceName + `#` + name
+
+			return httpStr
+		}
+
+		if proxyMod == "vless+tcp+tls" {
+
+			if p.UserFlow != nil {
+				fmt.Println("订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
+				return ""
+			}
+
+			if *p.UserFlow != "xtls-rprx-vision" {
+				fmt.Println("订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
+				return ""
+			}
+
+			httpStr = vless + `&flow=xtls-rprx-vision&security=tls` + alpn + `&fp=` + *p.Fingerprint + `&type=tcp&headerType=none#` + name
+
+			return httpStr
+		}
+
+		if proxyMod == "vless+xhttp+tls" {
+
+			httpStr = vless + `&security=tls` + alpn + `&fp=` + *p.Fingerprint + `&type=xhttp` + path + host + `&mode=auto#` + name
+
+			return httpStr
+		}
+
+		switch proxyMod {
+		case "vless+ws+tls", "vless+httpupgrade+tls", "vless+splithttp+tls":
+			httpStr = vless + `&security=tls` + alpn + `&fp=` + *p.Fingerprint + `&type=` + *p.Network + path + `#` + name
+
+			return httpStr
+
+		}
 	}
 
-	if proxyMod == "vless+xhttp+tls" {
-
-		httpStr = vless + `&security=tls` + alpn + `&fp=` + p.Fingerprint + `&type=xhttp` + path + host + `&mode=auto#` + name
-
-		return httpStr
-	}
-
-	switch proxyMod {
-	case "vless+ws+tls", "vless+httpupgrade+tls", "vless+splithttp+tls":
-		httpStr = vless + `&security=tls` + alpn + `&fp=` + p.Fingerprint + `&type=` + p.Network + path + `#` + name
-
-		return httpStr
-
+	if p.UserPassword != nil {
+		password = url.QueryEscape(*p.UserPassword)
 	}
 
 	if proxyMod == "trojan+tcp+tls" {
-		httpStr = `trojan://` + password + `@` + p.Addr + `:` + p.Port + `?security=tls` + alpn + `&fp=` + p.Fingerprint + `&type=tcp&headerType=none#` + name
+		httpStr = `trojan://` + password + `@` + *p.Addr + `:` + *p.Port + `?security=tls` + alpn + `&fp=` + *p.Fingerprint + `&type=tcp&headerType=none#` + name
 		return httpStr
 
 	}
 
 	if proxyMod == "hysteria2" {
-		httpStr = `hysteria2://` + password + `@` + p.Addr + `:` + p.Port + `/?alpn=h3&insecure=0#` + name
+		httpStr = `hysteria2://` + password + `@` + *p.Addr + `:` + *p.Port + `/?alpn=h3&insecure=0#` + name
 		return httpStr
 	}
 
 	if proxyMod == "tuic" {
-		httpStr = `tuic://` + p.UserUUID + `:` + password + `@` + p.Addr + `:` + p.Port + `?alpn=h3&congestion_control=` + p.TuicCC + `#` + name
+		httpStr = `tuic://` + *p.UserUUID + `:` + password + `@` + *p.Addr + `:` + *p.Port + `?alpn=h3&congestion_control=` + *p.TuicCC + `#` + name
 		return httpStr
 	}
 
@@ -179,9 +192,12 @@ func getDetourData(str, tag string) string {
 	}
 
 	if jsonMap["type"] == "shadowsocks" {
-		p.Protocol = "shadowtls_ss"
-		p.Method = jsonMap["method"]
-		p.UserPassword = jsonMap["password"]
+		p.Protocol = new(string)
+		*p.Protocol = "shadowtls_ss"
+		p.Method = new(string)
+		*p.Method = jsonMap["method"]
+		p.UserPassword = new(string)
+		*p.UserPassword = jsonMap["password"]
 		return p.JsonUrl(tag)
 	}
 
@@ -190,18 +206,29 @@ func getDetourData(str, tag string) string {
 
 func (p Config) JsonUrl(tag string) string {
 
-	proxyMod := p.Protocol
+	proxyMod := *p.Protocol
 
-	protocols := []string{"vmess", "vless", "trojan"}
+	switch *p.Protocol {
+	case "vmess", "vless", "trojan":
+		proxyMod += "+"
+		proxyMod += *p.Network
 
-	for _, protocol := range protocols {
-		if proxyMod == protocol {
-			proxyMod += "+"
-			proxyMod += p.Network + "+"
-			proxyMod += p.Security
-			break
+		if *p.Security != "" {
+			proxyMod += "+" + *p.Security
 		}
+
 	}
+
+	// protocols := []string{"vmess", "vless", "trojan"}
+
+	// for _, protocol := range protocols {
+	// 	if proxyMod == protocol {
+	// 		proxyMod += "+"
+	// 		proxyMod += p.Network + "+"
+	// 		proxyMod += p.Security
+	// 		break
+	// 	}
+	// }
 
 	proxyMod = strings.ToLower(proxyMod)
 
@@ -214,10 +241,16 @@ func (p Config) JsonUrl(tag string) string {
 	}
 
 	if proxyMod == "vless+tcp+reality" {
-		if p.UserFlow != "xtls-rprx-vision" {
-			fmt.Println("sing-box订阅警告:xtls-rprx-reality,没开启xtls-rprx-vision!")
+		if p.UserFlow != nil {
+			fmt.Println("sing-box订阅警告:vless+tcp+reality,没开启xtls-rprx-vision!")
 			return ""
 		}
+
+		if *p.UserFlow != "xtls-rprx-vision" {
+			fmt.Println("sing-box订阅警告:vless+tcp+reality,没开启xtls-rprx-vision!")
+			return ""
+		}
+
 		return p.setSBData(SBStringData.VlessTcpReality, tag)
 	}
 
@@ -231,10 +264,16 @@ func (p Config) JsonUrl(tag string) string {
 
 	if proxyMod == "vless+tcp+tls" {
 
-		if p.UserFlow != "xtls-rprx-vision" {
+		if p.UserFlow != nil {
 			fmt.Println("sing-box订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
 			return ""
 		}
+
+		if *p.UserFlow != "xtls-rprx-vision" {
+			fmt.Println("sing-box订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
+			return ""
+		}
+
 		return p.setSBData(SBStringData.VlessTcpTls, tag)
 
 	}
@@ -256,7 +295,7 @@ func (p Config) JsonUrl(tag string) string {
 	}
 
 	if proxyMod == "shadowtls" {
-		shadowtlsStr := getDetourData(p.DetourProxy, tag)
+		shadowtlsStr := getDetourData(*p.DetourProxy, tag)
 
 		if shadowtlsStr == "" {
 			return ""
@@ -281,31 +320,37 @@ func (p Config) JsonUrl(tag string) string {
 func (p Config) vmessUrl() string {
 	var path string
 
-	if p.Path != "" {
-		if strings.HasPrefix(p.Path, "/") {
-			path = p.Path
+	if p.Path != nil {
+
+		if strings.HasPrefix(*p.Path, "/") {
+			path = *p.Path
 		} else {
-			path = "/" + p.Path
+			path = "/" + *p.Path
+		}
+
+		if (*p.Network == "ws" || *p.Network == "httpupgrade") &&
+			setup.ConfigData.Proxy.Core == "xray" {
+			path += setup.ConfigData.Users.Ws0Rtt
 		}
 	}
 
 	vmess := `
 	{
     "v": "2",
-    "ps": "` + p.UserName + `",
-    "add": "` + p.Addr + `",
-    "port": "` + p.Port + `",
-    "id": "` + p.UserUUID + `",
+    "ps": "` + *p.UserName + `",
+    "add": "` + *p.Addr + `",
+    "port": "` + *p.Port + `",
+    "id": "` + *p.UserUUID + `",
     "aid": "0",
     "scy": "auto",
-    "net": "` + p.Network + `",
+    "net": "` + *p.Network + `",
     "type": "none",
-    "host": "` + p.Host + `",
+    "host": "` + *p.Host + `",
     "path": "` + path + `",
-    "tls": "` + p.Security + `",
-    "sni": "` + p.Sni + `",
-    "alpn": "` + p.Alpn + `",
-    "fp": "` + p.Fingerprint + `"
+    "tls": "` + *p.Security + `",
+    "sni": "` + *p.Sni + `",
+    "alpn": "` + *p.Alpn + `",
+    "fp": "` + *p.Fingerprint + `"
     }`
 
 	var formatBuf bytes.Buffer

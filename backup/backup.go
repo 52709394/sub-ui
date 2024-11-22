@@ -202,16 +202,19 @@ func setSBData(_url string, tag string) (string, string) {
 			return proxyUrl, ""
 		}
 		match = re.FindStringSubmatch(proxyUrl)
-
-		p.Protocol = protocol
+		p.Protocol = new(string)
+		*p.Protocol = protocol
 		if protocol == "vless" || protocol == "vmess" {
-			p.UserUUID = match[1]
+			p.UserUUID = new(string)
+			*p.UserUUID = match[1]
 		} else {
-			p.UserPassword, _ = url.PathUnescape(match[1])
+			p.UserPassword = new(string)
+			*p.UserPassword, _ = url.PathUnescape(match[1])
 		}
-
-		p.Addr = match[2]
-		p.Port = match[3]
+		p.Addr = new(string)
+		*p.Addr = match[2]
+		p.Port = new(string)
+		*p.Port = match[3]
 
 		proxyData = strings.TrimPrefix(proxyUrl, match[0])
 		return proxyUrl, getProxyData(p, proxyData, tag)
@@ -220,10 +223,14 @@ func setSBData(_url string, tag string) (string, string) {
 		if !re.MatchString(proxyUrl) {
 			return proxyUrl, ""
 		}
-		p.UserUUID = match[1]
-		p.UserPassword, _ = url.PathUnescape(match[1])
-		p.Addr = match[3]
-		p.Port = match[4]
+		p.UserUUID = new(string)
+		*p.UserUUID = match[1]
+		p.UserPassword = new(string)
+		*p.UserPassword, _ = url.PathUnescape(match[2])
+		p.Addr = new(string)
+		*p.Addr = match[3]
+		p.Port = new(string)
+		*p.Port = match[4]
 
 		proxyData = strings.TrimPrefix(proxyUrl, match[0])
 		return proxyUrl, getProxyData(p, proxyData, tag)
@@ -238,7 +245,7 @@ func getVmessData(strData string, tag string) string {
 	var vmessJson map[string]string
 	var err error
 	var p protocol.Config
-
+	var host, path, alpn string
 	jsonStr, err = change.ToUnicode(strData)
 
 	if err != nil {
@@ -250,17 +257,44 @@ func getVmessData(strData string, tag string) string {
 		return ""
 	}
 
-	p.Protocol = "vmess"
-	p.Addr = vmessJson["add"]
-	p.Port = vmessJson["port"]
-	p.UserUUID = vmessJson["id"]
-	p.Network = vmessJson["net"]
-	p.Host, _ = url.QueryUnescape(vmessJson["host"])
-	p.Path, _ = url.QueryUnescape(vmessJson["path"])
-	p.Security = vmessJson["tls"]
-	p.Sni = vmessJson["sni"]
-	p.Alpn, _ = url.QueryUnescape(vmessJson["alpn"])
-	p.Fingerprint = vmessJson["fp"]
+	p.Protocol = new(string)
+	*p.Protocol = "vmess"
+	p.Addr = new(string)
+	*p.Addr = vmessJson["add"]
+	p.Port = new(string)
+	*p.Port = vmessJson["port"]
+	p.UserUUID = new(string)
+	*p.UserUUID = vmessJson["id"]
+	p.Network = new(string)
+	*p.Network = vmessJson["net"]
+
+	host, _ = url.QueryUnescape(vmessJson["host"])
+	if host != "" {
+		p.Host = new(string)
+		*p.Host = host
+	}
+
+	path, _ = url.QueryUnescape(vmessJson["path"])
+	if path != "" {
+		p.Path = new(string)
+		*p.Path = path
+	}
+	p.Security = new(string)
+	*p.Security = vmessJson["tls"]
+
+	if vmessJson["sni"] != "" {
+		p.Sni = new(string)
+		*p.Sni = vmessJson["sni"]
+	}
+
+	alpn, _ = url.QueryUnescape(vmessJson["alpn"])
+	if alpn != "" {
+		p.Alpn = new(string)
+		*p.Alpn = alpn
+	}
+
+	p.Fingerprint = new(string)
+	*p.Fingerprint = vmessJson["fp"]
 
 	return p.JsonUrl(tag)
 }
@@ -280,52 +314,64 @@ func getProxyData(p protocol.Config, proxyData string, tag string) string {
 			continue
 		}
 
-		if data, err = getRegData(v, `type=(.*)`); err == nil {
-			p.Network = data
+		if data, err = getRegData(v, `type=(.+)`); err == nil {
+			p.Network = new(string)
+			*p.Network = data
 		}
 
-		if data, err = getRegData(v, `security=(.*)`); err == nil {
-			p.Security = data
+		if data, err = getRegData(v, `security=(.+)`); err == nil {
+			p.Security = new(string)
+			*p.Security = data
 		}
 
-		if data, err = getRegData(v, `alpn=(.*)`); err == nil {
-			p.Alpn, _ = url.PathUnescape(data)
+		if data, err = getRegData(v, `alpn=(.+)`); err == nil {
+			p.Alpn = new(string)
+			*p.Alpn, _ = url.PathUnescape(data)
 		}
 
-		if data, err = getRegData(v, `host=(.*)`); err == nil {
-			p.Host, _ = url.PathUnescape(data)
+		if data, err = getRegData(v, `host=(.+)`); err == nil {
+			p.Host = new(string)
+			*p.Host, _ = url.PathUnescape(data)
 		}
 
-		if data, err = getRegData(v, `path=(.*)`); err == nil {
-			p.Path, _ = url.PathUnescape(data)
+		if data, err = getRegData(v, `path=(.+)`); err == nil {
+			p.Path = new(string)
+			*p.Path, _ = url.PathUnescape(data)
 		}
 
-		if data, err = getRegData(v, `sni=(.*)`); err == nil {
-			p.Sni = data
+		if data, err = getRegData(v, `sni=(.+)`); err == nil {
+			p.Sni = new(string)
+			*p.Sni = data
 		}
 
-		if data, err = getRegData(v, `fp=(.*)`); err == nil {
-			p.Fingerprint = data
+		if data, err = getRegData(v, `fp=(.+)`); err == nil {
+			p.Fingerprint = new(string)
+			*p.Fingerprint = data
 		}
 
-		if data, err = getRegData(v, `pbk=(.*)`); err == nil {
-			p.PublicKey, _ = url.PathUnescape(data)
+		if data, err = getRegData(v, `pbk=(.+)`); err == nil {
+			p.PublicKey = new(string)
+			*p.PublicKey, _ = url.PathUnescape(data)
 		}
 
-		if data, err = getRegData(v, `sid=(.*)`); err == nil {
-			p.ShortId = data
+		if data, err = getRegData(v, `sid=(.+)`); err == nil {
+			p.ShortId = new(string)
+			*p.ShortId = data
 		}
 
-		if data, err = getRegData(v, `serviceName=(.*)`); err == nil {
-			p.ServiceName, _ = url.PathUnescape(data)
+		if data, err = getRegData(v, `serviceName=(.+)`); err == nil {
+			p.ServiceName = new(string)
+			*p.ServiceName, _ = url.PathUnescape(data)
 		}
 
-		if data, err = getRegData(v, `flow=(.*)`); err == nil {
-			p.UserFlow = data
+		if data, err = getRegData(v, `flow=(.+)`); err == nil {
+			p.UserFlow = new(string)
+			*p.UserFlow = data
 		}
 
-		if data, err = getRegData(v, `congestion_control=(.*)`); err == nil {
-			p.TuicCC = data
+		if data, err = getRegData(v, `congestion_control=(.+)`); err == nil {
+			p.TuicCC = new(string)
+			*p.TuicCC = data
 		}
 
 	}

@@ -22,7 +22,7 @@ type Tls struct {
 }
 
 type Shadowtls struct {
-	Version     uint16 `json:"version,omitempty"`
+	Version     string `json:"version,omitempty"`
 	Detour      string `json:"-"`
 	Sni         string `json:"sni,omitempty"`
 	DetourProxy string `json:"detour_proxy,omitempty"`
@@ -39,7 +39,7 @@ type Inbound struct {
 	Tag               string     `json:"tag"`
 	TagPath           string     `json:"tag_path"`
 	Protocol          string     `json:"protocol"`
-	Port              uint16     `json:"port"`
+	Port              string     `json:"port"`
 	ServiceListen     string     `json:"-"`
 	ServicePort       uint16     `json:"-"`
 	Hide              bool       `json:"hide"`

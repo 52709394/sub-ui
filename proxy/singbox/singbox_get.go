@@ -35,7 +35,7 @@ func (s SBDetours) setData(config *users.Config) {
 				config.Inbounds[j].Hide = true
 
 				x := s.Detours[i].Index
-				(*config.Inbounds[x].Shadowtls).DetourProxy = jsonStr
+				config.Inbounds[x].Shadowtls.DetourProxy = jsonStr
 			}
 
 		}
@@ -48,7 +48,7 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 	usersInbound.Protocol = protocol
 
 	if inbound.Listen == "::" {
-		usersInbound.Port = inbound.Port
+		usersInbound.Port = fmt.Sprintf("%d", inbound.Port)
 	}
 
 	switch protocol {
@@ -64,18 +64,18 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		case "":
 			usersInbound.Network = "tcp"
 		case "grpc":
-			(*usersInbound.Transport).ServiceName = inbound.Transport.ServiceName
+			usersInbound.Transport.ServiceName = inbound.Transport.ServiceName
 		case "http":
 			usersInbound.Transport.Path = inbound.Transport.Path
 			if len(inbound.Transport.Host) > 0 {
-				(*usersInbound.Transport).Host = ""
+				usersInbound.Transport.Host = ""
 				for _, host := range inbound.Transport.Host {
-					(*usersInbound.Transport).Host += host + ","
+					usersInbound.Transport.Host += host + ","
 				}
-				(*usersInbound.Transport).Host = strings.TrimRight((*usersInbound.Transport).Host, ",")
+				usersInbound.Transport.Host = strings.TrimRight(usersInbound.Transport.Host, ",")
 			}
 		case "httpupgrade", "ws":
-			(*usersInbound.Transport).Path = inbound.Transport.Path
+			usersInbound.Transport.Path = inbound.Transport.Path
 		}
 
 		if protocol == "vless" {
@@ -83,12 +83,12 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 				usersInbound.Security = "reality"
 				usersInbound.FixedSecurity = true
 				usersInbound.Reality = new(users.Reality)
-				(*usersInbound.Reality).Sni = inbound.Tls.ServerName
+				usersInbound.Reality.Sni = inbound.Tls.ServerName
 				if publicKey, err := change.GetPublicKey(inbound.Tls.Reality.PrivateKey); err == nil {
-					(*usersInbound.Reality).PublicKey = publicKey
+					usersInbound.Reality.PublicKey = publicKey
 				}
 				if len(inbound.Tls.Reality.ShortId) > 0 {
-					(*usersInbound.Reality).ShortId = inbound.Tls.Reality.ShortId[0]
+					usersInbound.Reality.ShortId = inbound.Tls.Reality.ShortId[0]
 				}
 			}
 		}
@@ -98,11 +98,11 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 			usersInbound.FixedSecurity = true
 			if len(inbound.Tls.Alpn) > 0 {
 				usersInbound.Tls = new(users.Tls)
-				(*usersInbound.Tls).Alpn = ""
+				usersInbound.Tls.Alpn = ""
 				for _, alpn := range inbound.Tls.Alpn {
-					(*usersInbound.Tls).Alpn += alpn + ","
+					usersInbound.Tls.Alpn += alpn + ","
 				}
-				(*usersInbound.Tls).Alpn = strings.TrimRight((*usersInbound.Tls).Alpn, ",")
+				usersInbound.Tls.Alpn = strings.TrimRight(usersInbound.Tls.Alpn, ",")
 			}
 		}
 
@@ -111,12 +111,12 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		return protocol
 	case "hysteria2":
 		usersInbound.Tls = new(users.Tls)
-		(*usersInbound.Tls).Alpn = "h3"
+		usersInbound.Tls.Alpn = "h3"
 		usersInbound.Security = "tls"
 		return protocol
 	case "tuic":
 		usersInbound.Tls = new(users.Tls)
-		(*usersInbound.Tls).Alpn = "h3"
+		usersInbound.Tls.Alpn = "h3"
 		usersInbound.CongestionControl = inbound.CongestionControl
 		usersInbound.Security = "tls"
 		return protocol
@@ -139,9 +139,9 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 	case "shadowtls":
 		usersInbound.Shadowtls = new(users.Shadowtls)
 
-		(*usersInbound.Shadowtls).Version = inbound.Version
-		(*usersInbound.Shadowtls).Sni = inbound.Handshake.Server
-		(*usersInbound.Shadowtls).Detour = inbound.Detour
+		usersInbound.Shadowtls.Version = fmt.Sprintf("%d", inbound.Version)
+		usersInbound.Shadowtls.Sni = inbound.Handshake.Server
+		usersInbound.Shadowtls.Detour = inbound.Detour
 		return protocol
 	}
 
@@ -284,23 +284,20 @@ OuterLoop:
 		if len(config.Inbounds[i].Users) == 1 {
 			if config.Inbounds[i].Users[0].Name == "" {
 				switch config.Inbounds[i].Type {
-				case "vmess":
-					p.UserUUID = config.Inbounds[i].Users[0].UUID
-				case "vless":
-					p.UserUUID = config.Inbounds[i].Users[0].UUID
-					p.UserFlow = config.Inbounds[i].Users[0].Flow
+				case "vmess", "vless":
+					*p.UserUUID = config.Inbounds[i].Users[0].UUID
 				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
-					p.UserPassword = config.Inbounds[i].Users[0].Password
+					*p.UserPassword = config.Inbounds[i].Users[0].Password
 				case "tuic":
-					p.UserUUID = config.Inbounds[i].Users[0].UUID
-					p.UserPassword = config.Inbounds[i].Users[0].Password
+					*p.UserUUID = config.Inbounds[i].Users[0].UUID
+					*p.UserPassword = config.Inbounds[i].Users[0].Password
 				}
 
 				break OuterLoop
 			}
 		} else if config.Inbounds[i].Type == "shadowsocks" {
 			if len(config.Inbounds[i].Users) == 0 && config.Inbounds[i].Password != "" {
-				p.UserPassword = config.Inbounds[i].Password
+				*p.UserPassword = config.Inbounds[i].Password
 				break OuterLoop
 			}
 		}
@@ -308,17 +305,13 @@ OuterLoop:
 		for j := range config.Inbounds[i].Users {
 			if config.Inbounds[i].Users[j].Name == userName {
 				switch config.Inbounds[i].Type {
-				case "vmess":
-					p.UserUUID = config.Inbounds[i].Users[j].UUID
-				case "vless":
-					p.UserUUID = config.Inbounds[i].Users[j].UUID
-					p.UserFlow = config.Inbounds[i].Users[j].Flow
+				case "vmess", "vless":
+					*p.UserUUID = config.Inbounds[i].Users[j].UUID
 				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
-					p.UserPassword = config.Inbounds[i].Users[j].Password
-
+					*p.UserPassword = config.Inbounds[i].Users[j].Password
 				case "tuic":
-					p.UserUUID = config.Inbounds[i].Users[j].UUID
-					p.UserPassword = config.Inbounds[i].Users[j].Password
+					*p.UserUUID = config.Inbounds[i].Users[j].UUID
+					*p.UserPassword = config.Inbounds[i].Users[j].Password
 				}
 				break OuterLoop
 			}
