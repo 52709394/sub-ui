@@ -83,13 +83,14 @@ func (p Config) HttpUrl() string {
 			httpStr = vmess + `&security=tls` + alpn + `&fp=` + *p.Fingerprint + `&type=` + *p.Network + path + `#` + name
 			return httpStr
 		}
+		goto urlOut
 	}
 
 	if *p.Protocol == "vless" {
 		vless = `vless://` + *p.UserUUID + `@` + *p.Addr + `:` + *p.Port + `?encryption=none`
 
 		if proxyMod == "vless+tcp+reality" {
-			if p.UserFlow != nil {
+			if p.UserFlow == nil {
 				fmt.Println("订阅警告:vless+tcp+reality,没开启xtls-rprx-vision!")
 				return ""
 			}
@@ -124,7 +125,7 @@ func (p Config) HttpUrl() string {
 
 		if proxyMod == "vless+tcp+tls" {
 
-			if p.UserFlow != nil {
+			if p.UserFlow == nil {
 				fmt.Println("订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
 				return ""
 			}
@@ -153,6 +154,8 @@ func (p Config) HttpUrl() string {
 			return httpStr
 
 		}
+
+		goto urlOut
 	}
 
 	if p.UserPassword != nil {
@@ -175,6 +178,7 @@ func (p Config) HttpUrl() string {
 		return httpStr
 	}
 
+urlOut:
 	fmt.Println("订阅警告:Url协议暂不支持!")
 	return ""
 
@@ -232,54 +236,60 @@ func (p Config) JsonUrl(tag string) string {
 
 	proxyMod = strings.ToLower(proxyMod)
 
-	if proxyMod == "vmess+tcp+tls" {
+	if *p.Protocol == "vmess" {
+		if proxyMod == "vmess+tcp+tls" {
 
-	}
-
-	if proxyMod == "vmess+ws+tls" || proxyMod == "vmess+httpupgrade+tls" {
-		return p.setSBData(SBStringData.VmessWsTls, tag)
-	}
-
-	if proxyMod == "vless+tcp+reality" {
-		if p.UserFlow != nil {
-			fmt.Println("sing-box订阅警告:vless+tcp+reality,没开启xtls-rprx-vision!")
-			return ""
 		}
 
-		if *p.UserFlow != "xtls-rprx-vision" {
-			fmt.Println("sing-box订阅警告:vless+tcp+reality,没开启xtls-rprx-vision!")
-			return ""
+		if proxyMod == "vmess+ws+tls" || proxyMod == "vmess+httpupgrade+tls" {
+			return p.setSBData(SBStringData.VmessWsTls, tag)
+		}
+		goto jsonOut
+	}
+
+	if *p.Protocol == "vless" {
+		if proxyMod == "vless+tcp+reality" {
+			if p.UserFlow == nil {
+				fmt.Println("sing-box订阅警告:vless+tcp+reality,没开启xtls-rprx-vision!")
+				return ""
+			}
+
+			if *p.UserFlow != "xtls-rprx-vision" {
+				fmt.Println("sing-box订阅警告:vless+tcp+reality,没开启xtls-rprx-vision!")
+				return ""
+			}
+
+			return p.setSBData(SBStringData.VlessTcpReality, tag)
 		}
 
-		return p.setSBData(SBStringData.VlessTcpReality, tag)
-	}
-
-	if proxyMod == "vless+http+reality" {
-		return p.setSBData(SBStringData.VlessHttpReality, tag)
-	}
-
-	if proxyMod == "vless+grpc+reality" {
-		return p.setSBData(SBStringData.VlessGrpcReality, tag)
-	}
-
-	if proxyMod == "vless+tcp+tls" {
-
-		if p.UserFlow != nil {
-			fmt.Println("sing-box订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
-			return ""
+		if proxyMod == "vless+http+reality" {
+			return p.setSBData(SBStringData.VlessHttpReality, tag)
 		}
 
-		if *p.UserFlow != "xtls-rprx-vision" {
-			fmt.Println("sing-box订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
-			return ""
+		if proxyMod == "vless+grpc+reality" {
+			return p.setSBData(SBStringData.VlessGrpcReality, tag)
 		}
 
-		return p.setSBData(SBStringData.VlessTcpTls, tag)
+		if proxyMod == "vless+tcp+tls" {
 
-	}
+			if p.UserFlow == nil {
+				fmt.Println("sing-box订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
+				return ""
+			}
 
-	if proxyMod == "vless+ws+tls" || proxyMod == "vless+httpupgrade+tls" {
+			if *p.UserFlow != "xtls-rprx-vision" {
+				fmt.Println("sing-box订阅警告:vless+tcp+tls,没开启xtls-rprx-vision!")
+				return ""
+			}
 
+			return p.setSBData(SBStringData.VlessTcpTls, tag)
+
+		}
+
+		if proxyMod == "vless+ws+tls" || proxyMod == "vless+httpupgrade+tls" {
+
+		}
+		goto jsonOut
 	}
 
 	if proxyMod == "trojan+tcp+tls" {
@@ -313,6 +323,7 @@ func (p Config) JsonUrl(tag string) string {
 		return p.setSBData(SBStringData.Shadowsocks, tag)
 	}
 
+jsonOut:
 	fmt.Println("sing-box订阅警告:协议暂不支持!")
 	return ""
 }

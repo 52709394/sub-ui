@@ -271,9 +271,11 @@ func (config Config) RenewData(mod string) error {
 	return nil
 }
 
-func (config Config) GetCurrentData(p *protocol.Config, tag string, userName string) {
+func (config LConfig) GetCurrentData(p *protocol.Config, tag string, userName string) {
 
 	read.GetJsonData(setup.ConfigData.Proxy.Config, &config)
+
+	isUpdata := false
 
 OuterLoop:
 	for i := range config.Inbounds {
@@ -285,19 +287,47 @@ OuterLoop:
 			if config.Inbounds[i].Users[0].Name == "" {
 				switch config.Inbounds[i].Type {
 				case "vmess", "vless":
-					*p.UserUUID = config.Inbounds[i].Users[0].UUID
+					if p.UserUUID != nil {
+						if *p.UserUUID != config.Inbounds[i].Users[0].UUID {
+							*p.UserUUID = config.Inbounds[i].Users[0].UUID
+							isUpdata = true
+						}
+					}
+
 				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
-					*p.UserPassword = config.Inbounds[i].Users[0].Password
+					if p.UserPassword != nil {
+						if *p.UserPassword == config.Inbounds[i].Users[0].Password {
+							*p.UserPassword = config.Inbounds[i].Users[0].Password
+							isUpdata = true
+						}
+					}
+
 				case "tuic":
-					*p.UserUUID = config.Inbounds[i].Users[0].UUID
-					*p.UserPassword = config.Inbounds[i].Users[0].Password
+					if p.UserUUID != nil {
+						if *p.UserUUID != config.Inbounds[i].Users[0].UUID {
+							*p.UserUUID = config.Inbounds[i].Users[0].UUID
+							isUpdata = true
+						}
+					}
+					if p.UserPassword != nil {
+						if *p.UserPassword != config.Inbounds[i].Users[0].Password {
+							*p.UserPassword = config.Inbounds[i].Users[0].Password
+							isUpdata = true
+						}
+					}
 				}
 
 				break OuterLoop
 			}
 		} else if config.Inbounds[i].Type == "shadowsocks" {
 			if len(config.Inbounds[i].Users) == 0 && config.Inbounds[i].Password != "" {
-				*p.UserPassword = config.Inbounds[i].Password
+				if p.UserPassword != nil {
+					if *p.UserPassword != config.Inbounds[i].Password {
+						*p.UserPassword = config.Inbounds[i].Password
+						isUpdata = true
+					}
+				}
+
 				break OuterLoop
 			}
 		}
@@ -306,15 +336,40 @@ OuterLoop:
 			if config.Inbounds[i].Users[j].Name == userName {
 				switch config.Inbounds[i].Type {
 				case "vmess", "vless":
-					*p.UserUUID = config.Inbounds[i].Users[j].UUID
+					if p.UserUUID != nil {
+						if *p.UserUUID != config.Inbounds[i].Users[j].UUID {
+							*p.UserUUID = config.Inbounds[i].Users[j].UUID
+							isUpdata = true
+						}
+					}
+
 				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
-					*p.UserPassword = config.Inbounds[i].Users[j].Password
+					if p.UserPassword != nil {
+						if *p.UserPassword == config.Inbounds[i].Users[j].Password {
+							*p.UserPassword = config.Inbounds[i].Users[j].Password
+							isUpdata = true
+						}
+					}
 				case "tuic":
-					*p.UserUUID = config.Inbounds[i].Users[j].UUID
-					*p.UserPassword = config.Inbounds[i].Users[j].Password
+					if p.UserUUID != nil {
+						if *p.UserUUID != config.Inbounds[i].Users[j].UUID {
+							*p.UserUUID = config.Inbounds[i].Users[j].UUID
+							isUpdata = true
+						}
+					}
+					if p.UserPassword != nil {
+						if *p.UserPassword != config.Inbounds[i].Users[j].Password {
+							*p.UserPassword = config.Inbounds[i].Users[j].Password
+							isUpdata = true
+						}
+					}
 				}
 				break OuterLoop
 			}
 		}
+	}
+
+	if isUpdata {
+		users.ConfigData.SavedConfig()
 	}
 }

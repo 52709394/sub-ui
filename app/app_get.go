@@ -10,8 +10,8 @@ import (
 )
 
 func GetAppUrl() {
-	MuTime.Lock()
-	defer MuTime.Unlock()
+	Mu.Lock()
+	defer Mu.Unlock()
 
 	now := time.Now()
 

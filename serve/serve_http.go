@@ -30,7 +30,6 @@ func (s Server) login(w http.ResponseWriter, r *http.Request) {
 				Value:   setup.CookieValue,
 				Path:    setup.ConfigData.Server.Home.Url,
 				Expires: time.Now().Add(time.Duration(setup.CookieDay) * 24 * time.Hour),
-				MaxAge:  3600 * 24,
 			})
 			http.Redirect(w, r, setup.ConfigData.Server.Home.Url+"/sub-ui", http.StatusFound)
 			return
@@ -41,7 +40,7 @@ func (s Server) login(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html")
 
-	tmpl, err := template.ParseFiles("login.html")
+	tmpl, err := template.ParseFiles("html/login.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -79,6 +78,19 @@ func (s Server) logout(w http.ResponseWriter, r *http.Request) {
 
 func (s Server) home(w http.ResponseWriter, r *http.Request) {
 
+	cookie, err := r.Cookie(setup.CookieName)
+	if err != nil ||
+		cookie.Value != setup.CookieValue {
+		http.Redirect(w, r, setup.ConfigData.Server.Home.Url+"/login", http.StatusSeeOther)
+		return
+	}
+
+	var titleStr string
+
+	if setup.ConfigData.Server.Home.Title != "" {
+		titleStr = `<h1>` + setup.ConfigData.Server.Home.Title + `</h1>`
+	}
+
 	var subAddr string
 
 	if setup.ConfigData.Users.Domain == "" {
@@ -93,13 +105,6 @@ func (s Server) home(w http.ResponseWriter, r *http.Request) {
 			subAddr = "https://" + setup.ConfigData.Users.Domain + ":" + setup.ConfigData.Users.Port
 		}
 
-	}
-
-	cookie, err := r.Cookie(setup.CookieName)
-	if err != nil ||
-		cookie.Value != setup.CookieValue {
-		http.Redirect(w, r, setup.ConfigData.Server.Home.Url+"/login", http.StatusSeeOther)
-		return
 	}
 
 	var setTagStr, usersLiSrt string
@@ -146,6 +151,7 @@ func (s Server) home(w http.ResponseWriter, r *http.Request) {
 
 	variables := struct {
 		Logout        string
+		TitleStr      template.HTML
 		SetTagStr     template.HTML
 		UsersLiSrt    template.HTML
 		StaticStr     template.HTML
@@ -157,6 +163,7 @@ func (s Server) home(w http.ResponseWriter, r *http.Request) {
 		BackupPostUrl string
 	}{
 		Logout:        setup.ConfigData.Server.Home.Url + "/logout",
+		TitleStr:      template.HTML(titleStr),
 		SetTagStr:     template.HTML(setTagStr),
 		UsersLiSrt:    template.HTML(usersLiSrt),
 		StaticStr:     template.HTML(staticStr),
@@ -171,7 +178,7 @@ func (s Server) home(w http.ResponseWriter, r *http.Request) {
 	ToggleContent = ""
 	w.Header().Set("Content-Type", "text/html")
 
-	tmpl, err := template.ParseFiles("index.html")
+	tmpl, err := template.ParseFiles("html/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

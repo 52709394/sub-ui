@@ -32,23 +32,41 @@ type Tls struct {
 }
 
 type Inbound struct {
+	Tag               string    `json:"tag"`
 	Type              string    `json:"type"`
 	Listen            string    `json:"listen"`
 	Port              uint16    `json:"listen_port"`
-	Users             []User    `json:"users"`
-	Version           uint16    `json:"version"`
 	Method            string    `json:"method"`
 	Password          string    `json:"password"`
+	Users             []User    `json:"users"`
+	Version           uint16    `json:"version"`
 	Detour            string    `json:"detour"`
 	Handshake         Handshake `json:"handshake"`
 	CongestionControl string    `json:"congestion_control"`
 	Transport         Transport `json:"transport"`
 	Tls               Tls       `json:"tls"`
-	Tag               string    `json:"tag"`
 }
 
 type Config struct {
 	Inbounds []Inbound `json:"inbounds"`
+}
+
+type LUser struct {
+	Name     string `json:"name"`
+	UUID     string `json:"uuid"`
+	Password string `json:"password"`
+}
+
+type LInbound struct {
+	Tag      string  `json:"tag"`
+	Type     string  `json:"type"`
+	Method   string  `json:"method"`
+	Password string  `json:"password"`
+	Users    []LUser `json:"users"`
+}
+
+type LConfig struct {
+	Inbounds []LInbound `json:"inbounds"`
 }
 
 type Detour struct {

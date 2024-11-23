@@ -21,13 +21,13 @@ import (
 	"sync"
 )
 
-var MuHttp sync.Mutex
+var Mu sync.Mutex
 var ToggleContent string
 
 func (s Server) setTag(w http.ResponseWriter, r *http.Request) {
 
-	MuHttp.Lock()
-	defer MuHttp.Unlock()
+	Mu.Lock()
+	defer Mu.Unlock()
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
@@ -56,8 +56,8 @@ func (s Server) setTag(w http.ResponseWriter, r *http.Request) {
 
 func (s Server) renewUrl(w http.ResponseWriter, r *http.Request) {
 
-	MuHttp.Lock()
-	defer MuHttp.Unlock()
+	Mu.Lock()
+	defer Mu.Unlock()
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
@@ -108,8 +108,8 @@ func (s Server) renewUrl(w http.ResponseWriter, r *http.Request) {
 
 func (s Server) renewBackupUrl(w http.ResponseWriter, r *http.Request) {
 
-	MuHttp.Lock()
-	defer MuHttp.Unlock()
+	Mu.Lock()
+	defer Mu.Unlock()
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
@@ -230,8 +230,10 @@ func getConfigData() error {
 
 	if setup.ConfigData.Proxy.Core == "sing-box" {
 		proxy.ConfigData = singbox.Config{}
+		proxy.LConfigData = singbox.LConfig{}
 	} else {
 		proxy.ConfigData = xray.Config{}
+		proxy.LConfigData = singbox.LConfig{}
 	}
 
 	if read.CheckExistence(setup.ConfigData.Users.Config) != "file" {

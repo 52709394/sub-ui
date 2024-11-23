@@ -149,7 +149,7 @@ func GetUrlData(proxyUrl string) (string, string) {
 	}
 
 	if setup.ConfigData.Proxy.RealTime {
-		proxy.ConfigData.GetCurrentData(&p, tag, userName)
+		proxy.LConfigData.GetCurrentData(&p, tag, userName)
 	}
 
 	if p.UserUUID != nil && p.UserPassword != nil {
@@ -188,7 +188,12 @@ func GetUrlData(proxyUrl string) (string, string) {
 		}
 	jsonOut:
 		urlSB := protocol.GenerateSBConfig(jsonStr, isUseBackup)
-		return urlSB, "json"
+		if setup.ConfigData.SingBox.Format {
+			return urlSB, "json"
+		} else {
+			return urlSB, "html"
+		}
+
 	}
 
 	url := p.HttpUrl()
@@ -314,13 +319,13 @@ func UsersListHttp(subAddr string, setTagStr, usersLiSrt *string) {
                     type="number" min="0" max="65535"> </br> </br>
 
                 <label>传输层安全:</label>
-                <select id="securitySel-1" style="height: 21px;">
+                <select id="securitySel-1" style="height: 21px; width: 115px;">
                     <option value=""></option>
                     <option value="tls">tls</option>
                 </select>
 
                 <label>alpn:</label>
-                <select id="alpnSel-1" style="height: 21px;">
+                <select id="alpnSel-1" style="height: 21px; width: 115px;">
                     <option value=""></option>
                     <option value="h3">h3</option>
                     <option value="h2">h2</option>
@@ -362,13 +367,13 @@ func UsersListHttp(subAddr string, setTagStr, usersLiSrt *string) {
                     type="number" min="0" max="65535"> </br> </br>
 
                 <label>传输层安全:</label>
-                <select id="` + securityID + `" style="height: 21px;">
+                <select id="` + securityID + `" style="height: 21px; width: 115px;">
                     <option value=""></option>
                     <option value="tls">tls</option>
                 </select>
 
                 <label>alpn:</label>
-                <select id="` + alpnID + `" style="height: 21px;">
+                <select id="` + alpnID + `" style="height: 21px; width: 115px;">
                     <option value=""></option>
                     <option value="h3">h3</option>
                     <option value="h2">h2</option>

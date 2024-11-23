@@ -80,6 +80,29 @@ type Config struct {
 	Inbounds []Inbound `json:"inbounds"`
 }
 
+type LClient struct {
+	Email    string `json:"email"`
+	Id       string `json:"id"`
+	Method   string `json:"method"`
+	Password string `json:"password"`
+}
+
+type LSettings struct {
+	Method   string    `json:"method"`
+	Password string    `json:"password"`
+	Clients  []LClient `jsong:"clients"`
+}
+
+type LInbound struct {
+	Tag      string    `json:"tag"`
+	Protocol string    `json:"protocol"`
+	Settings LSettings `json:"settings"`
+}
+
+type LConfig struct {
+	Inbounds []LInbound `json:"inbounds"`
+}
+
 type RealityFallback struct {
 	Index int
 	Dest  interface{}

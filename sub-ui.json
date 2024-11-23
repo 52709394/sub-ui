@@ -8,8 +8,8 @@
     "ws_0-rtt": "?ed=2560"
   },
   "proxy": {
-    "core": "sing-box",
-    "config": "sconfig.json",
+    "core": "xray",
+    "config": "test/xconfig.json",
     "real_time": true,
     "only_name": "facai"
   },
@@ -17,6 +17,7 @@
     "port": "8080",
     "user_url": "/120",
     "home": {
+      "title": "欢迎使用sub-ui面板",
       "url": "/110",
       "user": "admin",
       "password": "123456"
@@ -34,6 +35,7 @@
   },
   "sing-box": {
     "config": "sing-boxData.json",
+    "format": true,
     "main_tag": "proxyMain"
   },
   "download": {
@@ -119,9 +121,9 @@
     "sb_selector": false,
     "excludes": [
       {
-        "tag": "xTrojanTcpTls",
+        "tag": "xVlessRawReality",
         "users": [
-          "xTrojanTcpTls-1"
+          "facai-3"
         ]
       }
     ],

@@ -7,7 +7,7 @@ import (
 
 var (
 	LastExecutionTime time.Time
-	MuTime            sync.Mutex
+	Mu                sync.Mutex
 	AppsData          []Properties
 )
 

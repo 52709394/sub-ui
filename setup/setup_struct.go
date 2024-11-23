@@ -71,6 +71,7 @@ type Download struct {
 
 type SingBox struct {
 	Config  string `json:"config"`
+	Format  bool   `json:"format"`
 	MainTag string `json:"main_tag"`
 }
 
@@ -101,6 +102,7 @@ type Post struct {
 }
 
 type Home struct {
+	Title    string `json:"title"`
 	Url      string `json:"url"`
 	User     string `json:"user"`
 	Password string `json:"password"`

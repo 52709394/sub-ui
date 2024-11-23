@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"os"
 	"sub-ui/setup"
+	"sync"
 )
+
+var Mu sync.Mutex
 
 func setStaticUrl(users *[]User, constUsers []setup.ConstUser) {
 	for i := range *users {
@@ -72,6 +75,10 @@ func (config *Config) SetOldData() {
 }
 
 func (config Config) SavedConfig() error {
+
+	Mu.Lock()
+	defer Mu.Unlock()
+
 	nowData, err := json.MarshalIndent(config, "", "  ")
 	if err != nil {
 		fmt.Println("文件:", setup.ConfigData.Users.Config)

@@ -2,6 +2,7 @@ package xray
 
 import (
 	"fmt"
+
 	"strings"
 	"sub-ui/change"
 	"sub-ui/proxy"
@@ -264,8 +265,9 @@ func (config Config) RenewData(mod string) error {
 	return nil
 }
 
-func (config Config) GetCurrentData(p *protocol.Config, tag string, userName string) {
+func (config LConfig) GetCurrentData(p *protocol.Config, tag string, userName string) {
 	read.GetJsonData(setup.ConfigData.Proxy.Config, &config)
+	isUpdata := false
 OuterLoop:
 	for i := range config.Inbounds {
 		if config.Inbounds[i].Tag != tag {
@@ -276,16 +278,32 @@ OuterLoop:
 			if config.Inbounds[i].Settings.Clients[0].Email == "" {
 				switch config.Inbounds[i].Protocol {
 				case "vmess", "vless":
-					*p.UserUUID = config.Inbounds[i].Settings.Clients[0].Id
+					if p.UserUUID != nil {
+						if *p.UserUUID != config.Inbounds[i].Settings.Clients[0].Id {
+							*p.UserUUID = config.Inbounds[i].Settings.Clients[0].Id
+							isUpdata = true
+						}
+					}
+
 				case "trojan", "shadowsocks":
-					*p.UserPassword = config.Inbounds[i].Settings.Clients[0].Password
+					if p.UserPassword != nil {
+						if *p.UserPassword != config.Inbounds[i].Settings.Clients[0].Password {
+							*p.UserPassword = config.Inbounds[i].Settings.Clients[0].Password
+							isUpdata = true
+						}
+					}
 				}
 
 				break OuterLoop
 			}
 		} else if config.Inbounds[i].Protocol == "shadowsocks" {
 			if len(config.Inbounds[i].Settings.Clients) == 0 && config.Inbounds[i].Settings.Password != "" {
-				*p.UserPassword = config.Inbounds[i].Settings.Password
+				if p.UserPassword != nil {
+					if *p.UserPassword != config.Inbounds[i].Settings.Password {
+						*p.UserPassword = config.Inbounds[i].Settings.Password
+						isUpdata = true
+					}
+				}
 				break OuterLoop
 			}
 		}
@@ -294,13 +312,27 @@ OuterLoop:
 			if config.Inbounds[i].Settings.Clients[j].Email == userName {
 				switch config.Inbounds[i].Protocol {
 				case "vmess", "vless":
-					*p.UserUUID = config.Inbounds[i].Settings.Clients[j].Id
+					if p.UserUUID != nil {
+						if *p.UserUUID != config.Inbounds[i].Settings.Clients[j].Id {
+							*p.UserUUID = config.Inbounds[i].Settings.Clients[j].Id
+							isUpdata = true
+						}
+					}
 				case "trojan", "shadowsocks":
-					*p.UserPassword = config.Inbounds[i].Settings.Clients[j].Password
+					if p.UserPassword != nil {
+						if *p.UserPassword != config.Inbounds[i].Settings.Clients[j].Password {
+							*p.UserPassword = config.Inbounds[i].Settings.Clients[j].Password
+							isUpdata = true
+						}
+					}
 				}
 				break OuterLoop
 			}
 
 		}
+	}
+
+	if isUpdata {
+		users.ConfigData.SavedConfig()
 	}
 }
