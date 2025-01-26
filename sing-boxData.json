@@ -45,10 +45,10 @@
             "type": "tun",
             "tag": "tun-in",
             "mtu": 9000,
-            "inet4_address": "172.19.0.1/30",
+            "address": "172.19.0.1/30",
             "auto_route": true,
             "strict_route": true,
-            "inet4_route_address": [
+            "route_address": [
                 "0.0.0.0/1",
                 "128.0.0.0/1",
                 "198.18.0.0/15"

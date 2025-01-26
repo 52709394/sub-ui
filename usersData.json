@@ -1,77 +1,108 @@
 {
   "inbounds": [
     {
-      "address": "www.17173.com",
-      "tag": "xVlessTcpTls",
-      "tag_path": "eFZsZXNzVGNwVGxz",
-      "protocol": "vless",
+      "address": "www.douban.com",
+      "tag": "sVmessWsTls",
+      "tag_path": "c1ZtZXNzV3NUbHM253D",
+      "protocol": "vmess",
       "port": "443",
       "hide": false,
       "users": [
         {
-          "name": "facai-0",
-          "uuid": "8791e1ad-c040-48ba-ef67-bea0b4367b98",
-          "flow": "xtls-rprx-vision",
+          "name": "vmessWsTls-1",
+          "uuid": "3f2580eb-d1c8-492e-a142-45887c8aad41",
           "static": false,
-          "user_path": "wMtWKGYym5MxdJXj"
+          "user_path": "FbY7KknuBGIxVZIE"
         }
       ],
-      "network": "tcp",
+      "network": "ws",
+      "transport": {
+        "path": "I4hpPjEJsi"
+      },
       "security": "tls",
       "fixed_Security": true,
       "fingerprint": "chrome"
     },
     {
-      "address": "www.17173.com",
-      "tag": "xVlessRawTls",
-      "tag_path": "eFZsZXNzUmF3VGxz",
-      "protocol": "vless",
+      "address": "www.douban.com",
+      "tag": "sVmessHttpupgradeTls",
+      "tag_path": "c1ZtZXNzSHR0cHVwZ3JhZGVUbHM253D",
+      "protocol": "vmess",
       "port": "443",
       "hide": false,
       "users": [
         {
-          "name": "facai-1",
-          "uuid": "8791e1ad-c040-48ba-ef67-bea0b4367b98",
-          "flow": "xtls-rprx-vision",
+          "name": "vmessHttpupgradeTls-1",
+          "uuid": "71ed23ff-0114-46bb-ab21-06a5bfd92e8e",
           "static": false,
-          "user_path": "tVbyiJTsxx5wAlND"
+          "user_path": "l3MLNXtWaWE2RPZm"
+        },
+        {
+          "name": "vmessHttpupgradeTls-2",
+          "uuid": "5b707a04-70de-498d-9c57-e6885741a3e9",
+          "static": false,
+          "user_path": "xEjlVWye05RLjNpE"
+        },
+        {
+          "name": "vmessHttpupgradeTls-3",
+          "uuid": "09fcf9da-14be-4ba7-b316-ba1dcf8d572d",
+          "static": false,
+          "user_path": "PoMyZmsKKacsRyxC"
         }
       ],
-      "network": "tcp",
+      "network": "httpupgrade",
+      "transport": {
+        "path": "flCLMXMi8w"
+      },
       "security": "tls",
-      "fixed_Security": true,
+      "fixed_Security": false,
       "fingerprint": "chrome"
     },
     {
-      "address": "www.17173.com",
-      "tag": "xVlessTcpReality",
-      "tag_path": "eFZsZXNzVGNwUmVhbGl0eQ253D253D",
-      "protocol": "vless",
+      "address": "www.douban.com",
+      "tag": "sTrojanTcpTls",
+      "tag_path": "c1Ryb2phblRjcFRscw253D253D",
+      "protocol": "trojan",
       "port": "443",
       "hide": false,
       "users": [
         {
           "name": "facai-2",
-          "uuid": "dbfe500b-107e-40fb-8fbc-7ea51767bfb7",
-          "flow": "xtls-rprx-vision",
+          "password": "QMN9NOangPp1QGNU",
           "static": false,
-          "user_path": "Ma4h5fhBqhfWm85a"
+          "user_path": "VK2UDDQpOrSruDeD"
         }
       ],
       "network": "tcp",
-      "security": "reality",
+      "security": "tls",
       "fixed_Security": true,
-      "reality": {
-        "sni": "ly01.709394.xyz",
-        "publicKey": "VUYw8KthSxZDvQqgqUNRt32c1ZMqF6Y7U9eaQuDn3yg",
-        "shortId": "bb2edf40a870f5a5"
-      },
       "fingerprint": "chrome"
     },
     {
-      "address": "www.17173.com",
-      "tag": "xTestVlessRawReality",
-      "tag_path": "eFRlc3RWbGVzc1Jhd1JlYWxpdHk253D",
+      "address": "www.douban.com",
+      "tag": "sVlessTcpTls",
+      "tag_path": "c1ZsZXNzVGNwVGxz",
+      "protocol": "vless",
+      "port": "443",
+      "hide": false,
+      "users": [
+        {
+          "name": "facai-3",
+          "uuid": "339d2717-1fa5-4fab-a9e6-89ed46f59a93",
+          "flow": "xtls-rprx-vision",
+          "static": false,
+          "user_path": "HbraZDMpwrsNwZz4"
+        }
+      ],
+      "network": "tcp",
+      "security": "tls",
+      "fixed_Security": true,
+      "fingerprint": "chrome"
+    },
+    {
+      "address": "www.douban.com",
+      "tag": "sTestVlessTcpReality",
+      "tag_path": "c1Rlc3RWbGVzc1RjcFJlYWxpdHk253D",
       "protocol": "vless",
       "port": "443",
       "hide": true,
@@ -80,258 +111,202 @@
       "security": "reality",
       "fixed_Security": true,
       "reality": {
-        "sni": "ly01.709394.xyz",
-        "publicKey": "VUYw8KthSxZDvQqgqUNRt32c1ZMqF6Y7U9eaQuDn3yg",
-        "shortId": "bb2edf40a870f5a5"
+        "sni": "www.17173.com",
+        "publicKey": "6sA7SLTIS6fna9U2iDjd24ZM1ct7og8oRzJtQzmQwW8",
+        "shortId": "7fd3054f3ef8cfc1"
       },
       "fingerprint": "chrome"
     },
     {
-      "address": "www.17173.com",
-      "tag": "xVlessRawReality",
-      "tag_path": "eFZsZXNzUmF3UmVhbGl0eQ253D253D",
+      "address": "www.douban.com",
+      "tag": "sVlessTcpReality",
+      "tag_path": "c1ZsZXNzVGNwUmVhbGl0eQ253D253D",
       "protocol": "vless",
       "port": "443",
       "hide": false,
       "users": [
         {
-          "name": "facai-3",
-          "uuid": "dbfe500b-107e-40fb-8fbc-7ea51767bfb7",
+          "name": "vlessTcpReality-1",
+          "uuid": "105c7e09-ec70-469c-8bf2-69c471ae86cb",
           "flow": "xtls-rprx-vision",
           "static": false,
-          "user_path": "MfQslzBjgy4YIeL3"
+          "user_path": "QScufaj9dkkyT0nr"
         }
       ],
       "network": "tcp",
       "security": "reality",
       "fixed_Security": true,
       "reality": {
-        "sni": "ly01.709394.xyz",
-        "publicKey": "VUYw8KthSxZDvQqgqUNRt32c1ZMqF6Y7U9eaQuDn3yg",
-        "shortId": "bb2edf40a870f5a5"
+        "sni": "www.17173.com",
+        "publicKey": "6sA7SLTIS6fna9U2iDjd24ZM1ct7og8oRzJtQzmQwW8",
+        "shortId": "7fd3054f3ef8cfc1"
       },
       "fingerprint": "chrome"
     },
     {
-      "address": "www.17173.com",
-      "tag": "xVlessGrpcReality",
-      "tag_path": "eFZsZXNzR3JwY1JlYWxpdHk253D",
+      "address": "www.douban.com",
+      "tag": "sVlessHttpReality",
+      "tag_path": "c1ZsZXNzSHR0cFJlYWxpdHk253D",
       "protocol": "vless",
       "port": "443",
       "hide": false,
       "users": [
         {
-          "name": "facai-4",
-          "uuid": "86162ee1-ce59-4149-9782-ac11f4ca79b8",
+          "name": "vlessHttpReality-1",
+          "uuid": "df054670-eb76-42c2-be6e-f0bcaa6cbdc9",
           "static": false,
-          "user_path": "ln7JMFFz9NP0v1RM"
-        }
-      ],
-      "network": "grpc",
-      "transport": {
-        "service_name": "lovelive"
-      },
-      "security": "reality",
-      "fixed_Security": true,
-      "reality": {
-        "sni": "hdx01.709394.xyz",
-        "publicKey": "0DBvaHVK1I1fbjdNNLl4tqNnsJFSb8c2SQEwh9XgiQU",
-        "shortId": "c65d930732a9fe35"
-      },
-      "fingerprint": "chrome"
-    },
-    {
-      "address": "www.17173.com",
-      "tag": "xVlesshttpReality",
-      "tag_path": "eFZsZXNzaHR0cFJlYWxpdHk253D",
-      "protocol": "vless",
-      "port": "443",
-      "hide": false,
-      "users": [
-        {
-          "name": "facai-5",
-          "uuid": "931863cd-351d-4e59-c624-e2c87c5e6203",
-          "static": false,
-          "user_path": "QhZPVbPQT4vBSj1X"
+          "user_path": "2NYC81kUS2HfzOvP"
         }
       ],
       "network": "http",
       "transport": {
-        "host": "www.ctrip.com",
-        "path": "/"
+        "host": "www.55.com,www.166xs.com,www.81zw.com"
       },
       "security": "reality",
       "fixed_Security": true,
       "reality": {
-        "sni": "zhy.709394.xyz",
-        "publicKey": "Y8MzPGEVkGm_nmt-xgsJuaRyjd6EGffic3GYXbOWED4",
-        "shortId": "80ff80df83210f80"
+        "sni": "709394.xyz",
+        "publicKey": "QqRtwDRLD7gUJC8sH7fWD8hN_94oBau3Au9wYD2MZ2Y",
+        "shortId": "3b51503d0950f9e9"
       },
       "fingerprint": "chrome"
     },
     {
-      "address": "www.17173.com",
-      "tag": "xVlessSplitTls",
-      "tag_path": "eFZsZXNzU3BsaXRUbHM253D",
+      "address": "www.douban.com",
+      "tag": "sVlessGrpcReality",
+      "tag_path": "c1ZsZXNzR3JwY1JlYWxpdHk253D",
       "protocol": "vless",
       "port": "443",
       "hide": false,
       "users": [
         {
-          "name": "vlessSplitTls-1",
-          "uuid": "0eb85658-a75e-4b86-a924-98e5c920e17a",
+          "name": "vlessGrpcReality-1",
+          "uuid": "eb0781bc-1d16-4421-997e-37b53fa2dc11",
           "static": false,
-          "user_path": "80NDxgJCbmFV9ou8"
+          "user_path": "SDQBXpZSZpOooC2C"
         },
         {
-          "name": "vlessSplitTls-2",
-          "uuid": "5cc06b35-1609-47c6-93ed-072851fd408e",
+          "name": "vlessGrpcReality-2",
+          "uuid": "fbbb4e8e-d838-4c0f-a115-0b4340a401fc",
           "static": false,
-          "user_path": "8nP6WH4rwa4iSj8v"
-        }
-      ],
-      "network": "splithttp",
-      "transport": {
-        "path": "/lovelive"
-      },
-      "security": "tls",
-      "fixed_Security": false,
-      "fingerprint": "chrome"
-    },
-    {
-      "address": "www.17173.com",
-      "tag": "xVlessXhttpTls",
-      "tag_path": "eFZsZXNzWGh0dHBUbHM253D",
-      "protocol": "vless",
-      "port": "443",
-      "hide": false,
-      "users": [
-        {
-          "name": "vlessXhttp-1",
-          "uuid": "0eb85658-a75e-4b86-a924-98e5c920e17a",
-          "static": false,
-          "user_path": "DxU5whV3KUgQNkvK"
+          "user_path": "yp0UDWC0XQKG5zSV"
         },
         {
-          "name": "vlessXhttp-2",
-          "uuid": "5cc06b35-1609-47c6-93ed-072851fd408e",
+          "name": "vlessGrpcReality-3",
+          "uuid": "e981b3b0-7294-4850-aa23-b2ae17b55db9",
           "static": false,
-          "user_path": "put33Cycazb1rKqB"
+          "user_path": "CPEYq8wZJ39EPyAc"
         }
       ],
-      "network": "xhttp",
+      "network": "grpc",
       "transport": {
-        "path": "/lovelive"
-      },
-      "security": "tls",
-      "fixed_Security": false,
-      "fingerprint": "chrome"
-    },
-    {
-      "address": "www.17173.com",
-      "tag": "xVlessXhttpReality",
-      "tag_path": "eFZsZXNzWGh0dHBSZWFsaXR5",
-      "protocol": "vless",
-      "port": "443",
-      "hide": false,
-      "users": [
-        {
-          "name": "vlessXhttp-1",
-          "uuid": "0eb85658-a75e-4b86-a924-98e5c920e17a",
-          "static": false,
-          "user_path": "DxU5whV3KUgQNkvK"
-        },
-        {
-          "name": "vlessXhttp-2",
-          "uuid": "5cc06b35-1609-47c6-93ed-072851fd408e",
-          "static": false,
-          "user_path": "put33Cycazb1rKqB"
-        }
-      ],
-      "network": "xhttp",
-      "transport": {
-        "path": "/lovelive"
+        "service_name": "wocao"
       },
       "security": "reality",
       "fixed_Security": true,
       "reality": {
-        "sni": "ly01.709394.xyz",
-        "publicKey": "VUYw8KthSxZDvQqgqUNRt32c1ZMqF6Y7U9eaQuDn3yg",
-        "shortId": "bb2edf40a870f5a5"
+        "sni": "www.gamersky.com",
+        "publicKey": "tRy3KLOwZlMutU_B9QdHqcrz1wiBHiTMVXK5wrLpk2k",
+        "shortId": "571fa89a2a731510"
       },
       "fingerprint": "chrome"
     },
     {
-      "address": "www.17173.com",
-      "tag": "xVmessHttpupgradeTls",
-      "tag_path": "eFZtZXNzSHR0cHVwZ3JhZGVUbHM253D",
-      "protocol": "vmess",
+      "address": "www.douban.com",
+      "tag": "sHysteria2",
+      "tag_path": "c0h5c3RlcmlhMg253D253D",
+      "protocol": "hysteria2",
       "port": "443",
       "hide": false,
       "users": [
         {
-          "name": "facai-8",
-          "uuid": "83e0692c-54d2-49eb-9812-dc775f6361e4",
+          "name": "hysteria2-1",
+          "password": "02a43942a7b8c4b8",
           "static": false,
-          "user_path": "RnFyS2DxN6mSFiDz"
+          "user_path": "kCP6KLSz1FE2wSVV"
         }
       ],
-      "network": "httpupgrade",
-      "transport": {
-        "path": "/CcAw3PRxv57Q5usu"
-      },
+      "network": "",
       "security": "tls",
       "fixed_Security": false,
-      "fingerprint": "chrome"
-    },
-    {
-      "address": "www.17173.com",
-      "tag": "xVmessWsTls",
-      "tag_path": "eFZtZXNzV3NUbHM253D",
-      "protocol": "vmess",
-      "port": "443",
-      "hide": false,
-      "users": [
-        {
-          "name": "vmessWsTls-1",
-          "uuid": "e4f47cdb-4d1c-4403-ff9e-6522da59f637",
-          "static": false,
-          "user_path": "sLJco7an31RguSJv"
-        }
-      ],
-      "network": "ws",
-      "transport": {
-        "path": "/wdh9XOe3NLgitLJX"
-      },
-      "security": "tls",
-      "fixed_Security": true,
-      "fingerprint": "chrome"
-    },
-    {
-      "address": "www.17173.com",
-      "tag": "xTrojanTcpTls",
-      "tag_path": "eFRyb2phblRjcFRscw253D253D",
-      "protocol": "trojan",
-      "port": "443",
-      "hide": false,
-      "users": [
-        {
-          "name": "xTrojanTcpTls-1",
-          "password": "your password",
-          "static": false,
-          "user_path": "a6XFMTvF8F6zNMfW"
-        }
-      ],
-      "network": "tcp",
-      "security": "tls",
-      "fixed_Security": true,
       "tls": {
-        "alpn": "http/1.1"
+        "alpn": "h3"
       },
-      "fingerprint": "chrome"
+      "fingerprint": ""
     },
     {
-      "address": "www.17173.com",
+      "address": "www.douban.com",
+      "tag": "sTuic",
+      "tag_path": "c1R1aWM253D",
+      "protocol": "tuic",
+      "port": "443",
+      "hide": false,
+      "users": [
+        {
+          "name": "tuic-1",
+          "uuid": "0d75ca42-5e0c-47f2-9112-84cd3ec7067d",
+          "password": "b04eb6a2a02ee164",
+          "static": false,
+          "user_path": "T216iuXlrbY4CWtB"
+        }
+      ],
+      "congestion_control": "bbr",
+      "network": "",
+      "security": "tls",
+      "fixed_Security": false,
+      "tls": {
+        "alpn": "h3"
+      },
+      "fingerprint": ""
+    },
+    {
+      "address": "www.douban.com",
+      "tag": "sshadowtls",
+      "tag_path": "c3NoYWRvd3Rscw253D253D",
+      "protocol": "shadowtls",
+      "port": "443",
+      "hide": false,
+      "users": [
+        {
+          "name": "facai-9",
+          "password": "dmQ1hOZI3Y10oXWW",
+          "static": true,
+          "user_path": "kf1cxo6VEjlXr7CD"
+        }
+      ],
+      "shadowtls": {
+        "version": "3",
+        "sni": "www.bing.com",
+        "detour_proxy": "{\"type\":\"shadowsocks\",\"method\":\"2022-blake3-aes-128-gcm\",\"password\":\"j12bZGKDeZ1o/ftx5WlSvw==\"}"
+      },
+      "network": "",
+      "security": "tls",
+      "fixed_Security": false,
+      "fingerprint": ""
+    },
+    {
+      "address": "www.douban.com",
+      "tag": "shadowsocks-in",
+      "tag_path": "c2hhZG93c29ja3MtaW4253D",
+      "protocol": "shadowsocks",
+      "port": "443",
+      "hide": true,
+      "users": [
+        {
+          "name": "facai-0",
+          "method": "2022-blake3-aes-128-gcm",
+          "password": "j12bZGKDeZ1o/ftx5WlSvw==",
+          "static": false,
+          "user_path": "iZI4wiWk9KaF7D6y"
+        }
+      ],
+      "network": "",
+      "security": "tls",
+      "fixed_Security": false,
+      "fingerprint": ""
+    },
+    {
+      "address": "www.douban.com",
       "tag": "shadowsocks-1",
       "tag_path": "c2hhZG93c29ja3MtMQ253D253D",
       "protocol": "shadowsocks",
@@ -339,20 +314,20 @@
       "hide": false,
       "users": [
         {
-          "name": "facai-1234",
+          "name": "facai-80",
           "method": "2022-blake3-aes-128-gcm",
-          "password": "{{ psk }}",
+          "password": "j12bZGKDeZ1o/ftx5WlSvw==",
           "static": false,
-          "user_path": "lZNqot0x6FWtD4lP"
+          "user_path": "UHE6OnkJx9fRoxhS"
         }
       ],
       "network": "",
       "security": "tls",
       "fixed_Security": false,
-      "fingerprint": "chrome"
+      "fingerprint": ""
     },
     {
-      "address": "www.17173.com",
+      "address": "www.douban.com",
       "tag": "shadowsocks-2",
       "tag_path": "c2hhZG93c29ja3MtMg253D253D",
       "protocol": "shadowsocks",
@@ -360,31 +335,24 @@
       "hide": false,
       "users": [
         {
-          "name": "aes-128-gcm",
-          "method": "aes-128-gcm",
-          "password": "example_user_1",
+          "name": "facai-80",
+          "method": "2022-blake3-aes-128-gcm",
+          "password": "j12bZGKDeZ1o/ftx5WlSvw==",
           "static": false,
-          "user_path": "Ez7CDX2DIQKJJXl4"
+          "user_path": "iHRkjdXmfBK2AoQY"
         },
         {
-          "name": "aes-256-gcm",
-          "method": "aes-256-gcm",
-          "password": "example_user_2",
+          "name": "sekai",
+          "method": "2022-blake3-aes-128-gcm",
+          "password": "PCD2Z4o12bKUoFa3cC97Hw==",
           "static": false,
-          "user_path": "CNYGKebOCZunFajq"
-        },
-        {
-          "name": "chacha20-poly1305",
-          "method": "chacha20-poly1305",
-          "password": "example_user_3",
-          "static": false,
-          "user_path": "7hkbqWHvnNfxOOf2"
+          "user_path": "pCjOT4eOyLq3YGuE"
         }
       ],
       "network": "",
       "security": "tls",
       "fixed_Security": false,
-      "fingerprint": "chrome"
+      "fingerprint": ""
     }
   ]
 }

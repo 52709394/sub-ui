@@ -9,7 +9,7 @@ type Client struct {
 }
 
 type Fallback struct {
-	Dest interface{} `josn:"dest"`
+	Dest any `josn:"dest"`
 }
 
 type Settings struct {
@@ -105,7 +105,7 @@ type LConfig struct {
 
 type RealityFallback struct {
 	Index int
-	Dest  interface{}
+	Dest  any
 }
 
 type RealityFallbacks struct {
