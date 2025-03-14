@@ -36,10 +36,7 @@
             "type": "mixed",
             "tag": "mixed-in",
             "listen": "127.0.0.1",
-            "listen_port": 2080,
-            "sniff": true,
-            "sniff_override_destination": false,
-            "domain_strategy": "ipv4_only"
+            "listen_port": 2080
         },
         {
             "type": "tun",
@@ -61,10 +58,7 @@
                     "server": "127.0.0.1",
                     "server_port": 2080
                 }
-            },
-            "sniff": true,
-            "sniff_override_destination": false,
-            "domain_strategy": "ipv4_only"
+            }
         }
     ],
     "outbounds": [
@@ -72,30 +66,33 @@
         {
             "type": "direct",
             "tag": "direct"
-        },
-        {
-            "type": "block",
-            "tag": "block"
-        },
-        {
-            "type": "dns",
-            "tag": "dns-out"
         }
     ],
     "route": {
         "rules": [
             {
-                "protocol": "dns",
-                "outbound": "dns-out"
+                "inbound": [
+                    "mixed-in",
+                    "tun-in"
+                ],
+                "action": "resolve",
+                "strategy": "prefer_ipv4"
             },
             {
-                "port": 53,
-                "outbound": "dns-out"
+                "inbound": [
+                    "mixed-in",
+                    "tun-in"
+                ],
+                "action": "sniff"
+            },
+            {
+                "protocol": "dns",
+                "action": "hijack-dns"
             },
             {
                 "network": "udp",
                 "port": 443,
-                "outbound": "block"
+                "action": "reject"
             },
             {
                 "clash_mode": "direct",
@@ -103,20 +100,6 @@
             },
             {
                 "clash_mode": "global",
-                "outbound": "{{.Outbound}}"
-            },
-            {
-                "type": "logical",
-                "mode": "and",
-                "rules": [
-                    {
-                        "rule_set": "geosite-geolocation-!cn"
-                    },
-                    {
-                        "rule_set": "geoip-cn",
-                        "invert": true
-                    }
-                ],
                 "outbound": "{{.Outbound}}"
             },
             {
@@ -141,13 +124,6 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
-                "download_detour": "{{.Detour}}"
-            },
-            {
-                "type": "remote",
-                "tag": "geosite-geolocation-!cn",
-                "format": "binary",
-                "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-geolocation-!cn.srs",
                 "download_detour": "{{.Detour}}"
             }
         ],
