@@ -233,7 +233,7 @@ func getConfigData() error {
 		proxy.LConfigData = singbox.LConfig{}
 	} else {
 		proxy.ConfigData = xray.Config{}
-		proxy.LConfigData = singbox.LConfig{}
+		proxy.LConfigData = xray.LConfig{}
 	}
 
 	if read.CheckExistence(setup.ConfigData.Users.Config) != "file" {
