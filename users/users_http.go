@@ -46,7 +46,7 @@ func GetUrlData(proxyUrl string) (string, string) {
 					if ConfigData.Inbounds[i].Users[j].Flow != "" {
 						p.UserFlow = &ConfigData.Inbounds[i].Users[j].Flow
 					}
-				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
+				case "trojan", "shadowsocks", "anytls", "shadowtls", "hysteria2":
 					p.UserPassword = &ConfigData.Inbounds[i].Users[j].Password
 				case "tuic":
 					p.UserUUID = &ConfigData.Inbounds[i].Users[j].UUID
@@ -129,7 +129,7 @@ func GetUrlData(proxyUrl string) (string, string) {
 				}
 			}
 
-		case "tuic", "hysteria2":
+		case "anytls", "tuic", "hysteria2":
 			if *p.Protocol == "tuic" {
 				p.TuicCC = &ConfigData.Inbounds[i].CongestionControl
 			}

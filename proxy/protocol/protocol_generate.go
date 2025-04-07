@@ -296,6 +296,10 @@ func (p Config) JsonUrl(tag string) string {
 		return p.setSBData(SBStringData.TrojanTcpTls, tag)
 	}
 
+	if proxyMod == "anytls" {
+		return p.setSBData(SBStringData.Anytls, tag)
+	}
+
 	if proxyMod == "hysteria2" {
 		return p.setSBData(SBStringData.Hysteria2, tag)
 	}

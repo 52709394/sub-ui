@@ -212,6 +212,27 @@
       "fingerprint": "chrome"
     },
     {
+      "address": "www.58.com",
+      "tag": "sanytls",
+      "tag_path": "c2FueXRscw253D253D",
+      "protocol": "anytls",
+      "port": "443",
+      "hide": false,
+      "users": [
+        {
+          "name": "anytls-1",
+          "password": "RAT70bgOBXnqIViv",
+          "static": false,
+          "user_path": "Ku59mmbVxy1G7Qfn"
+        }
+      ],
+      "network": "",
+      "security": "",
+      "fixed_Security": false,
+      "tls": {},
+      "fingerprint": ""
+    },
+    {
       "address": "www.douban.com",
       "tag": "sHysteria2",
       "tag_path": "c0h5c3RlcmlhMg253D253D",

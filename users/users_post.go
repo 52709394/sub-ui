@@ -47,7 +47,7 @@ func SetTagData(body []byte) (map[string]string, string, string) {
 		inboundsLen := len(ConfigData.Inbounds)
 		i := tagData.Index
 
-		if inboundsLen < i && 1 > i {
+		if inboundsLen < i || 0 > i {
 
 			return response, toggleContent, "网络错误!"
 		}
@@ -92,13 +92,13 @@ func (re RenewUsers) SetUsersUrl() error {
 		x := re.Users[i].X
 		y := re.Users[i].Y
 
-		if inboundsLen < x && 1 > x {
+		if inboundsLen < x || 0 > x {
 			break
 		}
 
 		UsersLen := len(ConfigData.Inbounds[x].Users)
 
-		if UsersLen < y && 1 > y {
+		if UsersLen < y || 0 > y {
 			break
 		}
 
@@ -130,7 +130,7 @@ func (re RenewUsers) SetUsersUrl() error {
 func (re RenewUsers) SetStaticUsers() {
 
 	var newConsts []setup.Consts
-	var Users []setup.ConstUser
+	var users setup.ConstUser
 
 	inboundsLen := len(ConfigData.Inbounds)
 
@@ -138,13 +138,13 @@ func (re RenewUsers) SetStaticUsers() {
 		x := re.Users[i].X
 		y := re.Users[i].Y
 
-		if inboundsLen < x && 1 > x {
+		if inboundsLen < x || 0 > x {
 			break
 		}
 
 		UsersLen := len(ConfigData.Inbounds[x].Users)
 
-		if UsersLen < y && 1 > y {
+		if UsersLen < y || 0 > y {
 			break
 		}
 
@@ -171,14 +171,14 @@ func (re RenewUsers) SetStaticUsers() {
 			continue
 		}
 
-		Users = append(Users[:0], setup.ConstUser{
+		users = setup.ConstUser{
 			Name: ConfigData.Inbounds[x].Users[y].Name,
 			Path: ConfigData.Inbounds[x].Users[y].UserPath,
-		})
+		}
 
 		newConsts = append(newConsts, setup.Consts{
 			Tag:   tag,
-			Users: Users,
+			Users: []setup.ConstUser{users},
 		})
 
 	}
@@ -193,7 +193,6 @@ func (re RenewUsers) SetStaticUsers() {
 func (bac BackupInfo) AddUsers() {
 
 	var newExcludes []setup.Exclude
-	var names []string
 
 	inboundsLen := len(ConfigData.Inbounds)
 
@@ -201,13 +200,13 @@ func (bac BackupInfo) AddUsers() {
 		x := bac.Users[i].X
 		y := bac.Users[i].Y
 
-		if inboundsLen < x && 1 > x {
+		if inboundsLen < x || 0 > x {
 			break
 		}
 
 		UsersLen := len(ConfigData.Inbounds[x].Users)
 
-		if UsersLen < y && 1 > y {
+		if UsersLen < y || 0 > y {
 			break
 		}
 
@@ -230,11 +229,10 @@ func (bac BackupInfo) AddUsers() {
 		if !isNew {
 			continue
 		}
-		names = append(names[:0], bac.Users[i].Name)
 
 		newExcludes = append(newExcludes, setup.Exclude{
 			Tag:   tag,
-			Users: names,
+			Users: []string{bac.Users[i].Name},
 		})
 	}
 

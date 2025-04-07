@@ -67,14 +67,14 @@
         "repository": "sing-box",
         "regexp": "\\d-universal\\.apk$",
         "name": "sing-box.apk",
-        "url": "https://github.com/SagerNet/sing-box/releases/download/v1.11.5/SFA-1.11.5-universal.apk"
+        "url": "https://github.com/SagerNet/sing-box/releases/download/v1.11.6/SFA-1.11.6-universal.apk"
       },
       {
         "user": "2dust",
         "repository": "v2rayNG",
         "regexp": "universal.*?\\.apk$",
         "name": "v2rayNG.apk",
-        "url": "https://github.com/2dust/v2rayNG/releases/download/1.9.33/v2rayNG_1.9.33_universal.apk"
+        "url": "https://github.com/2dust/v2rayNG/releases/download/1.9.45/v2rayNG_1.9.45_universal.apk"
       },
       {
         "user": "2dust",
@@ -121,9 +121,85 @@
     "sb_selector": false,
     "excludes": [
       {
+        "tag": "sVmessWsTls",
+        "users": [
+          "vmessWsTls-1"
+        ]
+      },
+      {
+        "tag": "sVmessHttpupgradeTls",
+        "users": [
+          "vmessHttpupgradeTls-1",
+          "vmessHttpupgradeTls-2",
+          "vmessHttpupgradeTls-3"
+        ]
+      },
+      {
+        "tag": "sTrojanTcpTls",
+        "users": [
+          "facai-2"
+        ]
+      },
+      {
+        "tag": "sVlessTcpTls",
+        "users": [
+          "facai-3"
+        ]
+      },
+      {
+        "tag": "sVlessTcpReality",
+        "users": [
+          "vlessTcpReality-1"
+        ]
+      },
+      {
+        "tag": "sVlessHttpReality",
+        "users": [
+          "vlessHttpReality-1"
+        ]
+      },
+      {
+        "tag": "sVlessGrpcReality",
+        "users": [
+          "vlessGrpcReality-1",
+          "vlessGrpcReality-2",
+          "vlessGrpcReality-3"
+        ]
+      },
+      {
+        "tag": "sanytls",
+        "users": [
+          "anytls-1"
+        ]
+      },
+      {
+        "tag": "sHysteria2",
+        "users": [
+          "hysteria2-1"
+        ]
+      },
+      {
+        "tag": "sTuic",
+        "users": [
+          "tuic-1"
+        ]
+      },
+      {
         "tag": "sshadowtls",
         "users": [
           "facai-9"
+        ]
+      },
+      {
+        "tag": "shadowsocks-1",
+        "users": [
+          "facai-80"
+        ]
+      },
+      {
+        "tag": "shadowsocks-2",
+        "users": [
+          "sekai"
         ]
       }
     ],
@@ -147,7 +223,7 @@
     "enabled": true,
     "const_list": [
       {
-        "tag": "sTuic",
+        "tag": "sshadowtls",
         "users": [
           {
             "name": "facai-9",
@@ -156,11 +232,20 @@
         ]
       },
       {
-        "tag": "sshadowtls",
+        "tag": "shadowsocks-1",
         "users": [
           {
-            "name": "facai-9",
-            "path": "kf1cxo6VEjlXr7CD"
+            "name": "facai-80",
+            "path": "UHE6OnkJx9fRoxhS"
+          }
+        ]
+      },
+      {
+        "tag": "shadowsocks-2",
+        "users": [
+          {
+            "name": "facai-80",
+            "path": "iHRkjdXmfBK2AoQY"
           }
         ]
       }

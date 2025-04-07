@@ -222,6 +222,24 @@
             }
         },
         {
+            "type": "anytls",
+            "tag": "sanytls",
+            "listen": "::",
+            "listen_port": 7,
+            "users": [
+                {
+                    "name": "anytls-1",
+                    "password": "RAT70bgOBXnqIViv"
+                }
+            ],
+            "padding_scheme": [],
+            "tls": {
+                "enabled": true,
+                "certificate_path": "/root/fullchain.cer",
+                "key_path": "/root/private.key"
+            }
+        },
+        {
             "type": "hysteria2",
             "tag": "sHysteria2",
             "listen": "::",
@@ -278,7 +296,7 @@
                 }
             ],
             "handshake": {
-                "server": "www.bing.com", 
+                "server": "www.bing.com",
                 "server_port": 443
             },
             "strict_mode": true
@@ -288,7 +306,7 @@
             "tag": "shadowsocks-in",
             "listen": "127.0.0.1",
             "method": "2022-blake3-aes-128-gcm",
-            "password": "j12bZGKDeZ1o/ftx5WlSvw==", 
+            "password": "j12bZGKDeZ1o/ftx5WlSvw==",
             "multiplex": {
                 "enabled": true
             }
@@ -299,7 +317,7 @@
             "listen": "::",
             "listen_port": 80,
             "method": "2022-blake3-aes-128-gcm",
-            "password": "j12bZGKDeZ1o/ftx5WlSvw==", 
+            "password": "j12bZGKDeZ1o/ftx5WlSvw==",
             "multiplex": {
                 "enabled": true
             }
@@ -310,12 +328,12 @@
             "listen": "::",
             "listen_port": 80,
             "method": "2022-blake3-aes-128-gcm",
-            "password": "j12bZGKDeZ1o/ftx5WlSvw==", 
+            "password": "j12bZGKDeZ1o/ftx5WlSvw==",
             "users": [
-              {
-                "name": "sekai",
-                "password": "PCD2Z4o12bKUoFa3cC97Hw=="
-              }
+                {
+                    "name": "sekai",
+                    "password": "PCD2Z4o12bKUoFa3cC97Hw=="
+                }
             ],
             "multiplex": {
                 "enabled": true

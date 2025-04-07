@@ -109,6 +109,10 @@ func (inbound Inbound) getData(usersInbound *users.Inbound) string {
 		usersInbound.Fingerprint = setup.ConfigData.Users.UtlsFp
 
 		return protocol
+	case "anytls":
+		usersInbound.Tls = new(users.Tls)
+		usersInbound.Security = "tls"
+		return protocol
 	case "hysteria2":
 		usersInbound.Tls = new(users.Tls)
 		usersInbound.Tls.Alpn = "h3"
@@ -222,7 +226,7 @@ func (config Config) RenewData(mod string) error {
 			case "vless":
 				newUsersInbound.Users[n].UUID = config.Inbounds[i].Users[j].UUID
 				newUsersInbound.Users[n].Flow = config.Inbounds[i].Users[j].Flow
-			case "trojan", "shadowsocks", "shadowtls", "hysteria2":
+			case "trojan", "shadowsocks", "anytls", "shadowtls", "hysteria2":
 				newUsersInbound.Users[n].Password = config.Inbounds[i].Users[j].Password
 				if protocol == "shadowsocks" {
 					newUsersInbound.Users[n].Method = config.Inbounds[i].Method
@@ -294,7 +298,7 @@ OuterLoop:
 						}
 					}
 
-				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
+				case "trojan", "shadowsocks", "anytls", "shadowtls", "hysteria2":
 					if p.UserPassword != nil {
 						if *p.UserPassword == config.Inbounds[i].Users[0].Password {
 							*p.UserPassword = config.Inbounds[i].Users[0].Password
@@ -343,9 +347,9 @@ OuterLoop:
 						}
 					}
 
-				case "trojan", "shadowsocks", "shadowtls", "hysteria2":
+				case "trojan", "shadowsocks", "anytls", "shadowtls", "hysteria2":
 					if p.UserPassword != nil {
-						if *p.UserPassword == config.Inbounds[i].Users[j].Password {
+						if *p.UserPassword != config.Inbounds[i].Users[j].Password {
 							*p.UserPassword = config.Inbounds[i].Users[j].Password
 							isUpdata = true
 						}

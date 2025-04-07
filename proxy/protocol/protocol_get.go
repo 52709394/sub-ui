@@ -25,6 +25,7 @@ func GetSBString() {
 	SBStringData.VlessGrpcReality = getString("sing-box/vless_grpc_reality.json")
 	SBStringData.VlessTcpTls = getString("sing-box/vless_tcp_tls.json")
 	SBStringData.TrojanTcpTls = getString("sing-box/trojan_tcp_tls.json")
+	SBStringData.Anytls = getString("sing-box/anytls.json")
 	SBStringData.Hysteria2 = getString("sing-box/hysteria2.json")
 	SBStringData.Tuic = getString("sing-box/tuic.json")
 	SBStringData.Shadowtls = getString("sing-box/shadowtls.json")

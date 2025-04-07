@@ -33,6 +33,7 @@ type SBString struct {
 	VlessGrpcReality string
 	VlessTcpTls      string
 	TrojanTcpTls     string
+	Anytls           string
 	Hysteria2        string
 	Tuic             string
 	Shadowtls        string
